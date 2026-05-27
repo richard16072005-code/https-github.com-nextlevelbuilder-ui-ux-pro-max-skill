@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DriveEasy — Premium Car Rental | Camry & MG Fleet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { serif: ['Bodoni Moda','serif'], sans: ['Jost','sans-serif'] },
+      colors: {
+        ink:   { DEFAULT:'#0F172A', 700:'#1E293B', 500:'#334155', 300:'#64748B', 100:'#CBD5E1', 50:'#F1F5F9' },
+        cream: { DEFAULT:'#F8FAFC', warm:'#FFF7ED' },
+        red:   { DEFAULT:'#DC2626', dark:'#B91C1C', light:'#FEE2E2' },
+        gold:  { DEFAULT:'#B45309', light:'#FEF3C7' },
+      }
+    }
+  }
+}
+</script>
+<style>
+*{box-sizing:border-box;}
+body{font-family:'Jost',sans-serif;background:#F8FAFC;color:#0F172A;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:#F1F5F9;}::-webkit-scrollbar-thumb{background:#1E293B;border-radius:2px;}
+
+/* NAV */
+nav{background:rgba(248,250,252,0.92);backdrop-filter:blur(16px);border-bottom:1px solid #E2E8F0;}
+
+/* HERO */
+.hero-bg{background:linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#0F172A 100%);}
+.hero-grid{background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:60px 60px;}
+
+/* BOOKING FORM */
+.booking-card{background:rgba(255,255,255,0.97);box-shadow:0 25px 60px rgba(0,0,0,0.25);}
+
+/* CAR CARD */
+.car-card{transition:all .3s ease;border:1px solid #E2E8F0;}
+.car-card:hover{transform:translateY(-6px);box-shadow:0 24px 48px rgba(0,0,0,0.12);border-color:#CBD5E1;}
+.car-card .badge{background:linear-gradient(135deg,#DC2626,#B91C1C);}
+
+/* RATING STARS */
+.stars{color:#F59E0B;}
+
+/* REVIEW CARD */
+.review-card{border:1px solid #E2E8F0;transition:all .3s;}
+.review-card:hover{border-color:#CBD5E1;box-shadow:0 12px 32px rgba(0,0,0,0.08);}
+.review-card.active{border-color:#1E293B;box-shadow:0 16px 40px rgba(0,0,0,0.12);}
+
+/* FEATURE ICON */
+.feat-icon{background:linear-gradient(135deg,#1E293B,#334155);}
+
+/* STEP */
+.step-num{background:linear-gradient(135deg,#DC2626,#B91C1C);font-family:'Bodoni Moda',serif;}
+
+/* BTN */
+.btn-red{background:linear-gradient(135deg,#DC2626,#B91C1C);transition:all .25s;position:relative;overflow:hidden;}
+.btn-red::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#B91C1C,#991B1B);opacity:0;transition:opacity .25s;}
+.btn-red:hover::after{opacity:1;}
+.btn-red span{position:relative;z-index:1;}
+.btn-outline{border:2px solid #1E293B;transition:all .25s;}
+.btn-outline:hover{background:#1E293B;color:#fff;}
+
+/* CAROUSEL */
+.reviews-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1);}
+
+/* TAG */
+.tag{background:#F1F5F9;border:1px solid #E2E8F0;font-size:11px;letter-spacing:.05em;}
+
+/* SPEC ROW */
+.spec-row{border-bottom:1px solid #F1F5F9;}
+.spec-row:last-child{border-bottom:none;}
+
+/* AVAILABILITY DOT */
+.avail-dot{width:8px;height:8px;border-radius:50%;background:#22C55E;animation:pulse-g 2s infinite;}
+@keyframes pulse-g{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4);}50%{box-shadow:0 0 0 6px rgba(34,197,94,0);}}
+
+/* FADE IN */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:none;}
+
+/* CAR SVG STAGE */
+.car-stage{background:linear-gradient(180deg,#F8FAFC 0%,#E2E8F0 100%);border-radius:12px;}
+
+/* INPUT */
+.form-input{border:1.5px solid #E2E8F0;transition:border-color .2s;}
+.form-input:focus{outline:none;border-color:#1E293B;}
+
+/* SECTION LABEL */
+.section-label{letter-spacing:.15em;font-size:11px;font-weight:600;color:#DC2626;}
+
+@media(prefers-reduced-motion:reduce){.fade-in{transition:none;}.reviews-track{transition:none;}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ NAVBAR ══════════════════ -->
+<nav class="fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+    <a href="#" class="flex items-center gap-2 cursor-pointer">
+      <div class="w-8 h-8 rounded-lg feat-icon flex items-center justify-center">
+        <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+      </div>
+      <span class="font-serif text-xl font-bold tracking-tight">Drive<span class="text-red">Easy</span></span>
+    </a>
+    <div class="hidden md:flex items-center gap-7 text-sm font-medium text-ink-500">
+      <a href="#fleet" class="hover:text-ink transition-colors cursor-pointer">Fleet</a>
+      <a href="#how" class="hover:text-ink transition-colors cursor-pointer">How It Works</a>
+      <a href="#reviews" class="hover:text-ink transition-colors cursor-pointer">Reviews</a>
+      <a href="#" class="hover:text-ink transition-colors cursor-pointer">Locations</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="hidden sm:block btn-outline text-sm font-semibold px-4 py-2 rounded-lg cursor-pointer">Sign In</button>
+      <button class="btn-red text-sm font-semibold px-5 py-2.5 rounded-lg text-white cursor-pointer"><span>Book Now</span></button>
+      <button id="menu-btn" class="md:hidden p-2 text-ink-300 cursor-pointer" aria-label="Menu">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-ink-100 px-4 py-4 space-y-3 text-sm font-medium">
+    <a href="#fleet" class="block py-1.5 text-ink-500 hover:text-ink">Fleet</a>
+    <a href="#how" class="block py-1.5 text-ink-500 hover:text-ink">How It Works</a>
+    <a href="#reviews" class="block py-1.5 text-ink-500 hover:text-ink">Reviews</a>
+    <button class="w-full btn-red font-semibold py-3 rounded-xl text-white cursor-pointer mt-2"><span>Book Now</span></button>
+  </div>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero-bg hero-grid min-h-screen flex flex-col justify-center pt-16 relative overflow-hidden">
+  <!-- Decorative rings -->
+  <div class="absolute -right-40 -top-40 w-96 h-96 rounded-full border border-white/5"></div>
+  <div class="absolute -right-20 -top-20 w-64 h-64 rounded-full border border-white/5"></div>
+  <div class="absolute -left-32 bottom-0 w-80 h-80 rounded-full bg-red/5 blur-3xl"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 lg:py-24">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <!-- Left copy -->
+      <div>
+        <p class="section-label mb-4 tracking-widest text-red-400">PREMIUM CAR HIRE</p>
+        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          Drive in<br><span class="italic text-red-400">Style.</span><br>Arrive with Ease.
+        </h1>
+        <p class="text-ink-100/70 text-base sm:text-lg leading-relaxed mb-8 max-w-md">
+          Premium Toyota Camrys and sporty MGs available for daily, weekly or monthly hire. Flexible pick-up, full insurance, zero stress.
+        </p>
+        <div class="flex flex-wrap gap-3 mb-10">
+          <div class="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 text-xs text-white/80">
+            <svg class="w-3.5 h-3.5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            Free cancellation
+          </div>
+          <div class="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 text-xs text-white/80">
+            <svg class="w-3.5 h-3.5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            Full insurance included
+          </div>
+          <div class="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 text-xs text-white/80">
+            <svg class="w-3.5 h-3.5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            24/7 roadside support
+          </div>
+        </div>
+        <!-- Social proof -->
+        <div class="flex items-center gap-4">
+          <div class="flex -space-x-2">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 border-2 border-ink-700 flex items-center justify-center text-xs text-white font-bold">JM</div>
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 border-2 border-ink-700 flex items-center justify-center text-xs text-white font-bold">SR</div>
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-red-500 border-2 border-ink-700 flex items-center justify-center text-xs text-white font-bold">PK</div>
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 border-2 border-ink-700 flex items-center justify-center text-xs text-white font-bold">AL</div>
+          </div>
+          <div>
+            <div class="stars text-sm">★★★★★</div>
+            <p class="text-xs text-white/60 mt-0.5"><span class="text-white font-semibold">4.9/5</span> from 2,847 reviews</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking card -->
+      <div class="booking-card rounded-2xl p-6 sm:p-8">
+        <h2 class="font-serif text-2xl font-bold text-ink mb-1">Book Your Ride</h2>
+        <p class="text-sm text-ink-300 mb-6">Choose your dates and pick-up location</p>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-ink-500 uppercase tracking-wider mb-1.5" for="pickup-loc">Pick-up Location</label>
+            <div class="relative">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <select id="pickup-loc" class="form-input w-full pl-9 pr-4 py-3 rounded-xl text-sm bg-cream appearance-none cursor-pointer">
+                <option>Sydney CBD</option>
+                <option>Melbourne Central</option>
+                <option>Brisbane Airport</option>
+                <option>Perth City</option>
+                <option>Adelaide Central</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-ink-500 uppercase tracking-wider mb-1.5" for="pickup-date">Pick-up Date</label>
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <input id="pickup-date" type="date" class="form-input w-full pl-9 pr-2 py-3 rounded-xl text-sm bg-cream cursor-pointer">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-ink-500 uppercase tracking-wider mb-1.5" for="return-date">Return Date</label>
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <input id="return-date" type="date" class="form-input w-full pl-9 pr-2 py-3 rounded-xl text-sm bg-cream cursor-pointer">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-ink-500 uppercase tracking-wider mb-1.5">Vehicle Class</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button class="vehicle-btn active border-2 border-ink rounded-xl py-3 px-3 text-left transition-all cursor-pointer bg-ink text-white" data-type="camry">
+                <div class="text-xs font-bold mb-0.5">Toyota Camry</div>
+                <div class="text-xs opacity-70">Sedan · From $89/day</div>
+              </button>
+              <button class="vehicle-btn border-2 border-ink-100 rounded-xl py-3 px-3 text-left transition-all cursor-pointer hover:border-ink-300" data-type="mg">
+                <div class="text-xs font-bold mb-0.5 text-ink">MG Series</div>
+                <div class="text-xs text-ink-300">SUV/Sports · From $79/day</div>
+              </button>
+            </div>
+          </div>
+
+          <div id="price-preview" class="bg-ink-50 rounded-xl p-3 flex items-center justify-between">
+            <div>
+              <div class="text-xs text-ink-300">Estimated total</div>
+              <div class="text-lg font-bold text-ink font-serif" id="est-price">$89 / day</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="avail-dot"></div>
+              <span class="text-xs text-green-600 font-semibold">Available</span>
+            </div>
+          </div>
+
+          <button id="search-btn" class="btn-red w-full py-4 rounded-xl text-white font-semibold text-sm cursor-pointer flex items-center justify-center gap-2">
+            <span>Search Available Cars</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TRUST BAR ══════════════════ -->
+<div class="bg-ink-700 py-5">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+      <div><div class="text-2xl font-bold font-serif text-white">12K+</div><div class="text-xs text-ink-100/60 mt-0.5">Happy Renters</div></div>
+      <div><div class="text-2xl font-bold font-serif text-white">50+</div><div class="text-xs text-ink-100/60 mt-0.5">Premium Vehicles</div></div>
+      <div><div class="text-2xl font-bold font-serif text-white">8</div><div class="text-xs text-ink-100/60 mt-0.5">City Locations</div></div>
+      <div><div class="text-2xl font-bold font-serif text-white">4.9★</div><div class="text-xs text-ink-100/60 mt-0.5">Average Rating</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ FLEET ══════════════════ -->
+<section id="fleet" class="py-20 sm:py-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-14 fade-in">
+      <p class="section-label mb-3">OUR FLEET</p>
+      <h2 class="font-serif text-4xl sm:text-5xl font-bold text-ink mb-4">Hand-picked. Immaculate.</h2>
+      <p class="text-ink-300 max-w-xl mx-auto">Every vehicle serviced weekly, deep-cleaned between every hire, and covered by comprehensive insurance.</p>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="flex justify-center gap-2 mb-10 fade-in">
+      <button class="fleet-filter active px-5 py-2.5 rounded-full text-sm font-semibold bg-ink text-white cursor-pointer transition-all" data-filter="all">All Vehicles</button>
+      <button class="fleet-filter px-5 py-2.5 rounded-full text-sm font-semibold border-2 border-ink-100 text-ink-300 hover:border-ink hover:text-ink cursor-pointer transition-all" data-filter="camry">Toyota Camry</button>
+      <button class="fleet-filter px-5 py-2.5 rounded-full text-sm font-semibold border-2 border-ink-100 text-ink-300 hover:border-ink hover:text-ink cursor-pointer transition-all" data-filter="mg">MG Series</button>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="fleet-grid">
+
+      <!-- Camry 1 -->
+      <div class="car-card bg-white rounded-2xl overflow-hidden cursor-pointer fade-in" data-brand="camry">
+        <div class="car-stage p-8 relative h-48 flex items-center justify-center">
+          <div class="badge absolute top-3 left-3 text-white text-xs font-bold px-3 py-1 rounded-full">Most Popular</div>
+          <svg viewBox="0 0 200 80" class="w-full max-w-xs" aria-label="Toyota Camry sedan illustration">
+            <defs>
+              <linearGradient id="c1b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1E293B"/><stop offset="100%" stop-color="#0F172A"/></linearGradient>
+              <linearGradient id="c1w" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8edf2"/><stop offset="100%" stop-color="#cbd5e1"/></linearGradient>
+            </defs>
+            <!-- Body -->
+            <rect x="20" y="35" width="160" height="32" rx="4" fill="url(#c1b)"/>
+            <!-- Cabin -->
+            <path d="M50 35 Q60 15 90 13 L130 13 Q155 14 158 35Z" fill="url(#c1b)"/>
+            <!-- Windows -->
+            <path d="M55 33 Q62 18 88 16 L110 16 L110 33Z" fill="#7dd3fc" opacity=".7"/>
+            <path d="M112 16 L130 16 Q148 17 153 33 L112 33Z" fill="#7dd3fc" opacity=".7"/>
+            <!-- Wheels -->
+            <circle cx="55" cy="67" r="13" fill="#334155"/><circle cx="55" cy="67" r="8" fill="#64748B"/><circle cx="55" cy="67" r="3" fill="#94A3B8"/>
+            <circle cx="145" cy="67" r="13" fill="#334155"/><circle cx="145" cy="67" r="8" fill="#64748B"/><circle cx="145" cy="67" r="3" fill="#94A3B8"/>
+            <!-- Headlights -->
+            <rect x="17" y="42" width="8" height="5" rx="2" fill="#FEF3C7"/>
+            <rect x="175" y="42" width="8" height="5" rx="2" fill="#DC2626"/>
+            <!-- Chrome strip -->
+            <rect x="20" y="53" width="160" height="2" rx="1" fill="#94A3B8" opacity=".5"/>
+          </svg>
+        </div>
+        <div class="p-5">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-ink">Toyota Camry Ascent</h3>
+              <p class="text-xs text-ink-300 mt-0.5">2024 · Automatic · Petrol</p>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-bold text-ink font-serif">$89</div>
+              <div class="text-xs text-ink-300">/day</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mb-4">
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">5</div><div class="text-xs text-ink-300">Seats</div></div>
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">Auto</div><div class="text-xs text-ink-300">Trans</div></div>
+            <div class="py-2 text-center"><div class="text-xs font-bold text-ink">A/C</div><div class="text-xs text-ink-300">Climate</div></div>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mb-4">
+            <span class="tag px-2 py-1 rounded-full font-medium">Apple CarPlay</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">Reverse Cam</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">Lane Assist</span>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn-red flex-1 py-2.5 rounded-xl text-white text-sm font-semibold cursor-pointer"><span>Book Now</span></button>
+            <button class="btn-outline flex-none px-4 py-2.5 rounded-xl text-sm font-semibold cursor-pointer">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Camry 2 -->
+      <div class="car-card bg-white rounded-2xl overflow-hidden cursor-pointer fade-in" data-brand="camry">
+        <div class="car-stage p-8 relative h-48 flex items-center justify-center">
+          <div class="absolute top-3 left-3 bg-gold text-white text-xs font-bold px-3 py-1 rounded-full">Premium</div>
+          <svg viewBox="0 0 200 80" class="w-full max-w-xs" aria-label="Toyota Camry SX illustration">
+            <defs>
+              <linearGradient id="c2b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7C3AED"/><stop offset="100%" stop-color="#4C1D95"/></linearGradient>
+            </defs>
+            <rect x="20" y="35" width="160" height="32" rx="4" fill="url(#c2b)"/>
+            <path d="M50 35 Q60 15 90 13 L130 13 Q155 14 158 35Z" fill="url(#c2b)"/>
+            <path d="M55 33 Q62 18 88 16 L110 16 L110 33Z" fill="#a78bfa" opacity=".6"/>
+            <path d="M112 16 L130 16 Q148 17 153 33 L112 33Z" fill="#a78bfa" opacity=".6"/>
+            <circle cx="55" cy="67" r="13" fill="#1E1B4B"/><circle cx="55" cy="67" r="8" fill="#4C1D95"/><circle cx="55" cy="67" r="3" fill="#7C3AED"/>
+            <circle cx="145" cy="67" r="13" fill="#1E1B4B"/><circle cx="145" cy="67" r="8" fill="#4C1D95"/><circle cx="145" cy="67" r="3" fill="#7C3AED"/>
+            <rect x="17" y="42" width="8" height="5" rx="2" fill="#FEF3C7"/>
+            <rect x="175" y="42" width="8" height="5" rx="2" fill="#DC2626"/>
+            <rect x="20" y="53" width="160" height="2" rx="1" fill="#a78bfa" opacity=".4"/>
+          </svg>
+        </div>
+        <div class="p-5">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-ink">Toyota Camry SX</h3>
+              <p class="text-xs text-ink-300 mt-0.5">2024 · Automatic · Hybrid</p>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-bold text-ink font-serif">$109</div>
+              <div class="text-xs text-ink-300">/day</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mb-4">
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">5</div><div class="text-xs text-ink-300">Seats</div></div>
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">Auto</div><div class="text-xs text-ink-300">Trans</div></div>
+            <div class="py-2 text-center"><div class="text-xs font-bold text-ink">Hybrid</div><div class="text-xs text-ink-300">Engine</div></div>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mb-4">
+            <span class="tag px-2 py-1 rounded-full font-medium">Leather Seats</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">JBL Audio</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">HUD Display</span>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn-red flex-1 py-2.5 rounded-xl text-white text-sm font-semibold cursor-pointer"><span>Book Now</span></button>
+            <button class="btn-outline flex-none px-4 py-2.5 rounded-xl text-sm font-semibold cursor-pointer">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MG 1 -->
+      <div class="car-card bg-white rounded-2xl overflow-hidden cursor-pointer fade-in" data-brand="mg">
+        <div class="car-stage p-8 relative h-48 flex items-center justify-center">
+          <div class="badge absolute top-3 left-3 text-white text-xs font-bold px-3 py-1 rounded-full">Best Value</div>
+          <svg viewBox="0 0 200 80" class="w-full max-w-xs" aria-label="MG ZS SUV illustration">
+            <defs>
+              <linearGradient id="m1b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#DC2626"/><stop offset="100%" stop-color="#7F1D1D"/></linearGradient>
+            </defs>
+            <!-- Taller SUV body -->
+            <rect x="15" y="28" width="170" height="38" rx="5" fill="url(#m1b)"/>
+            <!-- Cabin taller -->
+            <path d="M40 28 Q50 8 80 6 L130 6 Q158 8 162 28Z" fill="url(#m1b)"/>
+            <path d="M45 26 Q53 10 78 8 L108 8 L108 26Z" fill="#fca5a5" opacity=".5"/>
+            <path d="M110 8 L130 8 Q152 10 158 26 L110 26Z" fill="#fca5a5" opacity=".5"/>
+            <!-- Roof rack -->
+            <rect x="45" y="4" width="112" height="3" rx="1.5" fill="#9F1239"/>
+            <circle cx="55" cy="68" r="12" fill="#450A0A"/><circle cx="55" cy="68" r="7" fill="#7F1D1D"/><circle cx="55" cy="68" r="3" fill="#DC2626"/>
+            <circle cx="148" cy="68" r="12" fill="#450A0A"/><circle cx="148" cy="68" r="7" fill="#7F1D1D"/><circle cx="148" cy="68" r="3" fill="#DC2626"/>
+            <rect x="12" y="38" width="9" height="6" rx="2" fill="#FEF3C7"/>
+            <rect x="179" y="38" width="9" height="6" rx="2" fill="#DC2626"/>
+            <rect x="15" y="50" width="170" height="2" rx="1" fill="#fca5a5" opacity=".3"/>
+          </svg>
+        </div>
+        <div class="p-5">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-ink">MG ZS Excite</h3>
+              <p class="text-xs text-ink-300 mt-0.5">2024 · Automatic · Petrol SUV</p>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-bold text-ink font-serif">$79</div>
+              <div class="text-xs text-ink-300">/day</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mb-4">
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">5</div><div class="text-xs text-ink-300">Seats</div></div>
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">SUV</div><div class="text-xs text-ink-300">Body</div></div>
+            <div class="py-2 text-center"><div class="text-xs font-bold text-ink">AWD</div><div class="text-xs text-ink-300">Drive</div></div>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mb-4">
+            <span class="tag px-2 py-1 rounded-full font-medium">Android Auto</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">360° Camera</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">Sunroof</span>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn-red flex-1 py-2.5 rounded-xl text-white text-sm font-semibold cursor-pointer"><span>Book Now</span></button>
+            <button class="btn-outline flex-none px-4 py-2.5 rounded-xl text-sm font-semibold cursor-pointer">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MG EV -->
+      <div class="car-card bg-white rounded-2xl overflow-hidden cursor-pointer fade-in" data-brand="mg">
+        <div class="car-stage p-8 relative h-48 flex items-center justify-center">
+          <div class="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">Electric</div>
+          <svg viewBox="0 0 200 80" class="w-full max-w-xs" aria-label="MG ZS EV illustration">
+            <defs>
+              <linearGradient id="m2b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#064E3B"/></linearGradient>
+            </defs>
+            <rect x="15" y="28" width="170" height="38" rx="5" fill="url(#m2b)"/>
+            <path d="M40 28 Q50 8 80 6 L130 6 Q158 8 162 28Z" fill="url(#m2b)"/>
+            <path d="M45 26 Q53 10 78 8 L108 8 L108 26Z" fill="#6ee7b7" opacity=".5"/>
+            <path d="M110 8 L130 8 Q152 10 158 26 L110 26Z" fill="#6ee7b7" opacity=".5"/>
+            <!-- EV charging icon on grille -->
+            <rect x="88" y="62" width="24" height="8" rx="2" fill="#064E3B"/>
+            <text x="100" y="69" text-anchor="middle" font-size="7" fill="#6ee7b7" font-weight="bold">⚡</text>
+            <circle cx="55" cy="68" r="12" fill="#022C22"/><circle cx="55" cy="68" r="7" fill="#065F46"/><circle cx="55" cy="68" r="3" fill="#059669"/>
+            <circle cx="148" cy="68" r="12" fill="#022C22"/><circle cx="148" cy="68" r="7" fill="#065F46"/><circle cx="148" cy="68" r="3" fill="#059669"/>
+            <rect x="12" y="38" width="9" height="6" rx="2" fill="#A7F3D0"/>
+            <rect x="179" y="38" width="9" height="6" rx="2" fill="#059669"/>
+          </svg>
+        </div>
+        <div class="p-5">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-ink">MG ZS EV</h3>
+              <p class="text-xs text-ink-300 mt-0.5">2024 · Auto · Electric · 440km range</p>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-bold text-ink font-serif">$99</div>
+              <div class="text-xs text-ink-300">/day</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mb-4">
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">5</div><div class="text-xs text-ink-300">Seats</div></div>
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">440km</div><div class="text-xs text-ink-300">Range</div></div>
+            <div class="py-2 text-center"><div class="text-xs font-bold text-ink">Zero</div><div class="text-xs text-ink-300">Emissions</div></div>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mb-4">
+            <span class="tag px-2 py-1 rounded-full font-medium">Fast Charge</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">Pilot Assist</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">Premium Audio</span>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn-red flex-1 py-2.5 rounded-xl text-white text-sm font-semibold cursor-pointer"><span>Book Now</span></button>
+            <button class="btn-outline flex-none px-4 py-2.5 rounded-xl text-sm font-semibold cursor-pointer">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Camry Sport -->
+      <div class="car-card bg-white rounded-2xl overflow-hidden cursor-pointer fade-in" data-brand="camry">
+        <div class="car-stage p-8 relative h-48 flex items-center justify-center">
+          <div class="absolute top-3 left-3 bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full">Sport</div>
+          <svg viewBox="0 0 200 80" class="w-full max-w-xs" aria-label="Toyota Camry Sport illustration">
+            <defs>
+              <linearGradient id="c3b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F8FAFC"/><stop offset="100%" stop-color="#CBD5E1"/></linearGradient>
+            </defs>
+            <rect x="20" y="35" width="160" height="32" rx="4" fill="url(#c3b)"/>
+            <path d="M50 35 Q60 15 90 13 L130 13 Q155 14 158 35Z" fill="url(#c3b)"/>
+            <path d="M55 33 Q62 18 88 16 L110 16 L110 33Z" fill="#93c5fd" opacity=".6"/>
+            <path d="M112 16 L130 16 Q148 17 153 33 L112 33Z" fill="#93c5fd" opacity=".6"/>
+            <!-- Sport stripe -->
+            <rect x="20" y="49" width="160" height="4" fill="#DC2626"/>
+            <circle cx="55" cy="67" r="13" fill="#1E293B"/><circle cx="55" cy="67" r="8" fill="#334155"/><circle cx="55" cy="67" r="3" fill="#94A3B8"/>
+            <circle cx="145" cy="67" r="13" fill="#1E293B"/><circle cx="145" cy="67" r="8" fill="#334155"/><circle cx="145" cy="67" r="3" fill="#94A3B8"/>
+            <rect x="17" y="42" width="8" height="5" rx="2" fill="#FEF3C7"/>
+            <rect x="175" y="42" width="8" height="5" rx="2" fill="#DC2626"/>
+          </svg>
+        </div>
+        <div class="p-5">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-ink">Camry Sport Hybrid</h3>
+              <p class="text-xs text-ink-300 mt-0.5">2024 · Automatic · Hybrid AWD</p>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-bold text-ink font-serif">$129</div>
+              <div class="text-xs text-ink-300">/day</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mb-4">
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">5</div><div class="text-xs text-ink-300">Seats</div></div>
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">AWD</div><div class="text-xs text-ink-300">Drive</div></div>
+            <div class="py-2 text-center"><div class="text-xs font-bold text-ink">Sport</div><div class="text-xs text-ink-300">Mode</div></div>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mb-4">
+            <span class="tag px-2 py-1 rounded-full font-medium">Sport Exhaust</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">Paddle Shift</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">18" Alloys</span>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn-red flex-1 py-2.5 rounded-xl text-white text-sm font-semibold cursor-pointer"><span>Book Now</span></button>
+            <button class="btn-outline flex-none px-4 py-2.5 rounded-xl text-sm font-semibold cursor-pointer">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MG HS -->
+      <div class="car-card bg-white rounded-2xl overflow-hidden cursor-pointer fade-in" data-brand="mg">
+        <div class="car-stage p-8 relative h-48 flex items-center justify-center">
+          <div class="absolute top-3 left-3 bg-blue-700 text-white text-xs font-bold px-3 py-1 rounded-full">Large SUV</div>
+          <svg viewBox="0 0 200 80" class="w-full max-w-xs" aria-label="MG HS SUV illustration">
+            <defs>
+              <linearGradient id="m3b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1D4ED8"/><stop offset="100%" stop-color="#1E3A8A"/></linearGradient>
+            </defs>
+            <rect x="12" y="25" width="176" height="42" rx="5" fill="url(#m3b)"/>
+            <path d="M35 25 Q46 5 80 3 L128 3 Q160 5 168 25Z" fill="url(#m3b)"/>
+            <path d="M42 23 Q51 7 78 5 L108 5 L108 23Z" fill="#93c5fd" opacity=".5"/>
+            <path d="M110 5 L128 5 Q154 7 162 23 L110 23Z" fill="#93c5fd" opacity=".5"/>
+            <!-- Larger SUV alloys -->
+            <circle cx="52" cy="67" r="13" fill="#1E3A8A"/><circle cx="52" cy="67" r="8" fill="#1D4ED8"/><circle cx="52" cy="67" r="3" fill="#93c5fd"/>
+            <circle cx="150" cy="67" r="13" fill="#1E3A8A"/><circle cx="150" cy="67" r="8" fill="#1D4ED8"/><circle cx="150" cy="67" r="3" fill="#93c5fd"/>
+            <rect x="9" y="36" width="10" height="7" rx="2" fill="#FEF3C7"/>
+            <rect x="181" y="36" width="10" height="7" rx="2" fill="#DC2626"/>
+            <rect x="12" y="50" width="176" height="2" rx="1" fill="#93c5fd" opacity=".3"/>
+          </svg>
+        </div>
+        <div class="p-5">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-ink">MG HS Essence</h3>
+              <p class="text-xs text-ink-300 mt-0.5">2024 · Automatic · Turbo Petrol</p>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-bold text-ink font-serif">$119</div>
+              <div class="text-xs text-ink-300">/day</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mb-4">
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">7</div><div class="text-xs text-ink-300">Seats</div></div>
+            <div class="spec-row py-2 text-center"><div class="text-xs font-bold text-ink">Large</div><div class="text-xs text-ink-300">SUV</div></div>
+            <div class="py-2 text-center"><div class="text-xs font-bold text-ink">AWD</div><div class="text-xs text-ink-300">Drive</div></div>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mb-4">
+            <span class="tag px-2 py-1 rounded-full font-medium">7 Seater</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">Panoramic Roof</span>
+            <span class="tag px-2 py-1 rounded-full font-medium">Towing Pack</span>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn-red flex-1 py-2.5 rounded-xl text-white text-sm font-semibold cursor-pointer"><span>Book Now</span></button>
+            <button class="btn-outline flex-none px-4 py-2.5 rounded-xl text-sm font-semibold cursor-pointer">Details</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ HOW IT WORKS ══════════════════ -->
+<section id="how" class="py-20 sm:py-28 bg-ink-700">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-14 fade-in">
+      <p class="section-label mb-3 text-red-400">HOW IT WORKS</p>
+      <h2 class="font-serif text-4xl sm:text-5xl font-bold text-white mb-4">On the road in 3 steps</h2>
+      <p class="text-ink-100/60 max-w-md mx-auto">No queues. No paperwork. Pick up your keys and drive.</p>
+    </div>
+    <div class="grid sm:grid-cols-3 gap-8 relative">
+      <!-- connector line -->
+      <div class="hidden sm:block absolute top-10 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <div class="text-center fade-in">
+        <div class="step-num w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center text-2xl font-bold text-white">1</div>
+        <h3 class="font-serif text-xl font-bold text-white mb-2">Choose & Book</h3>
+        <p class="text-ink-100/60 text-sm leading-relaxed">Browse the fleet, pick your dates and location. Secure booking takes under 60 seconds.</p>
+      </div>
+      <div class="text-center fade-in">
+        <div class="step-num w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center text-2xl font-bold text-white">2</div>
+        <h3 class="font-serif text-xl font-bold text-white mb-2">Verify & Confirm</h3>
+        <p class="text-ink-100/60 text-sm leading-relaxed">Upload your licence digitally. We'll confirm instantly with a confirmation SMS and email.</p>
+      </div>
+      <div class="text-center fade-in">
+        <div class="step-num w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center text-2xl font-bold text-white">3</div>
+        <h3 class="font-serif text-xl font-bold text-white mb-2">Pick Up & Drive</h3>
+        <p class="text-ink-100/60 text-sm leading-relaxed">Show your QR code at the depot. Your immaculate car is fuelled, insured and ready to go.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FEATURES ══════════════════ -->
+<section class="py-20 sm:py-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="fade-in">
+        <p class="section-label mb-3">WHY DRIVEEASY</p>
+        <h2 class="font-serif text-4xl sm:text-5xl font-bold text-ink mb-6">Everything<br>taken care of.</h2>
+        <p class="text-ink-300 leading-relaxed mb-8">We handle the details so your journey is effortless from the moment you book to the moment you return the keys.</p>
+        <div class="space-y-5">
+          <div class="flex gap-4 items-start">
+            <div class="feat-icon w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+            </div>
+            <div>
+              <h4 class="font-semibold text-ink mb-0.5">Fully Comprehensive Insurance</h4>
+              <p class="text-sm text-ink-300 leading-relaxed">Zero excess options available. Drive with complete confidence wherever you go.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="feat-icon w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <h4 class="font-semibold text-ink mb-0.5">24/7 Roadside Assistance</h4>
+              <p class="text-sm text-ink-300 leading-relaxed">Our team is available around the clock. One call gets you back on the road fast.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="feat-icon w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"/></svg>
+            </div>
+            <div>
+              <h4 class="font-semibold text-ink mb-0.5">No Hidden Fees</h4>
+              <p class="text-sm text-ink-300 leading-relaxed">What you see is what you pay. Fuel policy and extras are clearly shown upfront.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="feat-icon w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+            </div>
+            <div>
+              <h4 class="font-semibold text-ink mb-0.5">Flexible Pick-up & Drop-off</h4>
+              <p class="text-sm text-ink-300 leading-relaxed">8 locations including all major airports. One-way rentals available between cities.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Stats panel -->
+      <div class="grid grid-cols-2 gap-5 fade-in">
+        <div class="bg-white rounded-2xl p-6 border border-ink-100 col-span-2">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-semibold text-ink-300 uppercase tracking-wider">Weekly Rentals</span>
+            <span class="text-xs text-green-600 font-semibold bg-green-50 px-2 py-0.5 rounded-full">+12% this week</span>
+          </div>
+          <div class="flex items-end gap-1 h-16">
+            <div class="flex-1 bg-ink-100 rounded-t-md" style="height:40%"></div>
+            <div class="flex-1 bg-ink-100 rounded-t-md" style="height:60%"></div>
+            <div class="flex-1 bg-ink-300 rounded-t-md" style="height:50%"></div>
+            <div class="flex-1 bg-ink-500 rounded-t-md" style="height:75%"></div>
+            <div class="flex-1 bg-ink-700 rounded-t-md" style="height:65%"></div>
+            <div class="flex-1 bg-red rounded-t-md" style="height:90%"></div>
+            <div class="flex-1 bg-red-dark rounded-t-md" style="height:100%"></div>
+          </div>
+          <div class="flex justify-between text-xs text-ink-300 mt-1.5">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+        </div>
+        <div class="bg-ink rounded-2xl p-6 text-white">
+          <div class="text-3xl font-bold font-serif mb-1">98%</div>
+          <div class="text-xs text-ink-100/60 leading-relaxed">Customer satisfaction score this month</div>
+        </div>
+        <div class="bg-red rounded-2xl p-6 text-white">
+          <div class="text-3xl font-bold font-serif mb-1">4.9★</div>
+          <div class="text-xs text-white/70 leading-relaxed">Average Google & Trustpilot rating</div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-ink-100">
+          <div class="text-3xl font-bold font-serif text-ink mb-1">50+</div>
+          <div class="text-xs text-ink-300 leading-relaxed">Vehicles serviced weekly</div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-ink-100">
+          <div class="text-3xl font-bold font-serif text-ink mb-1">8</div>
+          <div class="text-xs text-ink-300 leading-relaxed">City locations across Australia</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ REVIEWS ══════════════════ -->
+<section id="reviews" class="py-20 sm:py-28 bg-cream-warm overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4 fade-in">
+      <div>
+        <p class="section-label mb-3">CUSTOMER REVIEWS</p>
+        <h2 class="font-serif text-4xl sm:text-5xl font-bold text-ink">Real drivers.<br>Real stories.</h2>
+      </div>
+      <div class="flex gap-2">
+        <button id="prev-btn" aria-label="Previous review" class="w-10 h-10 rounded-full border-2 border-ink-100 flex items-center justify-center text-ink-300 hover:border-ink hover:text-ink transition-all cursor-pointer">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button id="next-btn" aria-label="Next review" class="w-10 h-10 rounded-full bg-ink flex items-center justify-center text-white hover:bg-red transition-all cursor-pointer">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-hidden">
+      <div class="reviews-track gap-5" id="reviews-track">
+        <!-- Reviews populated by JS -->
+      </div>
+    </div>
+
+    <!-- Dots -->
+    <div class="flex justify-center gap-2 mt-8" id="review-dots"></div>
+
+    <!-- Summary bar -->
+    <div class="mt-12 bg-white rounded-2xl p-6 sm:p-8 border border-ink-100 fade-in">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="text-center">
+          <div class="text-5xl font-bold font-serif text-ink mb-1">4.9</div>
+          <div class="stars text-lg mb-1">★★★★★</div>
+          <div class="text-xs text-ink-300">Overall rating</div>
+        </div>
+        <div>
+          <div class="space-y-2">
+            <div class="flex items-center gap-2"><span class="text-xs w-3 text-ink-300">5</span><div class="flex-1 bg-ink-50 rounded-full h-2"><div class="bg-green-500 h-2 rounded-full" style="width:88%"></div></div><span class="text-xs text-ink-300 w-8">88%</span></div>
+            <div class="flex items-center gap-2"><span class="text-xs w-3 text-ink-300">4</span><div class="flex-1 bg-ink-50 rounded-full h-2"><div class="bg-green-400 h-2 rounded-full" style="width:8%"></div></div><span class="text-xs text-ink-300 w-8">8%</span></div>
+            <div class="flex items-center gap-2"><span class="text-xs w-3 text-ink-300">3</span><div class="flex-1 bg-ink-50 rounded-full h-2"><div class="bg-yellow-400 h-2 rounded-full" style="width:3%"></div></div><span class="text-xs text-ink-300 w-8">3%</span></div>
+            <div class="flex items-center gap-2"><span class="text-xs w-3 text-ink-300">2</span><div class="flex-1 bg-ink-50 rounded-full h-2"><div class="bg-orange-400 h-2 rounded-full" style="width:1%"></div></div><span class="text-xs text-ink-300 w-8">1%</span></div>
+            <div class="flex items-center gap-2"><span class="text-xs w-3 text-ink-300">1</span><div class="flex-1 bg-ink-50 rounded-full h-2"><div class="bg-red h-2 rounded-full" style="width:0%"></div></div><span class="text-xs text-ink-300 w-8">0%</span></div>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center"><span class="text-xs text-ink-300">Vehicle Cleanliness</span><div class="stars text-xs">★★★★★</div></div>
+          <div class="flex justify-between items-center"><span class="text-xs text-ink-300">Booking Process</span><div class="stars text-xs">★★★★★</div></div>
+          <div class="flex justify-between items-center"><span class="text-xs text-ink-300">Value for Money</span><div class="stars text-xs">★★★★<span class="text-ink-100">★</span></div></div>
+          <div class="flex justify-between items-center"><span class="text-xs text-ink-300">Customer Service</span><div class="stars text-xs">★★★★★</div></div>
+        </div>
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center gap-2 text-xs text-ink-300"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>2,847 verified reviews</div>
+          <div class="flex items-center gap-2 text-xs text-ink-300"><svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>Verified on Google &amp; Trustpilot</div>
+          <button class="btn-outline text-xs font-semibold px-4 py-2.5 rounded-xl cursor-pointer mt-auto">Read All Reviews</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CTA BANNER ══════════════════ -->
+<section class="py-20 sm:py-28 hero-bg hero-grid relative overflow-hidden">
+  <div class="absolute -left-20 top-0 w-64 h-64 rounded-full bg-red/10 blur-3xl pointer-events-none"></div>
+  <div class="absolute right-0 bottom-0 w-80 h-80 rounded-full bg-blue-900/20 blur-3xl pointer-events-none"></div>
+  <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center fade-in">
+    <p class="section-label mb-4 text-red-400">START TODAY</p>
+    <h2 class="font-serif text-4xl sm:text-5xl font-bold text-white mb-5">Your next adventure<br><span class="italic text-red-400">starts here.</span></h2>
+    <p class="text-white/60 text-lg mb-8">First-time renters get 10% off. No code needed — discount applied automatically at checkout.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <button class="btn-red font-semibold px-8 py-4 rounded-xl text-white cursor-pointer flex items-center justify-center gap-2 text-base">
+        <span>Reserve Your Car Now</span>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </button>
+      <button class="btn-outline font-medium px-8 py-4 rounded-xl text-white border-white/30 hover:bg-white hover:text-ink cursor-pointer text-base">View Full Fleet</button>
+    </div>
+    <p class="text-white/40 text-xs mt-5">Free cancellation up to 24h before pick-up. No credit card surcharge.</p>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="bg-ink py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-7 h-7 rounded-lg bg-red flex items-center justify-center">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+          </div>
+          <span class="font-serif text-lg font-bold text-white">Drive<span class="text-red-400">Easy</span></span>
+        </div>
+        <p class="text-sm text-ink-100/50 leading-relaxed mb-4">Premium car hire with Toyota Camrys and MGs across Australia. Clean cars, clear pricing, no stress.</p>
+        <div class="flex gap-2">
+          <a href="#" class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-ink-100/60 hover:text-white hover:bg-white/20 transition-all cursor-pointer" aria-label="Facebook">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="#" class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-ink-100/60 hover:text-white hover:bg-white/20 transition-all cursor-pointer" aria-label="Instagram">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="#" class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-ink-100/60 hover:text-white hover:bg-white/20 transition-all cursor-pointer" aria-label="Google">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider mb-4 text-ink-100/50">Fleet</h4>
+        <ul class="space-y-2.5 text-sm text-ink-100/50">
+          <li><a href="#" class="hover:text-white transition-colors cursor-pointer">Toyota Camry Ascent</a></li>
+          <li><a href="#" class="hover:text-white transition-colors cursor-pointer">Toyota Camry SX Hybrid</a></li>
+          <li><a href="#" class="hover:text-white transition-colors cursor-pointer">MG ZS Excite</a></li>
+          <li><a href="#" class="hover:text-white transition-colors cursor-pointer">MG ZS EV</a></li>
+          <li><a href="#" class="hover:text-white transition-colors cursor-pointer">MG HS Essence</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider mb-4 text-ink-100/50">Company</h4>
+        <ul class="space-y-2.5 text-sm text-ink-100/50">
+          <li><a href="#" class="hover:text-white transition-colors cursor-pointer">About Us</a></li>
+          <li><a href="#" class="hover:text-white transition-colors cursor-pointer">Locations</a></li>
+          <li><a href="#" class="hover:text-white transition-colors cursor-pointer">FAQ</a></li>
+          <li><a href="#" class="hover:text-white transition-colors cursor-pointer">Blog</a></li>
+          <li><a href="#" class="hover:text-white transition-colors cursor-pointer">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider mb-4 text-ink-100/50">Contact</h4>
+        <ul class="space-y-3 text-sm text-ink-100/50">
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>1800 DRIVE EASY</li>
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>hello@driveeasy.com.au</li>
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Mon–Sun · 6am–10pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-ink-100/40">
+      <p>© 2026 DriveEasy Pty Ltd. ABN 12 345 678 901. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-white transition-colors cursor-pointer">Privacy</a>
+        <a href="#" class="hover:text-white transition-colors cursor-pointer">Terms</a>
+        <a href="#" class="hover:text-white transition-colors cursor-pointer">Insurance Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════ MODAL ══════════════════ -->
+<div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden" role="dialog" aria-modal="true" aria-label="Booking confirmation">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="modal-overlay"></div>
+  <div class="relative bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
+    <div class="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+      <svg class="w-7 h-7 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <h3 class="font-serif text-2xl font-bold text-ink text-center mb-2">Searching Available Cars</h3>
+    <p class="text-ink-300 text-sm text-center mb-6">We found <strong class="text-ink">6 vehicles</strong> matching your dates. Redirecting to results…</p>
+    <div class="bg-ink-50 rounded-xl p-4 text-sm space-y-2 mb-6">
+      <div class="flex justify-between"><span class="text-ink-300">Location</span><span class="font-medium text-ink" id="modal-loc">Sydney CBD</span></div>
+      <div class="flex justify-between"><span class="text-ink-300">Pick-up</span><span class="font-medium text-ink" id="modal-pickup">—</span></div>
+      <div class="flex justify-between"><span class="text-ink-300">Return</span><span class="font-medium text-ink" id="modal-return">—</span></div>
+      <div class="flex justify-between"><span class="text-ink-300">Est. total</span><span class="font-bold text-ink" id="modal-total">—</span></div>
+    </div>
+    <button id="modal-close" class="btn-red w-full py-3 rounded-xl text-white font-semibold cursor-pointer"><span>View Available Cars</span></button>
+  </div>
+</div>
+
+<script>
+// ── SET DEFAULT DATES ─────────────────────────────────────
+(function(){
+  const today = new Date();
+  const fmt = d => d.toISOString().split('T')[0];
+  const tom = new Date(today); tom.setDate(today.getDate()+1);
+  const nxt = new Date(today); nxt.setDate(today.getDate()+4);
+  document.getElementById('pickup-date').value = fmt(tom);
+  document.getElementById('return-date').value = fmt(nxt);
+})();
+
+// ── MOBILE MENU ───────────────────────────────────────────
+document.getElementById('menu-btn').addEventListener('click',()=>{
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// ── VEHICLE SELECTOR ──────────────────────────────────────
+const priceMap = {camry:'$89 / day', mg:'$79 / day'};
+document.querySelectorAll('.vehicle-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.vehicle-btn').forEach(b=>{
+      b.className = b.className.replace('bg-ink text-white','').trim();
+      b.classList.add('border-ink-100','text-ink');
+    });
+    btn.classList.remove('border-ink-100');
+    btn.classList.add('bg-ink','text-white');
+    document.getElementById('est-price').textContent = priceMap[btn.dataset.type];
+  });
+});
+
+// ── FLEET FILTER ──────────────────────────────────────────
+document.querySelectorAll('.fleet-filter').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.fleet-filter').forEach(b=>{
+      b.className = 'fleet-filter px-5 py-2.5 rounded-full text-sm font-semibold border-2 border-ink-100 text-ink-300 hover:border-ink hover:text-ink cursor-pointer transition-all';
+    });
+    btn.className = 'fleet-filter active px-5 py-2.5 rounded-full text-sm font-semibold bg-ink text-white cursor-pointer transition-all';
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('#fleet-grid [data-brand]').forEach(card=>{
+      card.style.display = (filter==='all'||card.dataset.brand===filter)?'':'none';
+    });
+  });
+});
+
+// ── BOOKING MODAL ─────────────────────────────────────────
+document.getElementById('search-btn').addEventListener('click',()=>{
+  const loc = document.getElementById('pickup-loc').value;
+  const pu  = document.getElementById('pickup-date').value;
+  const ret = document.getElementById('return-date').value;
+  const price = document.getElementById('est-price').textContent;
+  const days = pu&&ret ? Math.max(1,Math.round((new Date(ret)-new Date(pu))/(864e5))) : 1;
+  const daily = parseInt(price.replace(/\D/g,''))||89;
+  document.getElementById('modal-loc').textContent = loc;
+  document.getElementById('modal-pickup').textContent = pu||'—';
+  document.getElementById('modal-return').textContent = ret||'—';
+  document.getElementById('modal-total').textContent = '$'+(daily*days).toLocaleString()+' ('+days+' day'+(days>1?'s':'')+')';
+  document.getElementById('modal').classList.remove('hidden');
+});
+document.getElementById('modal-overlay').addEventListener('click',()=>document.getElementById('modal').classList.add('hidden'));
+document.getElementById('modal-close').addEventListener('click',()=>document.getElementById('modal').classList.add('hidden'));
+
+// ── REVIEWS CAROUSEL ──────────────────────────────────────
+const reviews = [
+  {name:'Samantha T.',loc:'Sydney',car:'Toyota Camry SX',stars:5,date:'March 2026',text:'Absolutely flawless experience. The Camry was immaculate — not a single scratch — and the whole booking took me under 2 minutes. Pick-up was smooth and the staff were genuinely friendly. Will never use another car hire company!',verified:true},
+  {name:'James R.',loc:'Melbourne',car:'MG ZS EV',stars:5,date:'April 2026',text:'I was nervous about renting an EV for a road trip but the MG ZS had 440km of range and the team set up my route with charging stops. Incredible car, whisper quiet, and the tech inside is next-level. Completely converted.'},
+  {name:'Priya M.',loc:'Brisbane',car:'Toyota Camry Ascent',stars:5,date:'April 2026',text:'Used DriveEasy for a week-long work trip. The Camry was spotless, petrol was full, and the Apple CarPlay made navigation effortless. Customer service responded instantly when I had a question about toll roads. 10/10.',verified:true},
+  {name:'Connor B.',loc:'Perth',car:'MG HS Essence',stars:5,date:'May 2026',text:'Hired the MG HS for a family road trip — 7 seats, panoramic roof, and the kids were obsessed with the massive infotainment screen. Returned it 2 days early and got a pro-rata refund with no hassle. That alone earns 5 stars.',verified:true},
+  {name:'Lily K.',loc:'Adelaide',car:'Camry Sport Hybrid',stars:5,date:'May 2026',text:'The Sport Hybrid is such a joy to drive. The fuel economy was insane — I got 5.1L/100km over 1,200km. Car was delivered to my hotel already cleaned and waiting. This is genuinely the best rental experience I\'ve ever had.',verified:true},
+  {name:'Marcus W.',loc:'Gold Coast',car:'MG ZS Excite',stars:4,date:'May 2026',text:'Great car and great service overall. The ZS is surprisingly spacious and the AWD handled wet roads brilliantly. Dropped one star only because the pick-up depot was slightly tricky to find, but staff were very helpful once I called.',verified:false},
+];
+
+const track = document.getElementById('reviews-track');
+const dotsEl = document.getElementById('review-dots');
+let current = 0;
+let perView = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1;
+
+function getStars(n){
+  return Array.from({length:5},(_,i)=>`<span class="${i<n?'text-amber-400':'text-ink-100'}">★</span>`).join('');
+}
+
+function buildReviews(){
+  track.innerHTML = reviews.map((r,i)=>`
+    <div class="review-card${i===current?' active':''} bg-white rounded-2xl p-6 flex-shrink-0 cursor-default" style="width:calc(${100/perView}% - ${(perView-1)*20/perView}px)">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-ink-500 to-ink-700 flex items-center justify-center text-sm font-bold text-white">${r.name.split(' ').map(x=>x[0]).join('')}</div>
+          <div>
+            <div class="text-sm font-semibold text-ink">${r.name}</div>
+            <div class="text-xs text-ink-300">${r.loc} · ${r.date}</div>
+          </div>
+        </div>
+        ${r.verified?`<span class="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-medium">Verified</span>`:''}
+      </div>
+      <div class="text-sm stars mb-3">${getStars(r.stars)}</div>
+      <p class="text-sm text-ink-500 leading-relaxed mb-4">"${r.text}"</p>
+      <div class="flex items-center gap-2 text-xs text-ink-300 border-t border-ink-50 pt-3 mt-auto">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+        ${r.car}
+      </div>
+    </div>
+  `).join('');
+  track.style.display = 'flex';
+  track.style.gap = '20px';
+  updateCarousel();
+  buildDots();
+}
+
+function updateCarousel(){
+  const maxSlide = reviews.length - perView;
+  current = Math.max(0, Math.min(current, maxSlide));
+  const cardW = track.children[0]?.offsetWidth || 0;
+  track.style.transform = `translateX(-${current*(cardW+20)}px)`;
+  document.querySelectorAll('.review-card').forEach((c,i)=>c.classList.toggle('active',i===current));
+  document.querySelectorAll('#review-dots button').forEach((d,i)=>d.classList.toggle('bg-ink',i===current));
+}
+
+function buildDots(){
+  const max = reviews.length - perView + 1;
+  dotsEl.innerHTML = Array.from({length:max},(_,i)=>`<button aria-label="Review ${i+1}" class="w-2 h-2 rounded-full transition-all ${i===current?'bg-ink':'bg-ink-100'} cursor-pointer"></button>`).join('');
+  dotsEl.querySelectorAll('button').forEach((d,i)=>d.addEventListener('click',()=>{current=i;updateCarousel();}));
+}
+
+document.getElementById('prev-btn').addEventListener('click',()=>{current--;updateCarousel();});
+document.getElementById('next-btn').addEventListener('click',()=>{current++;updateCarousel();});
+
+// Auto-advance
+let autoTimer = setInterval(()=>{ current=(current+1)%(reviews.length-perView+1); updateCarousel(); },5000);
+track.addEventListener('mouseenter',()=>clearInterval(autoTimer));
+track.addEventListener('mouseleave',()=>{ autoTimer=setInterval(()=>{ current=(current+1)%(reviews.length-perView+1); updateCarousel(); },5000); });
+
+window.addEventListener('resize',()=>{ perView=window.innerWidth>=1024?3:window.innerWidth>=640?2:1; buildReviews(); });
+buildReviews();
+
+// ── FADE IN OBSERVER ──────────────────────────────────────
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.15});
+document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
