@@ -3,835 +3,655 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bloom Atelier — Event Styling & Prop Hire | Sydney</title>
+<title>LuvUrHomey — Premium Short-Term Rental Management</title>
+<meta name="description" content="LuvUrHomey partners with landlords and agents to turn properties into high-performing short-term rentals — guaranteed rent, zero risk, premium hospitality.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Josefin+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-tailwind.config = {
-  theme: {
-    extend: {
-      fontFamily: {
-        script: ['Great Vibes', 'cursive'],
-        serif:  ['Cormorant Infant', 'serif'],
-        sans:   ['Montserrat', 'sans-serif'],
-      },
-      colors: {
-        cream:  { DEFAULT:'#FDF8F2', warm:'#FBF0E6', pink:'#FDF2F8' },
-        rose:   { DEFAULT:'#C8849A', dark:'#8B4F6B', deep:'#5E2D47', light:'#F2D5DE', blush:'#FAE8EE' },
-        sage:   { DEFAULT:'#8CAF8B', dark:'#5E7A5D', light:'#D4E8D3' },
-        champ:  { DEFAULT:'#C9A84C', light:'#F5E9C4', dark:'#8A6E28' },
-        ink:    { DEFAULT:'#2D1F25', muted:'#7D6473' },
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { serif: ['Cinzel', 'serif'], sans: ['Josefin Sans', 'sans-serif'] },
+        colors: {
+          navy: { DEFAULT: '#1E3A8A', dark: '#0F1E4D', deep: '#0A1530' },
+          blue: { DEFAULT: '#3B82F6', light: '#60A5FA' },
+          gold: { DEFAULT: '#CA8A04', light: '#EAB308', soft: '#FDE68A' },
+          ink: '#0F172A',
+          mute: '#475569',
+          paper: '#F8FAFC',
+        }
       }
     }
   }
-}
 </script>
 <style>
-*{box-sizing:border-box;}
-body{font-family:'Montserrat',sans-serif;background:#FDF8F2;color:#2D1F25;overflow-x:hidden;}
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:#FDF2F8;}
-::-webkit-scrollbar-thumb{background:#C8849A;border-radius:2px;}
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background-color: #F8FAFC; color: #0F172A; font-family: 'Josefin Sans', sans-serif; overflow-x: hidden; }
+  h1,h2,h3,.font-serif { font-family: 'Cinzel', serif; }
 
-/* ── NAV ── */
-#navbar{transition:all .4s ease;}
-#navbar.scrolled{background:rgba(253,248,242,0.97);backdrop-filter:blur(16px);box-shadow:0 2px 20px rgba(200,132,154,.12);}
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
 
-/* ── HERO ── */
-.hero-bg{background:linear-gradient(160deg,#FDF2F8 0%,#FBF0E6 40%,#F2D5DE 100%);}
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #F8FAFC; }
+  ::-webkit-scrollbar-thumb { background: #1E3A8A; border-radius: 3px; }
 
-/* ── PETALS ── */
-.petal{position:absolute;pointer-events:none;opacity:0;animation:petal-fall linear infinite;}
-@keyframes petal-fall{
-  0%  {opacity:0;transform:translateY(-60px) translateX(0) rotate(0deg);}
-  10% {opacity:.7;}
-  90% {opacity:.5;}
-  100%{opacity:0;transform:translateY(110vh) translateX(80px) rotate(360deg);}
-}
-
-/* ── SECTION LABEL ── */
-.label{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.25em;color:#C9A84C;text-transform:uppercase;}
-
-/* ── SERVICE CARD ── */
-.service-card{border:1px solid #F2D5DE;transition:all .3s ease;background:#fff;}
-.service-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(200,132,154,.15);border-color:#C8849A;}
-
-/* ── GALLERY ── */
-.gallery-item{overflow:hidden;cursor:pointer;position:relative;}
-.gallery-item img,.gallery-placeholder{transition:transform .5s ease;}
-.gallery-item:hover .gallery-placeholder{transform:scale(1.05);}
-.gallery-overlay{position:absolute;inset:0;background:rgba(45,31,37,0);transition:.3s;display:flex;align-items:center;justify-content:center;}
-.gallery-item:hover .gallery-overlay{background:rgba(45,31,37,.25);}
-
-/* ── LIGHTBOX ── */
-#lightbox{background:rgba(45,31,37,.92);backdrop-filter:blur(8px);}
-
-/* ── PACKAGE CARD ── */
-.pkg-card{border:1px solid #F2D5DE;transition:all .3s;}
-.pkg-card:hover{box-shadow:0 24px 60px rgba(200,132,154,.2);}
-.pkg-card.featured{border-color:#C8849A;background:linear-gradient(160deg,#5E2D47,#8B4F6B);}
-
-/* ── TESTIMONIAL ── */
-.testi-track{display:flex;transition:transform .6s cubic-bezier(.4,0,.2,1);}
-
-/* ── FAQ ── */
-.faq-answer{max-height:0;overflow:hidden;transition:max-height .4s ease;}
-.faq-answer.open{max-height:300px;}
-.faq-chevron{transition:transform .3s;}
-.faq-chevron.open{transform:rotate(180deg);}
-
-/* ── FORM ── */
-.form-field{border:1.5px solid #F2D5DE;transition:border-color .2s;background:#fff;}
-.form-field:focus{outline:none;border-color:#C8849A;}
-
-/* ── BTN ── */
-.btn-rose{background:linear-gradient(135deg,#C8849A,#8B4F6B);transition:.25s;position:relative;overflow:hidden;}
-.btn-rose::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#8B4F6B,#5E2D47);opacity:0;transition:.25s;}
-.btn-rose:hover::after{opacity:1;}
-.btn-rose span{position:relative;z-index:1;}
-.btn-outline-rose{border:1.5px solid #C8849A;color:#C8849A;transition:.25s;}
-.btn-outline-rose:hover{background:#C8849A;color:#fff;}
-.btn-champ{background:linear-gradient(135deg,#C9A84C,#8A6E28);transition:.25s;}
-.btn-champ:hover{opacity:.9;}
-
-/* ── FADE IN ── */
-.fade-up{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
-.fade-up.visible{opacity:1;transform:none;}
-
-/* ── DIVIDER ── */
-.petal-divider{background:linear-gradient(90deg,transparent,#F2D5DE,transparent);height:1px;}
-
-/* ── QUOTE MARK ── */
-.quote-mark{font-family:'Great Vibes',cursive;font-size:5rem;line-height:1;color:#F2D5DE;position:absolute;top:-10px;left:0;}
-
-@media(prefers-reduced-motion:reduce){
-  .petal,.fade-up,.testi-track,.faq-answer{animation:none;transition:none;}
-  .fade-up{opacity:1;transform:none;}
-}
+  .glass {
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+  .glass-dark {
+    background: rgba(15,30,77,0.55);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .hero-bg {
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 0%, rgba(59,130,246,0.35), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 20%, rgba(202,138,4,0.25), transparent 60%),
+      linear-gradient(160deg, #0A1530 0%, #0F1E4D 45%, #1E3A8A 100%);
+  }
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .text-gradient-gold {
+    background: linear-gradient(90deg, #FDE68A, #CA8A04);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, #EAB308, #CA8A04);
+    box-shadow: 0 8px 24px rgba(202,138,4,0.35);
+  }
+  .btn-gold:hover { box-shadow: 0 10px 30px rgba(202,138,4,0.5); }
+  .card-hover { transition: transform 300ms ease, box-shadow 300ms ease; }
+  .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(15,30,77,0.15); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 700ms ease, transform 700ms ease; }
+  .fade-up.in { opacity: 1; transform: translateY(0); }
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 2px;
+    background: #CA8A04; transition: width 250ms ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  .chevron { transition: transform 250ms ease; }
+  details[open] .chevron { transform: rotate(180deg); }
+  .star { color: #CA8A04; }
+  .stat-ring { transition: stroke-dashoffset 1.2s ease; }
 </style>
 </head>
-<body>
+<body class="antialiased">
 
-<!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 py-4">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-    <a href="#" class="flex flex-col leading-none cursor-pointer">
-      <span class="font-script text-3xl text-rose-dark">Bloom Atelier</span>
-      <span class="font-sans text-[9px] tracking-[.3em] text-ink-muted uppercase mt-0.5">Event Styling · Sydney</span>
+<!-- NAVBAR -->
+<header class="fixed top-4 left-4 right-4 z-50">
+  <nav class="max-w-7xl mx-auto glass rounded-2xl px-5 sm:px-8 py-3.5 flex items-center justify-between shadow-lg shadow-navy/5">
+    <a href="#top" class="flex items-center gap-2 cursor-pointer">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" stroke="#CA8A04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9" stroke="#1E3A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="font-serif text-lg sm:text-xl font-semibold text-navy-dark">Luv<span class="text-gold">Ur</span>Homey</span>
     </a>
-    <div class="hidden md:flex items-center gap-7 text-xs font-semibold tracking-widest text-ink uppercase">
-      <a href="#services" class="hover:text-rose transition-colors cursor-pointer">Services</a>
-      <a href="#gallery"  class="hover:text-rose transition-colors cursor-pointer">Gallery</a>
-      <a href="#packages" class="hover:text-rose transition-colors cursor-pointer">Packages</a>
-      <a href="#reviews"  class="hover:text-rose transition-colors cursor-pointer">Reviews</a>
-      <a href="#contact"  class="hover:text-rose transition-colors cursor-pointer">Contact</a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-ink">
+      <a href="#how" class="nav-link cursor-pointer">How It Works</a>
+      <a href="#portfolio" class="nav-link cursor-pointer">Portfolio</a>
+      <a href="#performance" class="nav-link cursor-pointer">Performance</a>
+      <a href="#partner" class="nav-link cursor-pointer">Partner With Us</a>
+      <a href="#faq" class="nav-link cursor-pointer">FAQ</a>
     </div>
     <div class="flex items-center gap-3">
-      <a href="#contact" class="hidden sm:block btn-rose text-white text-xs font-semibold tracking-widest uppercase px-6 py-2.5 rounded-full cursor-pointer"><span>Enquire Now</span></a>
-      <button id="menu-btn" class="md:hidden p-2 text-rose cursor-pointer" aria-label="Menu">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
+      <a href="#book" class="hidden sm:inline-block text-sm font-semibold text-navy px-4 py-2 rounded-full border border-navy/20 hover:border-navy/40 transition cursor-pointer">Book a Stay</a>
+      <a href="#partner" class="btn-gold text-sm font-semibold text-navy-deep px-5 py-2.5 rounded-full transition cursor-pointer">List Your Property</a>
     </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section id="top" class="hero-bg grain relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
+  <div class="absolute inset-0 opacity-20" aria-hidden="true">
+    <div class="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-blue-light/30 blur-3xl"></div>
+    <div class="absolute bottom-0 right-0 w-[30rem] h-[30rem] rounded-full bg-gold/20 blur-3xl"></div>
   </div>
-  <div id="mobile-menu" class="hidden md:hidden bg-cream/98 border-t border-rose-light px-6 py-5 space-y-4 text-xs font-semibold tracking-widest uppercase text-ink">
-    <a href="#services" class="block py-1 hover:text-rose">Services</a>
-    <a href="#gallery"  class="block py-1 hover:text-rose">Gallery</a>
-    <a href="#packages" class="block py-1 hover:text-rose">Packages</a>
-    <a href="#reviews"  class="block py-1 hover:text-rose">Reviews</a>
-    <a href="#contact"  class="block py-1 hover:text-rose">Contact</a>
-    <a href="#contact"  class="block btn-rose text-white text-center py-3 rounded-full mt-2"><span>Enquire Now</span></a>
-  </div>
-</nav>
-
-<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
-<section class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-  <!-- Floating petals container -->
-  <div id="petals" class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true"></div>
-
-  <!-- Decorative circles -->
-  <div class="absolute top-20 right-10 w-72 h-72 rounded-full bg-rose-blush/40 blur-3xl pointer-events-none"></div>
-  <div class="absolute bottom-20 left-10 w-56 h-56 rounded-full bg-sage-light/30 blur-3xl pointer-events-none"></div>
-  <div class="absolute top-40 left-1/4 w-40 h-40 rounded-full bg-champ-light/30 blur-2xl pointer-events-none"></div>
-
-  <div class="relative z-10 text-center max-w-3xl mx-auto px-4 sm:px-6 py-20">
-    <!-- Monogram -->
-    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full border border-rose-light bg-white/80 mb-8 shadow-sm">
-      <span class="font-script text-3xl text-rose-dark">BA</span>
-    </div>
-
-    <p class="label mb-4">Sydney, Australia</p>
-    <h1 class="font-script text-6xl sm:text-7xl lg:text-8xl text-rose-dark mb-4 leading-none">Bloom Atelier</h1>
-    <p class="font-serif italic text-xl sm:text-2xl text-rose font-light mb-3">Where every moment blooms into a memory.</p>
-    <p class="font-sans text-sm text-ink-muted leading-relaxed max-w-xl mx-auto mb-10">
-      Premium event styling, silk florals, balloon installations and prop hire for weddings, birthdays, tea ceremonies and every celebration worth remembering — across Sydney and surrounds.
-    </p>
-
-    <!-- Social proof -->
-    <div class="flex items-center justify-center gap-4 mb-10">
-      <div class="flex -space-x-2">
-        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-rose to-rose-dark border-2 border-white flex items-center justify-center text-xs text-white font-bold">JL</div>
-        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-sage to-sage-dark border-2 border-white flex items-center justify-center text-xs text-white font-bold">MS</div>
-        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-champ to-champ-dark border-2 border-white flex items-center justify-center text-xs text-white font-bold">RP</div>
-        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-rose-dark to-rose-deep border-2 border-white flex items-center justify-center text-xs text-white font-bold">AK</div>
+  <div class="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+    <div class="fade-up in">
+      <span class="inline-flex items-center gap-2 glass-dark text-gold-soft text-xs font-semibold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+        Trusted by 40+ Property Partners
+      </span>
+      <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-tight mb-6">
+        We Turn Your Property Into a <span class="text-gradient-gold">High-Performing</span> Short-Term Rental
+      </h1>
+      <p class="text-lg text-blue-light/90 max-w-xl mb-8 leading-relaxed">
+        LuvUrHomey leases properties from landlords and agents, then operates them as professionally managed Airbnb-style stays — turning idle rooms into guaranteed monthly income, with zero work and zero risk on your end.
+      </p>
+      <div class="flex flex-wrap gap-4 mb-10">
+        <a href="#partner" class="btn-gold text-navy-deep font-semibold px-7 py-3.5 rounded-full inline-flex items-center gap-2 transition cursor-pointer">
+          Partner Your Property
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#book" class="glass-dark text-white font-semibold px-7 py-3.5 rounded-full inline-flex items-center gap-2 transition cursor-pointer hover:bg-white/10">
+          Browse Our Stays
+        </a>
       </div>
-      <div class="text-left">
-        <div class="text-champ text-sm">★★★★★</div>
-        <p class="text-xs text-ink-muted"><span class="text-ink font-semibold">200+ events styled</span> · 5-star reviews</p>
+      <div class="grid grid-cols-3 gap-6 max-w-md">
+        <div>
+          <p class="font-serif text-2xl sm:text-3xl text-white font-semibold">94<span class="text-gold">%</span></p>
+          <p class="text-xs text-blue-light/70 uppercase tracking-wide mt-1">Avg. Occupancy</p>
+        </div>
+        <div>
+          <p class="font-serif text-2xl sm:text-3xl text-white font-semibold">12</p>
+          <p class="text-xs text-blue-light/70 uppercase tracking-wide mt-1">Properties Managed</p>
+        </div>
+        <div>
+          <p class="font-serif text-2xl sm:text-3xl text-white font-semibold">$2.1M</p>
+          <p class="text-xs text-blue-light/70 uppercase tracking-wide mt-1">Revenue Generated</p>
+        </div>
       </div>
     </div>
-
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="#contact" class="btn-rose font-sans text-white font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-full cursor-pointer"><span>Book Your Event</span></a>
-      <a href="#gallery" class="btn-outline-rose font-sans font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-full cursor-pointer">View Gallery</a>
-    </div>
-  </div>
-
-  <!-- Scroll hint -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-50 animate-bounce">
-    <span class="text-[10px] tracking-widest text-rose uppercase font-sans">Scroll</span>
-    <svg class="w-4 h-4 text-rose" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ INTRO STRIP ═══════════════════════════ -->
-<div class="bg-rose-dark py-5">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-      <div><div class="font-serif text-2xl font-light text-white">200+</div><div class="text-[10px] tracking-widest text-white/60 uppercase mt-0.5">Events Styled</div></div>
-      <div><div class="font-serif text-2xl font-light text-white">5★</div><div class="text-[10px] tracking-widest text-white/60 uppercase mt-0.5">Client Rating</div></div>
-      <div><div class="font-serif text-2xl font-light text-white">3+</div><div class="text-[10px] tracking-widest text-white/60 uppercase mt-0.5">Years Experience</div></div>
-      <div><div class="font-serif text-2xl font-light text-white">Sydney</div><div class="text-[10px] tracking-widest text-white/60 uppercase mt-0.5">& Surrounds</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════ SERVICES ═══════════════════════════ -->
-<section id="services" class="py-24 sm:py-32 bg-cream">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="text-center mb-16 fade-up">
-      <p class="label mb-3">What We Do</p>
-      <h2 class="font-serif text-4xl sm:text-5xl font-light text-ink mb-4">Our <span class="italic text-rose">Services</span></h2>
-      <p class="font-sans text-sm text-ink-muted max-w-lg mx-auto leading-relaxed">From intimate tea ceremonies to grand wedding receptions, we bring your vision to life with thoughtful detail and effortless elegance.</p>
-    </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-      <!-- Service 1 -->
-      <div class="service-card rounded-2xl p-7 fade-up cursor-default">
-        <div class="w-12 h-12 rounded-full bg-rose-blush flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-rose-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
-        </div>
-        <h3 class="font-serif text-xl font-medium text-ink mb-2">Event Styling</h3>
-        <p class="font-sans text-sm text-ink-muted leading-relaxed mb-4">Full concept-to-creation styling for any occasion. We handle every visual detail — from colour palettes to backdrops and tablescape design.</p>
-        <div class="petal-divider my-3"></div>
-        <p class="text-xs text-rose font-semibold tracking-wider uppercase">Birthdays · Engagement · Corporate</p>
+    <div class="relative fade-up in" style="transition-delay:150ms">
+      <div class="glass-dark rounded-3xl p-3 shadow-2xl">
+        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=900&q=80" alt="Modern bright living room of a LuvUrHomey managed rental" class="rounded-2xl w-full h-[420px] object-cover" loading="lazy">
       </div>
-
-      <!-- Service 2 -->
-      <div class="service-card rounded-2xl p-7 fade-up cursor-default">
-        <div class="w-12 h-12 rounded-full bg-rose-blush flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-rose-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+      <div class="absolute -bottom-6 -left-6 glass rounded-2xl p-4 shadow-xl hidden sm:block">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center">
+            <svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-ink">214 guests</p>
+            <p class="text-xs text-mute">hosted this quarter</p>
+          </div>
         </div>
-        <h3 class="font-serif text-xl font-medium text-ink mb-2">Silk Florals</h3>
-        <p class="font-sans text-sm text-ink-muted leading-relaxed mb-4">Lush, lifelike silk floral arrangements that stay picture-perfect all day. Bouquets, centrepieces, arches, and installations — crafted for your palette.</p>
-        <div class="petal-divider my-3"></div>
-        <p class="text-xs text-rose font-semibold tracking-wider uppercase">Bouquets · Arches · Centrepieces</p>
       </div>
-
-      <!-- Service 3 -->
-      <div class="service-card rounded-2xl p-7 fade-up cursor-default">
-        <div class="w-12 h-12 rounded-full bg-rose-blush flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-rose-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.047 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/></svg>
-        </div>
-        <h3 class="font-serif text-xl font-medium text-ink mb-2">Balloon Installations</h3>
-        <p class="font-sans text-sm text-ink-muted leading-relaxed mb-4">Organic garlands, balloon arches, ceiling clouds and custom sculptures. We transform spaces with bespoke balloon artistry that photographs beautifully.</p>
-        <div class="petal-divider my-3"></div>
-        <p class="text-xs text-rose font-semibold tracking-wider uppercase">Garlands · Arches · Columns</p>
-      </div>
-
-      <!-- Service 4 -->
-      <div class="service-card rounded-2xl p-7 fade-up cursor-default">
-        <div class="w-12 h-12 rounded-full bg-sage-light flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-sage-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
-        </div>
-        <h3 class="font-serif text-xl font-medium text-ink mb-2">Prop Hire</h3>
-        <p class="font-sans text-sm text-ink-muted leading-relaxed mb-4">Gold mirror signs, elegant easels, lanterns, LED numbers, flower walls, and luxe decor pieces available for hire — the perfect finishing touches.</p>
-        <div class="petal-divider my-3"></div>
-        <p class="text-xs text-sage-dark font-semibold tracking-wider uppercase">Signs · Walls · Furniture</p>
-      </div>
-
-      <!-- Service 5 -->
-      <div class="service-card rounded-2xl p-7 fade-up cursor-default">
-        <div class="w-12 h-12 rounded-full bg-champ-light flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-champ-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1 1 .03 2.798-1.414 2.798H4.213c-1.444 0-2.414-1.798-1.414-2.798L4.2 15.3"/></svg>
-        </div>
-        <h3 class="font-serif text-xl font-medium text-ink mb-2">Weddings</h3>
-        <p class="font-sans text-sm text-ink-muted leading-relaxed mb-4">Your most important day deserves the most exquisite styling. We collaborate with you from concept through to your ceremony and reception, making every moment magical.</p>
-        <div class="petal-divider my-3"></div>
-        <p class="text-xs text-champ-dark font-semibold tracking-wider uppercase">Ceremony · Reception · Elopements</p>
-      </div>
-
-      <!-- Service 6 -->
-      <div class="service-card rounded-2xl p-7 fade-up cursor-default">
-        <div class="w-12 h-12 rounded-full bg-champ-light flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-champ-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
-        </div>
-        <h3 class="font-serif text-xl font-medium text-ink mb-2">Tea Ceremonies</h3>
-        <p class="font-sans text-sm text-ink-muted leading-relaxed mb-4">Honouring tradition with elegance. We style beautiful, culturally thoughtful tea ceremony setups that blend heritage with modern sophistication.</p>
-        <div class="petal-divider my-3"></div>
-        <p class="text-xs text-champ-dark font-semibold tracking-wider uppercase">Traditional · Modern · Fusion</p>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
-<section id="gallery" class="py-24 sm:py-32 bg-cream-pink">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="text-center mb-16 fade-up">
-      <p class="label mb-3">Our Work</p>
-      <h2 class="font-serif text-4xl sm:text-5xl font-light text-ink mb-4">A <span class="italic text-rose">Gallery</span> of Moments</h2>
-      <p class="font-sans text-sm text-ink-muted max-w-md mx-auto">Every event is unique. Every setup tells a story. Here's a glimpse into the moments we've been honoured to create.</p>
+<!-- HOW IT WORKS -->
+<section id="how" class="py-24 bg-paper relative">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-16 fade-up">
+      <span class="text-gold font-semibold text-sm uppercase tracking-widest">How It Works</span>
+      <h2 class="font-serif text-3xl sm:text-4xl text-navy-dark font-semibold mt-3 mb-4">A Simple Partnership, A Guaranteed Outcome</h2>
+      <p class="text-mute leading-relaxed">We handle every part of the hospitality operation — you collect reliable income from a property that might otherwise sit empty or underperform on the long-term market.</p>
+    </div>
+    <div class="grid md:grid-cols-4 gap-6">
+      <div class="glass rounded-2xl p-7 card-hover fade-up">
+        <div class="w-12 h-12 rounded-xl bg-navy/10 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 13l2 2 4-4"/></svg>
+        </div>
+        <h3 class="font-serif text-lg text-navy-dark font-semibold mb-2">1. We Sign a Lease</h3>
+        <p class="text-sm text-mute leading-relaxed">We agree on a fixed monthly rent with you or your client — paid on time, every time, regardless of occupancy.</p>
+      </div>
+      <div class="glass rounded-2xl p-7 card-hover fade-up" style="transition-delay:100ms">
+        <div class="w-12 h-12 rounded-xl bg-navy/10 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+        </div>
+        <h3 class="font-serif text-lg text-navy-dark font-semibold mb-2">2. We Furnish & Launch</h3>
+        <p class="text-sm text-mute leading-relaxed">Our design team stages the space, builds a high-converting listing, and launches it across Airbnb, Booking.com, and VRBO.</p>
+      </div>
+      <div class="glass rounded-2xl p-7 card-hover fade-up" style="transition-delay:200ms">
+        <div class="w-12 h-12 rounded-xl bg-navy/10 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>
+        </div>
+        <h3 class="font-serif text-lg text-navy-dark font-semibold mb-2">3. We Manage Everything</h3>
+        <p class="text-sm text-mute leading-relaxed">Guest messaging, cleaning crews, dynamic pricing, maintenance, and 24/7 support — all handled by our team.</p>
+      </div>
+      <div class="glass rounded-2xl p-7 card-hover fade-up" style="transition-delay:300ms">
+        <div class="w-12 h-12 rounded-xl bg-navy/10 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <h3 class="font-serif text-lg text-navy-dark font-semibold mb-2">4. You Get Paid, Risk-Free</h3>
+        <p class="text-sm text-mute leading-relaxed">No vacancy risk, no tenant headaches, no upfront cost. Just dependable rent and a beautifully maintained property.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-14 fade-up">
+      <div class="max-w-xl">
+        <span class="text-gold font-semibold text-sm uppercase tracking-widest">Our Portfolio</span>
+        <h2 class="font-serif text-3xl sm:text-4xl text-navy-dark font-semibold mt-3">Spaces We're Proud to Manage</h2>
+      </div>
+      <p class="text-mute max-w-sm">From downtown lofts to suburban family homes, every property in our portfolio is professionally styled and consistently booked.</p>
     </div>
 
-    <!-- Filter tabs -->
-    <div class="flex flex-wrap justify-center gap-2 mb-10 fade-up">
-      <button class="gal-filter active font-sans text-xs font-semibold tracking-widest uppercase px-5 py-2 rounded-full bg-rose-dark text-white cursor-pointer transition-all" data-filter="all">All</button>
-      <button class="gal-filter font-sans text-xs font-semibold tracking-widest uppercase px-5 py-2 rounded-full border border-rose-light text-ink-muted hover:border-rose hover:text-rose cursor-pointer transition-all" data-filter="wedding">Weddings</button>
-      <button class="gal-filter font-sans text-xs font-semibold tracking-widest uppercase px-5 py-2 rounded-full border border-rose-light text-ink-muted hover:border-rose hover:text-rose cursor-pointer transition-all" data-filter="birthday">Birthdays</button>
-      <button class="gal-filter font-sans text-xs font-semibold tracking-widest uppercase px-5 py-2 rounded-full border border-rose-light text-ink-muted hover:border-rose hover:text-rose cursor-pointer transition-all" data-filter="floral">Florals</button>
-      <button class="gal-filter font-sans text-xs font-semibold tracking-widest uppercase px-5 py-2 rounded-full border border-rose-light text-ink-muted hover:border-rose hover:text-rose cursor-pointer transition-all" data-filter="balloon">Balloons</button>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <article class="rounded-2xl overflow-hidden border border-navy/10 card-hover cursor-pointer group">
+        <div class="relative h-60 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=700&q=80" alt="The Harbor Loft, a downtown two-bedroom rental" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+          <span class="absolute top-4 left-4 bg-white/90 text-navy text-xs font-semibold px-3 py-1.5 rounded-full">Superhost</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-serif text-lg text-navy-dark font-semibold">The Harbor Loft</h3>
+            <span class="flex items-center gap-1 text-sm text-ink"><svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>4.97</span>
+          </div>
+          <p class="text-sm text-mute mb-4">Downtown · 2BR / 2BA</p>
+          <div class="flex items-center justify-between text-sm border-t border-navy/10 pt-4">
+            <span class="text-mute">Occupancy</span>
+            <span class="font-semibold text-navy">96%</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="rounded-2xl overflow-hidden border border-navy/10 card-hover cursor-pointer group">
+        <div class="relative h-60 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=700&q=80" alt="Maple Street House, a suburban four-bedroom family rental" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+          <span class="absolute top-4 left-4 bg-white/90 text-navy text-xs font-semibold px-3 py-1.5 rounded-full">Guest Favorite</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-serif text-lg text-navy-dark font-semibold">Maple Street House</h3>
+            <span class="flex items-center gap-1 text-sm text-ink"><svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>4.92</span>
+          </div>
+          <p class="text-sm text-mute mb-4">Suburban · 4BR / 3BA</p>
+          <div class="flex items-center justify-between text-sm border-t border-navy/10 pt-4">
+            <span class="text-mute">Occupancy</span>
+            <span class="font-semibold text-navy">91%</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="rounded-2xl overflow-hidden border border-navy/10 card-hover cursor-pointer group">
+        <div class="relative h-60 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=700&q=80" alt="Skyline Studio, a modern high-rise studio rental" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+          <span class="absolute top-4 left-4 bg-white/90 text-navy text-xs font-semibold px-3 py-1.5 rounded-full">Top 1%</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-serif text-lg text-navy-dark font-semibold">Skyline Studio</h3>
+            <span class="flex items-center gap-1 text-sm text-ink"><svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>4.99</span>
+          </div>
+          <p class="text-sm text-mute mb-4">High-Rise · Studio</p>
+          <div class="flex items-center justify-between text-sm border-t border-navy/10 pt-4">
+            <span class="text-mute">Occupancy</span>
+            <span class="font-semibold text-navy">98%</span>
+          </div>
+        </div>
+      </article>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 auto-rows-[200px]" id="gallery-grid">
-      <!-- Populated by JS -->
-    </div>
-
-    <div class="text-center mt-10 fade-up">
-      <a href="https://instagram.com/bloomatelier.syd" target="_blank" rel="noopener" class="btn-outline-rose font-sans text-xs font-semibold tracking-widest uppercase px-8 py-3.5 rounded-full cursor-pointer inline-flex items-center gap-2">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        See More on Instagram
+    <div class="text-center mt-12">
+      <a href="#book" class="inline-flex items-center gap-2 text-navy font-semibold border-b-2 border-gold pb-1 cursor-pointer hover:text-gold transition">
+        View All Properties & Book a Stay
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </div>
   </div>
 </section>
 
-<!-- Lightbox -->
-<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Image lightbox">
-  <div id="lb-overlay" class="absolute inset-0 cursor-pointer"></div>
-  <button id="lb-prev" aria-label="Previous" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/40 transition cursor-pointer z-10">
-    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-  </button>
-  <div id="lb-content" class="relative z-10 max-w-2xl w-full rounded-2xl overflow-hidden"></div>
-  <button id="lb-next" aria-label="Next" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/40 transition cursor-pointer z-10">
-    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-  </button>
-  <button id="lb-close" aria-label="Close" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/40 transition cursor-pointer z-10">
-    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-  </button>
-</div>
-
-<!-- ═══════════════════════════ HOW IT WORKS ═══════════════════════════ -->
-<section id="how" class="py-24 sm:py-32 bg-cream">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6">
-    <div class="text-center mb-16 fade-up">
-      <p class="label mb-3">The Process</p>
-      <h2 class="font-serif text-4xl sm:text-5xl font-light text-ink mb-4">How It <span class="italic text-rose">Works</span></h2>
+<!-- PERFORMANCE / CHARTS -->
+<section id="performance" class="py-24 bg-navy-deep grain relative">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-14 fade-up">
+      <span class="text-gold font-semibold text-sm uppercase tracking-widest">Performance That Speaks for Itself</span>
+      <h2 class="font-serif text-3xl sm:text-4xl text-white font-semibold mt-3 mb-4">Real Occupancy. Real Revenue.</h2>
+      <p class="text-blue-light/80 leading-relaxed">Numbers from our current portfolio — the same disciplined operations we'll bring to your property.</p>
     </div>
-    <div class="grid sm:grid-cols-3 gap-8 relative">
-      <div class="hidden sm:block absolute top-8 left-1/6 right-1/6 h-px bg-gradient-to-r from-transparent via-rose-light to-transparent pointer-events-none"></div>
-      <div class="text-center fade-up">
-        <div class="w-16 h-16 rounded-full bg-rose-blush border border-rose-light flex items-center justify-center mx-auto mb-5">
-          <span class="font-script text-2xl text-rose-dark">1</span>
+
+    <div class="grid lg:grid-cols-3 gap-6 mb-10">
+      <div class="glass-dark rounded-2xl p-6 lg:col-span-2 fade-up">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-serif text-white text-lg font-semibold">Monthly Occupancy Rate</h3>
+          <span class="text-xs text-gold-soft bg-gold/10 px-3 py-1 rounded-full">Last 12 Months</span>
         </div>
-        <h3 class="font-serif text-xl font-medium text-ink mb-2">Enquire</h3>
-        <p class="font-sans text-sm text-ink-muted leading-relaxed">Fill in our enquiry form with your event details. We respond within 24 hours to discuss your vision, date, and budget.</p>
+        <div id="occupancyChart"></div>
       </div>
-      <div class="text-center fade-up">
-        <div class="w-16 h-16 rounded-full bg-rose-blush border border-rose-light flex items-center justify-center mx-auto mb-5">
-          <span class="font-script text-2xl text-rose-dark">2</span>
-        </div>
-        <h3 class="font-serif text-xl font-medium text-ink mb-2">Design</h3>
-        <p class="font-sans text-sm text-ink-muted leading-relaxed">We create a custom mood board and styling proposal tailored to your theme, colour palette and venue. You approve and we refine.</p>
-      </div>
-      <div class="text-center fade-up">
-        <div class="w-16 h-16 rounded-full bg-rose-blush border border-rose-light flex items-center justify-center mx-auto mb-5">
-          <span class="font-script text-2xl text-rose-dark">3</span>
-        </div>
-        <h3 class="font-serif text-xl font-medium text-ink mb-2">Bloom</h3>
-        <p class="font-sans text-sm text-ink-muted leading-relaxed">We arrive, set up, and transform your space. You arrive to a breathtaking scene — all you need to do is enjoy every moment.</p>
+      <div class="glass-dark rounded-2xl p-6 flex flex-col fade-up" style="transition-delay:100ms">
+        <h3 class="font-serif text-white text-lg font-semibold mb-4">Avg. Occupancy by Type</h3>
+        <div id="occupancyDonut" class="flex-1"></div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ═══════════════════════════ PACKAGES ═══════════════════════════ -->
-<section id="packages" class="py-24 sm:py-32 bg-cream-pink">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6">
-    <div class="text-center mb-16 fade-up">
-      <p class="label mb-3">Investment</p>
-      <h2 class="font-serif text-4xl sm:text-5xl font-light text-ink mb-4">Our <span class="italic text-rose">Packages</span></h2>
-      <p class="font-sans text-sm text-ink-muted max-w-md mx-auto">Every package is a starting point — we love creating fully custom quotes tailored to your event.</p>
-    </div>
-    <div class="grid sm:grid-cols-3 gap-6">
-
-      <!-- Petal -->
-      <div class="pkg-card bg-white rounded-2xl p-8 fade-up">
-        <p class="label mb-1">Petal</p>
-        <h3 class="font-serif text-2xl font-light text-ink mb-1">Styling Essentials</h3>
-        <div class="flex items-end gap-1 my-4">
-          <span class="font-serif text-4xl font-light text-rose">$350</span>
-          <span class="text-xs text-ink-muted mb-1">starting from</span>
+    <div class="grid lg:grid-cols-3 gap-6">
+      <div class="glass-dark rounded-2xl p-6 lg:col-span-2 fade-up">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-serif text-white text-lg font-semibold">Revenue Generated for Owners</h3>
+          <span class="text-xs text-gold-soft bg-gold/10 px-3 py-1 rounded-full">vs. Traditional Lease</span>
         </div>
-        <p class="font-sans text-xs text-ink-muted leading-relaxed mb-6">Perfect for intimate gatherings and simple celebrations that need that special touch.</p>
-        <ul class="space-y-3 mb-8">
-          <li class="flex items-start gap-2 text-sm text-ink"><svg class="w-4 h-4 text-rose flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>1 balloon garland (2m)</li>
-          <li class="flex items-start gap-2 text-sm text-ink"><svg class="w-4 h-4 text-rose flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Silk floral centrepiece</li>
-          <li class="flex items-start gap-2 text-sm text-ink"><svg class="w-4 h-4 text-rose flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>1 prop hire item</li>
-          <li class="flex items-start gap-2 text-sm text-ink"><svg class="w-4 h-4 text-rose flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Setup & pack down</li>
-          <li class="flex items-start gap-2 text-sm text-ink-muted"><svg class="w-4 h-4 text-ink-muted/30 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Mood board consultation</li>
-          <li class="flex items-start gap-2 text-sm text-ink-muted"><svg class="w-4 h-4 text-ink-muted/30 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Full room styling</li>
+        <div id="revenueChart"></div>
+      </div>
+      <div class="glass-dark rounded-2xl p-6 fade-up" style="transition-delay:100ms">
+        <h3 class="font-serif text-white text-lg font-semibold mb-5">Why Owners Choose Us</h3>
+        <ul class="space-y-4 text-sm text-blue-light/90">
+          <li class="flex items-start gap-3"><svg class="w-5 h-5 text-gold shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Up to 35% more income than a standard long-term lease</li>
+          <li class="flex items-start gap-3"><svg class="w-5 h-5 text-gold shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Fixed rent paid monthly — occupancy risk is ours</li>
+          <li class="flex items-start gap-3"><svg class="w-5 h-5 text-gold shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Professional cleaning after every stay</li>
+          <li class="flex items-start gap-3"><svg class="w-5 h-5 text-gold shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Fully insured operation, $1M liability coverage</li>
         </ul>
-        <a href="#contact" class="btn-outline-rose font-sans text-xs font-semibold tracking-widest uppercase px-6 py-3 rounded-full cursor-pointer block text-center">Enquire Now</a>
-      </div>
-
-      <!-- Bloom — FEATURED -->
-      <div class="pkg-card featured rounded-2xl p-8 fade-up relative overflow-hidden">
-        <div class="absolute top-4 right-4 bg-champ text-white text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full">Most Popular</div>
-        <p class="label mb-1 text-white/60">Bloom</p>
-        <h3 class="font-serif text-2xl font-light text-white mb-1">Signature Package</h3>
-        <div class="flex items-end gap-1 my-4">
-          <span class="font-serif text-4xl font-light text-white">$750</span>
-          <span class="text-xs text-white/60 mb-1">starting from</span>
-        </div>
-        <p class="font-sans text-xs text-white/70 leading-relaxed mb-6">Our most loved package for milestone birthdays, baby showers and tea ceremonies.</p>
-        <ul class="space-y-3 mb-8">
-          <li class="flex items-start gap-2 text-sm text-white"><svg class="w-4 h-4 text-champ-light flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Balloon arch (3–4m)</li>
-          <li class="flex items-start gap-2 text-sm text-white"><svg class="w-4 h-4 text-champ-light flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Full silk floral styling</li>
-          <li class="flex items-start gap-2 text-sm text-white"><svg class="w-4 h-4 text-champ-light flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>3 prop hire items</li>
-          <li class="flex items-start gap-2 text-sm text-white"><svg class="w-4 h-4 text-champ-light flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Mood board consultation</li>
-          <li class="flex items-start gap-2 text-sm text-white"><svg class="w-4 h-4 text-champ-light flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Full setup & pack down</li>
-          <li class="flex items-start gap-2 text-sm text-white"><svg class="w-4 h-4 text-champ-light flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Mirror welcome sign</li>
-        </ul>
-        <a href="#contact" class="btn-champ font-sans text-white text-xs font-semibold tracking-widest uppercase px-6 py-3 rounded-full cursor-pointer block text-center"><span>Enquire Now</span></a>
-      </div>
-
-      <!-- Grand -->
-      <div class="pkg-card bg-white rounded-2xl p-8 fade-up">
-        <p class="label mb-1">Grand</p>
-        <h3 class="font-serif text-2xl font-light text-ink mb-1">Full Wedding</h3>
-        <div class="flex items-end gap-1 my-4">
-          <span class="font-serif text-4xl font-light text-rose">Custom</span>
-        </div>
-        <p class="font-sans text-xs text-ink-muted leading-relaxed mb-6">A fully bespoke wedding styling experience from ceremony to reception. Every detail, beautifully considered.</p>
-        <ul class="space-y-3 mb-8">
-          <li class="flex items-start gap-2 text-sm text-ink"><svg class="w-4 h-4 text-rose flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Full venue styling</li>
-          <li class="flex items-start gap-2 text-sm text-ink"><svg class="w-4 h-4 text-rose flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Bridal silk bouquet</li>
-          <li class="flex items-start gap-2 text-sm text-ink"><svg class="w-4 h-4 text-rose flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Ceremony arch + aisle</li>
-          <li class="flex items-start gap-2 text-sm text-ink"><svg class="w-4 h-4 text-rose flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Reception tablescapes</li>
-          <li class="flex items-start gap-2 text-sm text-ink"><svg class="w-4 h-4 text-rose flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Unlimited prop hire</li>
-          <li class="flex items-start gap-2 text-sm text-ink"><svg class="w-4 h-4 text-rose flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Dedicated stylist on the day</li>
-        </ul>
-        <a href="#contact" class="btn-rose font-sans text-white text-xs font-semibold tracking-widest uppercase px-6 py-3 rounded-full cursor-pointer block text-center"><span>Get Custom Quote</span></a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ TESTIMONIALS ═══════════════════════════ -->
-<section id="reviews" class="py-24 sm:py-32 bg-rose-dark overflow-hidden">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4 fade-up">
-      <div>
-        <p class="label mb-3 text-champ">Kind Words</p>
-        <h2 class="font-serif text-4xl sm:text-5xl font-light text-white mb-2">What Our <span class="italic text-rose-light">Clients</span> Say</h2>
-      </div>
-      <div class="flex gap-2">
-        <button id="tprev" aria-label="Previous testimonial" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:border-white hover:text-white transition cursor-pointer">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-        </button>
-        <button id="tnext" aria-label="Next testimonial" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-champ transition cursor-pointer">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-        </button>
-      </div>
-    </div>
-    <div class="overflow-hidden">
-      <div class="testi-track" id="testi-track"></div>
-    </div>
-    <div class="flex justify-center gap-2 mt-8" id="testi-dots"></div>
-  </div>
-</section>
+<!-- PARTNER WITH US -->
+<section id="partner" class="py-24 bg-paper">
+  <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-14 items-start">
+    <div class="fade-up">
+      <span class="text-gold font-semibold text-sm uppercase tracking-widest">For Landlords & Real Estate Agents</span>
+      <h2 class="font-serif text-3xl sm:text-4xl text-navy-dark font-semibold mt-3 mb-5">Have a Property? Let's Make It Work Harder.</h2>
+      <p class="text-mute leading-relaxed mb-8">We work directly with landlords, property managers, and real estate agents to lease residential units across the metro — converting underperforming or vacant properties into reliable, professionally managed income streams. No renovation costs. No vacancy gaps. No hassle.</p>
 
-<!-- ═══════════════════════════ FAQ ═══════════════════════════ -->
-<section class="py-24 sm:py-32 bg-cream">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6">
-    <div class="text-center mb-14 fade-up">
-      <p class="label mb-3">Questions</p>
-      <h2 class="font-serif text-4xl sm:text-5xl font-light text-ink mb-4">Frequently <span class="italic text-rose">Asked</span></h2>
-    </div>
-    <div class="space-y-3 fade-up" id="faq-list"></div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ CONTACT ═══════════════════════════ -->
-<section id="contact" class="py-24 sm:py-32 bg-cream-pink">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6">
-    <div class="grid lg:grid-cols-2 gap-16 items-start">
-      <!-- Left -->
-      <div class="fade-up">
-        <p class="label mb-3">Let's Create Magic</p>
-        <h2 class="font-serif text-4xl sm:text-5xl font-light text-ink mb-5">Enquire <span class="italic text-rose">Now</span></h2>
-        <p class="font-sans text-sm text-ink-muted leading-relaxed mb-8">Tell us about your dream event and we'll be in touch within 24 hours with ideas, availability and a tailored quote.</p>
-        <div class="space-y-5">
-          <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0">
-              <svg class="w-4 h-4 text-rose-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
-            </div>
-            <div>
-              <div class="text-xs text-ink-muted tracking-wider uppercase mb-0.5">Email</div>
-              <div class="font-serif text-lg text-ink">hello@bloomatelier.com.au</div>
-            </div>
-          </div>
-          <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0">
-              <svg class="w-4 h-4 text-rose-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5a17.92 17.92 0 01-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg>
-            </div>
-            <div>
-              <div class="text-xs text-ink-muted tracking-wider uppercase mb-0.5">Instagram</div>
-              <div class="font-serif text-lg text-ink">@bloomatelier.syd</div>
-            </div>
-          </div>
-          <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0">
-              <svg class="w-4 h-4 text-rose-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-            </div>
-            <div>
-              <div class="text-xs text-ink-muted tracking-wider uppercase mb-0.5">Location</div>
-              <div class="font-serif text-lg text-ink">Sydney, NSW &amp; Surrounds</div>
-            </div>
-          </div>
-        </div>
-        <!-- Instagram button -->
-        <a href="https://instagram.com/bloomatelier.syd" target="_blank" rel="noopener" class="mt-8 inline-flex items-center gap-2 btn-rose text-white font-sans text-xs font-semibold tracking-widest uppercase px-6 py-3 rounded-full cursor-pointer"><span>Follow on Instagram</span></a>
-      </div>
-
-      <!-- Right — Form -->
-      <div class="bg-white rounded-2xl p-7 sm:p-9 border border-rose-light fade-up">
-        <form id="enquiry-form" novalidate class="space-y-4">
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="block text-[10px] font-semibold tracking-widest uppercase text-ink-muted mb-1.5" for="f-name">First Name</label>
-              <input id="f-name" name="firstname" type="text" required placeholder="Sophie" class="form-field w-full px-4 py-3 rounded-xl text-sm font-sans">
-            </div>
-            <div>
-              <label class="block text-[10px] font-semibold tracking-widest uppercase text-ink-muted mb-1.5" for="f-last">Last Name</label>
-              <input id="f-last" name="lastname" type="text" required placeholder="Williams" class="form-field w-full px-4 py-3 rounded-xl text-sm font-sans">
-            </div>
+      <div class="space-y-5 mb-10">
+        <div class="flex gap-4">
+          <div class="w-10 h-10 rounded-full bg-navy/10 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
           <div>
-            <label class="block text-[10px] font-semibold tracking-widest uppercase text-ink-muted mb-1.5" for="f-email">Email Address</label>
-            <input id="f-email" name="email" type="email" required placeholder="sophie@email.com" class="form-field w-full px-4 py-3 rounded-xl text-sm font-sans">
+            <h4 class="font-semibold text-ink mb-1">Guaranteed Fixed Rent</h4>
+            <p class="text-sm text-mute">Get paid the same amount every month, whether the property is fully booked or not.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="w-10 h-10 rounded-full bg-navy/10 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11z"/></svg>
           </div>
           <div>
-            <label class="block text-[10px] font-semibold tracking-widest uppercase text-ink-muted mb-1.5" for="f-phone">Phone Number</label>
-            <input id="f-phone" name="phone" type="tel" placeholder="04xx xxx xxx" class="form-field w-full px-4 py-3 rounded-xl text-sm font-sans">
+            <h4 class="font-semibold text-ink mb-1">Fully Insured & Vetted</h4>
+            <p class="text-sm text-mute">Every stay is covered, every guest is verified, and your property is treated like our own.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="w-10 h-10 rounded-full bg-navy/10 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 9h1m4 0h1m-5 4h1m4 0h1m-5 4h1m4 0h1"/></svg>
           </div>
           <div>
-            <label class="block text-[10px] font-semibold tracking-widest uppercase text-ink-muted mb-1.5" for="f-type">Event Type</label>
-            <select id="f-type" name="event_type" class="form-field w-full px-4 py-3 rounded-xl text-sm font-sans appearance-none cursor-pointer">
-              <option value="">Select event type...</option>
-              <option>Birthday Party</option>
-              <option>Wedding</option>
-              <option>Baby Shower</option>
-              <option>Tea Ceremony</option>
-              <option>Bridal Shower</option>
-              <option>Engagement Party</option>
-              <option>Corporate Event</option>
+            <h4 class="font-semibold text-ink mb-1">Agent Referral Bonus</h4>
+            <p class="text-sm text-mute">Bring us a qualified listing and earn a referral commission when the lease is signed.</p>
+          </div>
+        </div>
+      </div>
+
+      <blockquote class="glass rounded-2xl p-6 border-l-4 border-gold">
+        <p class="text-ink italic mb-3">"LuvUrHomey took over a unit that sat vacant for two months. Within three weeks it was booked solid, and I haven't had to think about it since."</p>
+        <p class="text-sm font-semibold text-navy">— Daniel R., Property Owner</p>
+      </blockquote>
+    </div>
+
+    <div class="glass rounded-3xl p-8 sm:p-10 shadow-xl fade-up" style="transition-delay:100ms">
+      <h3 class="font-serif text-2xl text-navy-dark font-semibold mb-2">Get a Free Property Assessment</h3>
+      <p class="text-sm text-mute mb-7">Tell us about your property and one of our partnership leads will reach out within 24 hours with a custom income projection.</p>
+      <form id="leadForm" class="space-y-4" novalidate>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label for="fullName" class="block text-sm font-medium text-ink mb-1.5">Full Name</label>
+            <input id="fullName" name="fullName" type="text" required class="w-full rounded-xl border border-navy/15 bg-white/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold" placeholder="Jordan Avery">
+          </div>
+          <div>
+            <label for="role" class="block text-sm font-medium text-ink mb-1.5">I am a...</label>
+            <select id="role" name="role" required class="w-full rounded-xl border border-navy/15 bg-white/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold">
+              <option value="">Select one</option>
+              <option>Landlord / Property Owner</option>
+              <option>Real Estate Agent</option>
+              <option>Property Manager</option>
               <option>Other</option>
             </select>
           </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-[10px] font-semibold tracking-widest uppercase text-ink-muted mb-1.5" for="f-date">Event Date</label>
-            <input id="f-date" name="event_date" type="date" class="form-field w-full px-4 py-3 rounded-xl text-sm font-sans cursor-pointer">
+            <label for="email" class="block text-sm font-medium text-ink mb-1.5">Email</label>
+            <input id="email" name="email" type="email" required class="w-full rounded-xl border border-navy/15 bg-white/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold" placeholder="you@email.com">
           </div>
           <div>
-            <label class="block text-[10px] font-semibold tracking-widest uppercase text-ink-muted mb-1.5" for="f-msg">Tell Us About Your Vision</label>
-            <textarea id="f-msg" name="message" rows="4" placeholder="Describe your dream event — theme, colours, number of guests, venue..." class="form-field w-full px-4 py-3 rounded-xl text-sm font-sans resize-none"></textarea>
+            <label for="phone" class="block text-sm font-medium text-ink mb-1.5">Phone</label>
+            <input id="phone" name="phone" type="tel" required class="w-full rounded-xl border border-navy/15 bg-white/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold" placeholder="(555) 123-4567">
           </div>
-          <div id="form-error" class="text-xs text-red-500 hidden">Please fill in all required fields.</div>
-          <button type="submit" id="form-submit" class="btn-rose w-full py-4 rounded-full text-white font-sans font-semibold text-xs tracking-widest uppercase cursor-pointer"><span id="form-label">Send Enquiry</span></button>
-        </form>
-        <div id="form-success" class="hidden text-center py-12">
-          <div class="w-14 h-14 rounded-full bg-rose-blush flex items-center justify-center mx-auto mb-4">
-            <svg class="w-6 h-6 text-rose-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          </div>
-          <h3 class="font-script text-3xl text-rose-dark mb-2">Thank You!</h3>
-          <p class="font-sans text-sm text-ink-muted leading-relaxed">Your enquiry has been received. We'll be in touch within 24 hours to start planning your perfect event.</p>
+        </div>
+        <div>
+          <label for="address" class="block text-sm font-medium text-ink mb-1.5">Property Address / Area</label>
+          <input id="address" name="address" type="text" required class="w-full rounded-xl border border-navy/15 bg-white/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold" placeholder="123 Main St, Austin, TX">
+        </div>
+        <div>
+          <label for="details" class="block text-sm font-medium text-ink mb-1.5">Tell us about the property</label>
+          <textarea id="details" name="details" rows="3" class="w-full rounded-xl border border-navy/15 bg-white/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold" placeholder="Bedrooms, condition, current rent, availability..."></textarea>
+        </div>
+        <button type="submit" class="w-full btn-gold text-navy-deep font-semibold py-3.5 rounded-xl transition cursor-pointer flex items-center justify-center gap-2">
+          <span id="submitLabel">Request My Income Estimate</span>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <p id="formSuccess" class="hidden text-sm text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-3" role="status">Thank you! Your request has been received — our partnerships team will reach out within 24 hours.</p>
+        <p class="text-xs text-mute text-center">No obligation. No cost. Cancel anytime before signing.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-14 fade-up">
+      <span class="text-gold font-semibold text-sm uppercase tracking-widest">Testimonials</span>
+      <h2 class="font-serif text-3xl sm:text-4xl text-navy-dark font-semibold mt-3">Loved by Owners and Guests Alike</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="glass rounded-2xl p-7 card-hover fade-up">
+        <div class="flex gap-1 mb-4" aria-label="5 out of 5 stars">
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+        </div>
+        <p class="text-ink mb-5">"As an agent, I've referred three listings to LuvUrHomey. Every one converted into a signed lease within a week, and my clients are thrilled with the income."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80" alt="Portrait of Priya N." class="w-10 h-10 rounded-full object-cover" loading="lazy">
+          <div><p class="text-sm font-semibold text-ink">Priya N.</p><p class="text-xs text-mute">Real Estate Agent</p></div>
+        </div>
+      </div>
+      <div class="glass rounded-2xl p-7 card-hover fade-up" style="transition-delay:100ms">
+        <div class="flex gap-1 mb-4" aria-label="5 out of 5 stars">
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+        </div>
+        <p class="text-ink mb-5">"We stayed at the Harbor Loft for a long weekend — spotless, beautifully designed, and the host responded to every message in minutes. Booking again next month."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=100&q=80" alt="Portrait of Marcus T." class="w-10 h-10 rounded-full object-cover" loading="lazy">
+          <div><p class="text-sm font-semibold text-ink">Marcus T.</p><p class="text-xs text-mute">Guest</p></div>
+        </div>
+      </div>
+      <div class="glass rounded-2xl p-7 card-hover fade-up" style="transition-delay:200ms">
+        <div class="flex gap-1 mb-4" aria-label="5 out of 5 stars">
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+          <svg class="w-4 h-4 star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
+        </div>
+        <p class="text-ink mb-5">"My rental sat on the market for months with no tenants. LuvUrHomey signed a lease in 10 days and now sends rent like clockwork. Best decision I made this year."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80" alt="Portrait of Daniel R." class="w-10 h-10 rounded-full object-cover" loading="lazy">
+          <div><p class="text-sm font-semibold text-ink">Daniel R.</p><p class="text-xs text-mute">Property Owner</p></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
-<footer class="bg-ink py-12">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="grid sm:grid-cols-3 gap-8 mb-8">
+<!-- BOOK A STAY CTA -->
+<section id="book" class="py-20 bg-paper">
+  <div class="max-w-5xl mx-auto px-6 text-center fade-up">
+    <span class="text-gold font-semibold text-sm uppercase tracking-widest">Planning a Trip?</span>
+    <h2 class="font-serif text-3xl sm:text-4xl text-navy-dark font-semibold mt-3 mb-5">Book Your Next Stay With LuvUrHomey</h2>
+    <p class="text-mute max-w-xl mx-auto mb-8">Every one of our homes is hand-furnished, spotlessly cleaned, and backed by a real local team — not a faceless platform.</p>
+    <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="btn-gold text-navy-deep font-semibold px-8 py-4 rounded-full inline-flex items-center gap-2 cursor-pointer">
+      Browse Stays on Airbnb
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-24 bg-white">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="text-center mb-14 fade-up">
+      <span class="text-gold font-semibold text-sm uppercase tracking-widest">FAQ</span>
+      <h2 class="font-serif text-3xl sm:text-4xl text-navy-dark font-semibold mt-3">Common Questions</h2>
+    </div>
+    <div class="space-y-3">
+      <details class="glass rounded-xl p-5 fade-up" open>
+        <summary class="flex items-center justify-between font-semibold text-ink">
+          What does "rental arbitrage" actually mean?
+          <svg class="chevron w-5 h-5 text-navy shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <p class="text-sm text-mute mt-3 leading-relaxed">We lease your property at a fixed monthly rate, just like a traditional tenant, then operate it as a short-term rental on Airbnb and similar platforms. The difference between what we pay you and what we earn from guests is our margin — but you're guaranteed your rent either way.</p>
+      </details>
+      <details class="glass rounded-xl p-5 fade-up">
+        <summary class="flex items-center justify-between font-semibold text-ink">
+          Does it cost me anything to list my property?
+          <svg class="chevron w-5 h-5 text-navy shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <p class="text-sm text-mute mt-3 leading-relaxed">No. We cover furnishing, photography, listing creation, cleaning, and day-to-day management. There is zero upfront cost to you as the owner.</p>
+      </details>
+      <details class="glass rounded-xl p-5 fade-up">
+        <summary class="flex items-center justify-between font-semibold text-ink">
+          What if my HOA or city doesn't allow short-term rentals?
+          <svg class="chevron w-5 h-5 text-navy shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <p class="text-sm text-mute mt-3 leading-relaxed">We run a full compliance check before signing any lease, including HOA bylaws and local short-term rental regulations, so you're never exposed to legal risk.</p>
+      </details>
+      <details class="glass rounded-xl p-5 fade-up">
+        <summary class="flex items-center justify-between font-semibold text-ink">
+          How do real estate agents get compensated?
+          <svg class="chevron w-5 h-5 text-navy shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <p class="text-sm text-mute mt-3 leading-relaxed">Agents who refer a qualifying property that results in a signed lease receive a one-time referral commission, paid at signing — on top of any commission already due from the landlord.</p>
+      </details>
+      <details class="glass rounded-xl p-5 fade-up">
+        <summary class="flex items-center justify-between font-semibold text-ink">
+          What happens if a guest damages the property?
+          <svg class="chevron w-5 h-5 text-navy shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <p class="text-sm text-mute mt-3 leading-relaxed">Every stay is backed by platform host guarantees plus our own $1M liability insurance policy. Owners are never responsible for guest-caused damage.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-navy-deep grain text-blue-light/80 pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
       <div>
-        <span class="font-script text-3xl text-rose-light block mb-1">Bloom Atelier</span>
-        <p class="font-sans text-xs text-ink-muted/60 leading-relaxed max-w-xs">Premium event styling, silk florals, balloons and prop hire. Crafting unforgettable moments across Sydney.</p>
+        <div class="flex items-center gap-2 mb-4">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" stroke="#CA8A04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="font-serif text-lg font-semibold text-white">LuvUrHomey</span>
+        </div>
+        <p class="text-sm leading-relaxed">Professionally managed short-term rentals — guaranteed income for owners, unforgettable stays for guests.</p>
       </div>
       <div>
-        <h4 class="text-[10px] font-semibold tracking-widest uppercase text-ink-muted/50 mb-4">Quick Links</h4>
-        <ul class="space-y-2 text-xs font-sans text-ink-muted/60">
-          <li><a href="#services" class="hover:text-rose-light transition-colors cursor-pointer">Services</a></li>
-          <li><a href="#gallery"  class="hover:text-rose-light transition-colors cursor-pointer">Gallery</a></li>
-          <li><a href="#packages" class="hover:text-rose-light transition-colors cursor-pointer">Packages</a></li>
-          <li><a href="#contact"  class="hover:text-rose-light transition-colors cursor-pointer">Enquire</a></li>
+        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Explore</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#how" class="hover:text-gold transition cursor-pointer">How It Works</a></li>
+          <li><a href="#portfolio" class="hover:text-gold transition cursor-pointer">Portfolio</a></li>
+          <li><a href="#performance" class="hover:text-gold transition cursor-pointer">Performance</a></li>
+          <li><a href="#faq" class="hover:text-gold transition cursor-pointer">FAQ</a></li>
         </ul>
       </div>
       <div>
-        <h4 class="text-[10px] font-semibold tracking-widest uppercase text-ink-muted/50 mb-4">Connect</h4>
-        <a href="https://instagram.com/bloomatelier.syd" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-xs text-ink-muted/60 hover:text-rose-light transition-colors cursor-pointer">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          @bloomatelier.syd
-        </a>
-        <p class="text-xs text-ink-muted/60 mt-3">Sydney, NSW &amp; Surrounds</p>
-        <p class="text-xs text-ink-muted/60 mt-1">hello@bloomatelier.com.au</p>
+        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Partner</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#partner" class="hover:text-gold transition cursor-pointer">List Your Property</a></li>
+          <li><a href="#partner" class="hover:text-gold transition cursor-pointer">Agent Referral Program</a></li>
+          <li><a href="#book" class="hover:text-gold transition cursor-pointer">Book a Stay</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Contact</h4>
+        <ul class="space-y-2 text-sm">
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>(512) 555-0148</li>
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>partners@luvurhomey.com</li>
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Austin, TX</li>
+        </ul>
       </div>
     </div>
-    <div class="border-t border-white/5 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-[10px] text-ink-muted/40 font-sans">
-      <p>© 2026 Bloom Atelier. All rights reserved.</p>
-      <p class="font-script text-base text-rose/30">Made with love in Sydney</p>
+    <div class="border-t border-white/10 pt-6 flex flex-wrap items-center justify-between gap-4 text-xs text-blue-light/60">
+      <p>&copy; 2026 LuvUrHomey.com. All rights reserved.</p>
+      <p>Built for hosts, owners, and guests who expect more.</p>
     </div>
   </div>
 </footer>
 
 <script>
-// ══ NAVBAR SCROLL ══
-window.addEventListener('scroll',()=>{
-  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
-});
-document.getElementById('menu-btn').addEventListener('click',()=>{
-  document.getElementById('mobile-menu').classList.toggle('hidden');
-});
-document.querySelectorAll('#mobile-menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.add('hidden')));
+  // Reveal-on-scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-// ══ FLOATING PETALS ══
-(function(){
-  const container=document.getElementById('petals');
-  const count=18;
-  const petalSVGs=[
-    `<svg viewBox="0 0 30 40" fill="none"><ellipse cx="15" cy="20" rx="9" ry="16" fill="#F2D5DE" opacity=".7"/></ellipse></svg>`,
-    `<svg viewBox="0 0 24 32" fill="none"><ellipse cx="12" cy="16" rx="7" ry="13" fill="#FAE8EE" opacity=".65"/></svg>`,
-    `<svg viewBox="0 0 20 28" fill="none"><ellipse cx="10" cy="14" rx="6" ry="11" fill="#FDF2F8" opacity=".8"/></svg>`,
-    `<svg viewBox="0 0 26 34" fill="none"><path d="M13 2 Q22 8 22 18 Q22 30 13 33 Q4 30 4 18 Q4 8 13 2Z" fill="#F2D5DE" opacity=".6"/></svg>`,
-  ];
-  for(let i=0;i<count;i++){
-    const el=document.createElement('div');
-    el.className='petal';
-    el.innerHTML=petalSVGs[i%petalSVGs.length];
-    const size=16+Math.random()*20;
-    el.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;top:0;animation-duration:${6+Math.random()*8}s;animation-delay:${Math.random()*8}s;transform:rotate(${Math.random()*360}deg);`;
-    container.appendChild(el);
-  }
-})();
-
-// ══ GALLERY ══
-const galleryData=[
-  {cat:'birthday',label:'30th Birthday',color:'from-rose-200 to-pink-300',text:'Happy 30th Love — Mirror Sign & Floral Table'},
-  {cat:'wedding', label:'Wedding Ceremony',color:'from-amber-100 to-yellow-200',text:'Silk Arch & Aisle Styling'},
-  {cat:'balloon', label:'Balloon Arch',color:'from-sky-200 to-blue-300',text:'Organic Balloon Garland — Baby Blue & Ivory',tall:true},
-  {cat:'floral',  label:'Silk Florals',color:'from-pink-200 to-rose-300',text:'Blush & Sage Silk Centrepieces'},
-  {cat:'birthday',label:'Baby Shower',color:'from-blue-100 to-indigo-200',text:'"What will Baby Bee?" Gender Reveal Styling',tall:true},
-  {cat:'wedding', label:'Reception Table',color:'from-amber-200 to-orange-200',text:'Champagne & Gold Tablescape'},
-  {cat:'balloon', label:'Bubble Balloons',color:'from-purple-200 to-fuchsia-300',text:'Chrome & Iridescent Bubble Installation'},
-  {cat:'floral',  label:'Flower Wall',color:'from-rose-100 to-pink-200',text:'Faux Rose Wall — Full Bloom Backdrop'},
-  {cat:'birthday',label:'1st Birthday',color:'from-green-100 to-emerald-200',text:'Sage & White First Birthday Setup'},
-  {cat:'floral',  label:'Bridal Bouquet',color:'from-pink-100 to-rose-200',text:'Blush Peony Silk Bridal Bouquet'},
-  {cat:'balloon', label:'Balloon Column',color:'from-amber-100 to-yellow-200',text:'Gold & Ivory Entrance Columns'},
-  {cat:'wedding', label:'Tea Ceremony',color:'from-red-100 to-rose-200',text:'Traditional Tea Ceremony Styling'},
-];
-
-const grid=document.getElementById('gallery-grid');
-function renderGallery(filter='all'){
-  grid.innerHTML='';
-  const items=filter==='all'?galleryData:galleryData.filter(g=>g.cat===filter);
-  items.forEach((g,i)=>{
-    const d=document.createElement('div');
-    d.className=`gallery-item rounded-2xl ${g.tall?'row-span-2':'row-span-1'} cursor-pointer`;
-    d.dataset.index=galleryData.indexOf(g);
-    d.innerHTML=`
-      <div class="gallery-placeholder w-full h-full bg-gradient-to-br ${g.color} flex flex-col items-center justify-center p-4 rounded-2xl">
-        <span class="font-script text-2xl text-rose-deep/70 text-center leading-tight mb-2">${g.label}</span>
-        <span class="font-sans text-[10px] text-ink/50 text-center leading-relaxed">${g.text}</span>
-      </div>
-      <div class="gallery-overlay rounded-2xl">
-        <div class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center">
-          <svg class="w-5 h-5 text-rose-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
-        </div>
-      </div>`;
-    d.addEventListener('click',()=>openLightbox(galleryData.indexOf(g)));
-    grid.appendChild(d);
+  // Lead form submission (demo)
+  const leadForm = document.getElementById('leadForm');
+  const formSuccess = document.getElementById('formSuccess');
+  leadForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!leadForm.checkValidity()) { leadForm.reportValidity(); return; }
+    const btn = leadForm.querySelector('button[type="submit"]');
+    const label = document.getElementById('submitLabel');
+    btn.disabled = true;
+    label.textContent = 'Submitting...';
+    setTimeout(() => {
+      formSuccess.classList.remove('hidden');
+      leadForm.reset();
+      label.textContent = 'Request My Income Estimate';
+      btn.disabled = false;
+    }, 900);
   });
-}
-renderGallery();
 
-document.querySelectorAll('.gal-filter').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.gal-filter').forEach(b=>{
-      b.className='gal-filter font-sans text-xs font-semibold tracking-widest uppercase px-5 py-2 rounded-full border border-rose-light text-ink-muted hover:border-rose hover:text-rose cursor-pointer transition-all';
-    });
-    btn.className='gal-filter active font-sans text-xs font-semibold tracking-widest uppercase px-5 py-2 rounded-full bg-rose-dark text-white cursor-pointer transition-all';
-    renderGallery(btn.dataset.filter);
-  });
-});
+  const months = ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'];
+  const occupancy = [78, 82, 85, 88, 90, 93, 89, 86, 91, 95, 96, 94];
+  const arbitrageRevenue = [3200, 3400, 3650, 3900, 4100, 4500, 4300, 4150, 4600, 4900, 5100, 5300];
+  const traditionalRevenue = [2200, 2200, 2200, 2300, 2300, 2300, 2300, 2300, 2400, 2400, 2400, 2400];
 
-// ── LIGHTBOX ──
-let lbIdx=0;
-function openLightbox(idx){
-  lbIdx=idx;
-  updateLightbox();
-  const lb=document.getElementById('lightbox');
-  lb.classList.remove('hidden');
-  lb.classList.add('flex');
-  document.body.style.overflow='hidden';
-}
-function closeLightbox(){
-  const lb=document.getElementById('lightbox');
-  lb.classList.add('hidden');
-  lb.classList.remove('flex');
-  document.body.style.overflow='';
-}
-function updateLightbox(){
-  const g=galleryData[lbIdx];
-  document.getElementById('lb-content').innerHTML=`
-    <div class="bg-gradient-to-br ${g.color} h-72 sm:h-96 flex flex-col items-center justify-center p-8 rounded-2xl">
-      <span class="font-script text-4xl text-rose-deep/80 text-center mb-3">${g.label}</span>
-      <span class="font-sans text-sm text-ink/60 text-center">${g.text}</span>
-    </div>
-    <div class="bg-white/10 text-center py-3 px-6">
-      <span class="font-sans text-xs text-white/70 tracking-wider uppercase">${g.cat} · ${lbIdx+1} of ${galleryData.length}</span>
-    </div>`;
-}
-document.getElementById('lb-overlay').addEventListener('click',closeLightbox);
-document.getElementById('lb-close').addEventListener('click',closeLightbox);
-document.getElementById('lb-prev').addEventListener('click',()=>{lbIdx=(lbIdx-1+galleryData.length)%galleryData.length;updateLightbox();});
-document.getElementById('lb-next').addEventListener('click',()=>{lbIdx=(lbIdx+1)%galleryData.length;updateLightbox();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();if(e.key==='ArrowLeft')document.getElementById('lb-prev').click();if(e.key==='ArrowRight')document.getElementById('lb-next').click();});
+  new ApexCharts(document.querySelector("#occupancyChart"), {
+    chart: { type: 'area', height: 280, toolbar: { show: false }, background: 'transparent' },
+    series: [{ name: 'Occupancy %', data: occupancy }],
+    xaxis: { categories: months, labels: { style: { colors: '#A7C7FA' } }, axisBorder: { show: false }, axisTicks: { show: false } },
+    yaxis: { max: 100, labels: { style: { colors: '#A7C7FA' }, formatter: v => v + '%' } },
+    colors: ['#EAB308'],
+    fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05 } },
+    stroke: { curve: 'smooth', width: 3 },
+    dataLabels: { enabled: false },
+    grid: { borderColor: 'rgba(255,255,255,0.08)' },
+    tooltip: { theme: 'dark' }
+  }).render();
 
-// ══ TESTIMONIALS ══
-const testis=[
-  {name:'Jasmine L.',event:'30th Birthday · Sydney',stars:5,text:'I cannot believe how stunning everything looked! Bloom Atelier understood my vision completely — the pink florals, mirror sign and balloon arch were absolutely breathtaking. Every guest was obsessed. 10/10 would recommend to every bride and birthday girl.',initials:'JL',bg:'from-rose to-rose-dark'},
-  {name:'Michelle S.',event:'Wedding · Blue Mountains',stars:5,text:'From our first call I knew we were in the best hands. The silk florals looked so real that guests were shocked they weren\'t fresh. The ceremony arch and reception styling were beyond anything we imagined. We cried happy tears walking in!',initials:'MS',bg:'from-sage to-sage-dark'},
-  {name:'Rachel P.',event:'Baby Shower · Parramatta',stars:5,text:'Booked Bloom Atelier for my sister\'s baby shower and the space was transformed into something out of a magazine. The gender reveal balloon installation was the highlight of the afternoon. Super professional, responsive and genuinely so talented.',initials:'RP',bg:'from-champ to-champ-dark'},
-  {name:'Amy K.',event:'Tea Ceremony · Chatswood',stars:5,text:'Finding someone who could style a modern tea ceremony with such cultural sensitivity and elegance was hard — until we found Bloom Atelier. The setup was beautifully balanced between traditional and contemporary. Our families were moved to tears.',initials:'AK',bg:'from-rose-dark to-rose-deep'},
-  {name:'Sophie M.',event:'Engagement Party · Bondi',stars:5,text:'Literally everything was perfect. The floral table runner, the custom balloon arch in our colours, the mirror sign with our names — all flawlessly done. Set up and pack down was seamless, we didn\'t have to lift a finger. Worth every cent.',initials:'SM',bg:'from-rose to-champ'},
-];
+  new ApexCharts(document.querySelector("#occupancyDonut"), {
+    chart: { type: 'donut', height: 280, background: 'transparent' },
+    series: [96, 91, 98, 85],
+    labels: ['Downtown Loft', 'Suburban House', 'High-Rise Studio', 'Townhome'],
+    colors: ['#EAB308', '#3B82F6', '#60A5FA', '#CA8A04'],
+    legend: { position: 'bottom', labels: { colors: '#A7C7FA' } },
+    dataLabels: { enabled: true, formatter: v => Math.round(v) + '%' },
+    stroke: { show: false }
+  }).render();
 
-let tIdx=0;
-const tPerView=()=>window.innerWidth>=1024?3:window.innerWidth>=640?2:1;
-
-function buildTestis(){
-  const pv=tPerView();
-  const track=document.getElementById('testi-track');
-  track.innerHTML=testis.map(t=>`
-    <div class="flex-shrink-0 bg-rose-deep/40 rounded-2xl p-7 border border-white/10 relative" style="width:calc(${100/pv}% - ${(pv-1)*16/pv}px)">
-      <div class="quote-mark">"</div>
-      <p class="font-serif italic text-white/90 leading-relaxed text-sm mb-5 relative z-10">"${t.text}"</p>
-      <div class="text-champ-light text-sm mb-4">${'★'.repeat(t.stars)}</div>
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full bg-gradient-to-br ${t.bg} flex items-center justify-center text-xs font-bold text-white">${t.initials}</div>
-        <div><div class="font-sans text-sm font-semibold text-white">${t.name}</div><div class="font-sans text-[10px] text-white/50 tracking-wider">${t.event}</div></div>
-      </div>
-    </div>`).join('');
-  track.style.cssText='display:flex;gap:16px;transition:transform .6s cubic-bezier(.4,0,.2,1);';
-  buildDots();
-  slideTo(0);
-}
-
-function slideTo(i){
-  const pv=tPerView();
-  const max=testis.length-pv;
-  tIdx=Math.max(0,Math.min(i,max));
-  const cards=document.getElementById('testi-track').children;
-  if(!cards.length)return;
-  const w=cards[0].offsetWidth+16;
-  document.getElementById('testi-track').style.transform=`translateX(-${tIdx*w}px)`;
-  document.querySelectorAll('#testi-dots button').forEach((d,i2)=>d.classList.toggle('bg-white',i2===tIdx));
-}
-
-function buildDots(){
-  const pv=tPerView();
-  const dotsEl=document.getElementById('testi-dots');
-  dotsEl.innerHTML=Array.from({length:testis.length-pv+1},(_,i)=>`<button aria-label="Testimonial ${i+1}" class="w-2 h-2 rounded-full transition-all ${i===0?'bg-white':'bg-white/30'} cursor-pointer"></button>`).join('');
-  dotsEl.querySelectorAll('button').forEach((d,i)=>d.addEventListener('click',()=>slideTo(i)));
-}
-
-document.getElementById('tprev').addEventListener('click',()=>slideTo(tIdx-1));
-document.getElementById('tnext').addEventListener('click',()=>slideTo(tIdx+1));
-let autoT=setInterval(()=>slideTo((tIdx+1)%(testis.length-tPerView()+1)),5000);
-document.getElementById('testi-track').addEventListener('mouseenter',()=>clearInterval(autoT));
-document.getElementById('testi-track').addEventListener('mouseleave',()=>{autoT=setInterval(()=>slideTo((tIdx+1)%(testis.length-tPerView()+1)),5000);});
-window.addEventListener('resize',buildTestis);
-buildTestis();
-
-// ══ FAQ ══
-const faqs=[
-  {q:'Do you travel outside Sydney?',a:'Yes! We service all of Greater Sydney, the Blue Mountains, Central Coast, Wollongong and Illawarra. Travel fees may apply for locations more than 50km from the Sydney CBD — we\'ll confirm this in your quote.'},
-  {q:'How far in advance should I book?',a:'We recommend booking at least 4–6 weeks in advance for birthdays and smaller events, and 3–6 months ahead for weddings. Popular dates (especially weekends in Spring and Summer) book out quickly, so the sooner the better!'},
-  {q:'Are your silk florals realistic?',a:'Absolutely. We source premium-quality silk florals that are incredibly lifelike. Many of our clients\' guests are genuinely surprised to learn they aren\'t fresh flowers — especially in photos.'},
-  {q:'Do you offer prop hire only?',a:'Yes! If you\'d like to hire individual items — like a mirror sign, gold easel, LED numbers or flower wall — without full styling, we can do that too. Get in touch and we\'ll let you know what\'s available for your date.'},
-  {q:'What is your payment process?',a:'We require a 30% deposit to secure your booking, with the remaining balance due 7 days before your event. We accept bank transfer and all major cards.'},
-  {q:'Can I customise the package colours and theme?',a:'Absolutely — every single event we style is tailored to you. We work from your colour palette, theme and vision. Nothing is off the shelf; everything is curated specifically for your event.'},
-];
-
-const faqList=document.getElementById('faq-list');
-faqs.forEach((f,i)=>{
-  const el=document.createElement('div');
-  el.className='bg-white border border-rose-light rounded-2xl overflow-hidden cursor-pointer';
-  el.innerHTML=`
-    <button class="faq-btn w-full flex items-center justify-between p-5 text-left cursor-pointer" aria-expanded="false">
-      <span class="font-serif text-base font-medium text-ink pr-4">${f.q}</span>
-      <svg class="faq-chevron w-4 h-4 text-rose flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-    </button>
-    <div class="faq-answer px-5"><p class="font-sans text-sm text-ink-muted leading-relaxed pb-5">${f.a}</p></div>`;
-  el.querySelector('.faq-btn').addEventListener('click',function(){
-    const ans=el.querySelector('.faq-answer');
-    const chev=el.querySelector('.faq-chevron');
-    const isOpen=ans.classList.contains('open');
-    document.querySelectorAll('.faq-answer').forEach(a=>a.classList.remove('open'));
-    document.querySelectorAll('.faq-chevron').forEach(c=>c.classList.remove('open'));
-    if(!isOpen){ans.classList.add('open');chev.classList.add('open');this.setAttribute('aria-expanded','true');}
-    else{this.setAttribute('aria-expanded','false');}
-  });
-  faqList.appendChild(el);
-});
-
-// ══ FORM ══
-document.getElementById('enquiry-form').addEventListener('submit',function(e){
-  e.preventDefault();
-  const name=document.getElementById('f-name').value.trim();
-  const email=document.getElementById('f-email').value.trim();
-  const msg=document.getElementById('f-msg').value.trim();
-  const errEl=document.getElementById('form-error');
-  if(!name||!email||!msg){errEl.classList.remove('hidden');return;}
-  errEl.classList.add('hidden');
-  const lbl=document.getElementById('form-label');
-  lbl.textContent='Sending…';
-  document.getElementById('form-submit').disabled=true;
-  setTimeout(()=>{
-    document.getElementById('enquiry-form').classList.add('hidden');
-    document.getElementById('form-success').classList.remove('hidden');
-  },1200);
-});
-
-// ══ SCROLL FADE ══
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
-},{threshold:.1});
-document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+  new ApexCharts(document.querySelector("#revenueChart"), {
+    chart: { type: 'bar', height: 280, toolbar: { show: false }, background: 'transparent' },
+    series: [
+      { name: 'Arbitrage Income', data: arbitrageRevenue },
+      { name: 'Traditional Lease', data: traditionalRevenue }
+    ],
+    xaxis: { categories: months, labels: { style: { colors: '#A7C7FA' } }, axisBorder: { show: false }, axisTicks: { show: false } },
+    yaxis: { labels: { style: { colors: '#A7C7FA' }, formatter: v => '$' + v } },
+    colors: ['#EAB308', '#1E40AF'],
+    plotOptions: { bar: { columnWidth: '55%', borderRadius: 4 } },
+    dataLabels: { enabled: false },
+    grid: { borderColor: 'rgba(255,255,255,0.08)' },
+    legend: { labels: { colors: '#A7C7FA' } },
+    tooltip: { theme: 'dark', y: { formatter: v => '$' + v.toLocaleString() } }
+  }).render();
 </script>
 </body>
 </html>
