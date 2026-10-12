@@ -1,0 +1,250 @@
+//@version=6
+// 4H Power of Three -> IFVG entry -> LRL target, with prop-firm risk guards.
+// Built for NQ/ES (use MNQ/MES micros for finer position sizing) on a 1m-15m chart.
+// Automation: alerts emit JSON for a TradingView -> Tradovate webhook bridge (see README).
+strategy("4H Po3 IFVG -> LRL | Prop Guard", shorttitle="Po3 IFVG", overlay=true, initial_capital=50000, currency=currency.USD, default_qty_type=strategy.fixed, default_qty_value=1, commission_type=strategy.commission.cash_per_contract, commission_value=0.5, slippage=1, pyramiding=0, max_bars_back=500)
+
+// ─────────────────────────────── Inputs ───────────────────────────────
+grpA = "Account / prop rules"
+mode           = input.string("Eval", "Account mode", options=["Eval", "Funded"], group=grpA)
+acctSize       = input.float(50000, "Starting balance ($)", group=grpA)
+evalRiskPct    = input.float(1.0, "Risk per trade - Eval (%)", step=0.1, group=grpA)
+fundRiskPct    = input.float(0.5, "Risk per trade - Funded (%)", step=0.1, group=grpA)
+profitTarget   = input.float(53000, "Eval target balance ($)", group=grpA)
+maxLoss        = input.float(2000, "Max loss / drawdown ($)", group=grpA)
+ddType         = input.string("Trailing EOD", "Drawdown type", options=["Static", "Trailing EOD", "Trailing intraday"], group=grpA)
+lockAtStart    = input.bool(true, "Trailing floor stops at starting balance", group=grpA)
+ddBuffer       = input.float(100, "Safety buffer above drawdown floor ($)", group=grpA)
+dailyProfitCap = input.float(1500, "Consistency: max profit per day ($)", group=grpA)
+dailyLossCap   = input.float(1000, "Personal max loss per day ($, 0 = off)", group=grpA)
+maxTradesDay   = input.int(2, "Max trades per day", minval=1, group=grpA)
+maxContracts   = input.int(10, "Max contracts per trade", minval=1, group=grpA)
+stopOnPassFail = input.bool(true, "Stop trading when eval passes or max loss is hit", group=grpA)
+researchMode   = input.bool(false, "Research mode: ignore account limits (long backtests)", group=grpA)
+
+grpS = "Strategy"
+manipMode       = input.string("Sweep prior 4H high/low", "Manipulation must", options=["Sweep prior 4H high/low", "Trade beyond 4H open"], group=grpS)
+requireOpenSide = input.bool(true, "Buy below / sell above the 4H open only", group=grpS)
+minFvgTicks     = input.int(4, "Min FVG size (ticks)", minval=1, group=grpS)
+targetMode      = input.string("Prior 4H high/low", "LRL target", options=["Prior 4H high/low", "Nearest swing high/low"], group=grpS)
+swingLen        = input.int(5, "Swing pivot strength (swing target)", minval=1, group=grpS)
+maxRR           = input.float(2.0, "Max reward:risk (TP cap)", step=0.1, group=grpS)
+minRR           = input.float(1.0, "Min reward:risk to take trade", step=0.1, group=grpS)
+stopBufTicks    = input.int(4, "Stop buffer beyond manipulation extreme (ticks)", minval=0, group=grpS)
+maxStopPts      = input.float(60, "Skip trade if stop wider than (points)", group=grpS)
+allowLong       = input.bool(true, "Longs", inline="dir", group=grpS)
+allowShort      = input.bool(true, "Shorts", inline="dir", group=grpS)
+
+grpT = "Time (New York)"
+tradeSess = input.session("0930-1400", "Entry window", group=grpT)
+flatH     = input.int(15, "Flatten all at hour", minval=0, maxval=23, inline="flat", group=grpT)
+flatM     = input.int(50, "minute", minval=0, maxval=59, inline="flat", group=grpT)
+
+grpW = "Automation (webhook)"
+whTicker = input.string("", "Ticker sent to bridge (blank = chart symbol)", group=grpW)
+
+if timeframe.in_seconds() >= 14400
+    runtime.error("Use a chart timeframe below 4H (1m-15m). The 4H Po3 candle is tracked internally.")
+
+tickSz = syminfo.mintick
+pv     = syminfo.pointvalue
+tkr    = whTicker == "" ? syminfo.ticker : whTicker
+
+// ─────────────────────────── Webhook payloads ──────────────────────────
+// TradersPost-style JSON. Other bridges use other fields; adjust these two functions.
+jsonEntry(string action, int qty, float sl, float tp) =>
+    '{"ticker":"' + tkr + '","action":"' + action + '","quantity":' + str.tostring(qty) + ',"stopLoss":{"type":"stop","stopPrice":' + str.tostring(sl, format.mintick) + '},"takeProfit":{"limitPrice":' + str.tostring(tp, format.mintick) + '}}'
+
+jsonExit() =>
+    '{"ticker":"' + tkr + '","action":"exit"}'
+
+// ───────────────────────── 4H candle (Po3) state ───────────────────────
+var float h4Open     = na
+var float h4High     = na
+var float h4Low      = na
+var float prevH4High = na
+var float prevH4Low  = na
+var int   barsInH4   = 0
+var bool  tradedThisH4 = false
+// Most recent FVG of each side formed inside the current 4H candle.
+var float bearFvgTop = na
+var float bullFvgBot = na
+
+if timeframe.change("240")
+    prevH4High   := h4High
+    prevH4Low    := h4Low
+    h4Open       := open
+    h4High       := high
+    h4Low        := low
+    barsInH4     := 0
+    tradedThisH4 := false
+    bearFvgTop   := na
+    bullFvgBot   := na
+else
+    h4High   := math.max(h4High, high)
+    h4Low    := math.min(h4Low, low)
+    barsInH4 += 1
+
+// Manipulation leg: the 4H candle has run the opposite side first.
+manipLong  = manipMode == "Sweep prior 4H high/low" ? (not na(prevH4Low) and h4Low < prevH4Low) : h4Low < h4Open
+manipShort = manipMode == "Sweep prior 4H high/low" ? (not na(prevH4High) and h4High > prevH4High) : h4High > h4Open
+
+// IFVG: a close through an FVG from the manipulation leg flips it (checked before new FVGs overwrite it).
+longInv  = not na(bearFvgTop) and close > bearFvgTop
+shortInv = not na(bullFvgBot) and close < bullFvgBot
+if longInv
+    bearFvgTop := na
+if shortInv
+    bullFvgBot := na
+
+if barsInH4 >= 2 and high < low[2] and (low[2] - high) >= minFvgTicks * tickSz
+    bearFvgTop := low[2]
+if barsInH4 >= 2 and low > high[2] and (low - high[2]) >= minFvgTicks * tickSz
+    bullFvgBot := high[2]
+
+longSetup  = allowLong and longInv and manipLong and (not requireOpenSide or close < h4Open)
+shortSetup = allowShort and shortInv and manipShort and (not requireOpenSide or close > h4Open)
+
+// ───────────────────── Untaken swing liquidity (LRL) ───────────────────
+var array<float> swingHighs = array.new<float>()
+var array<float> swingLows  = array.new<float>()
+ph = ta.pivothigh(high, swingLen, swingLen)
+pl = ta.pivotlow(low, swingLen, swingLen)
+if not na(ph)
+    array.push(swingHighs, ph)
+    if array.size(swingHighs) > 50
+        array.shift(swingHighs)
+if not na(pl)
+    array.push(swingLows, pl)
+    if array.size(swingLows) > 50
+        array.shift(swingLows)
+if array.size(swingHighs) > 0
+    for i = array.size(swingHighs) - 1 to 0
+        if high > array.get(swingHighs, i)
+            array.remove(swingHighs, i)
+if array.size(swingLows) > 0
+    for i = array.size(swingLows) - 1 to 0
+        if low < array.get(swingLows, i)
+            array.remove(swingLows, i)
+
+nearestAbove(array<float> arr, float px) =>
+    float best = na
+    for v in arr
+        if v > px and (na(best) or v < best)
+            best := v
+    best
+
+nearestBelow(array<float> arr, float px) =>
+    float best = na
+    for v in arr
+        if v < px and (na(best) or v > best)
+            best := v
+    best
+
+// Liquidity target, capped at maxRR. Returns na when there is no liquidity in the trade's direction.
+targetFor(bool isLong, float entry, float riskPts) =>
+    float liq = na
+    if targetMode == "Prior 4H high/low"
+        liq := isLong ? prevH4High : prevH4Low
+    else
+        liq := isLong ? nearestAbove(swingHighs, entry) : nearestBelow(swingLows, entry)
+    float tgt = na
+    if not na(liq) and (isLong ? liq > entry : liq < entry)
+        float cap = isLong ? entry + maxRR * riskPts : entry - maxRR * riskPts
+        tgt := isLong ? math.min(liq, cap) : math.max(liq, cap)
+    tgt
+
+// ────────────────────────────── Risk engine ────────────────────────────
+balance = acctSize + strategy.netprofit
+equity  = balance + strategy.openprofit
+
+var float peak        = acctSize
+var float dayStartNet = 0.0
+var int   tradesToday = 0
+if timeframe.change("D")
+    if ddType == "Trailing EOD"
+        peak := math.max(peak, balance)
+    dayStartNet := strategy.netprofit
+    tradesToday := 0
+if ddType == "Trailing intraday"
+    peak := math.max(peak, equity)
+
+floorRaw = ddType == "Static" ? acctSize - maxLoss : peak - maxLoss
+ddFloor  = ddType != "Static" and lockAtStart ? math.min(floorRaw, acctSize) : floorRaw
+dayPnL   = strategy.netprofit - dayStartNet
+
+var bool   halted     = false
+var string haltReason = ""
+if not researchMode and stopOnPassFail and not halted
+    if mode == "Eval" and balance >= profitTarget
+        halted     := true
+        haltReason := "EVAL PASSED"
+    else if equity <= ddFloor
+        halted     := true
+        haltReason := "MAX LOSS HIT"
+
+dayLossHit = not researchMode and dailyLossCap > 0 and dayPnL <= -dailyLossCap
+dayLocked  = dayLossHit or tradesToday >= maxTradesDay
+
+riskPct       = mode == "Eval" ? evalRiskPct : fundRiskPct
+riskBudget    = acctSize * riskPct / 100
+roomToFloor   = equity - ddFloor - ddBuffer
+roomToDayLoss = dailyLossCap > 0 ? dailyLossCap + dayPnL : 1e9
+riskAllowed   = researchMode ? riskBudget : math.min(riskBudget, roomToFloor, roomToDayLoss)
+
+// Contracts sized to the risk budget, then cut so a full TP can't push the day over the consistency cap.
+calcQty(float riskPts, float rewardPts) =>
+    int q    = math.floor(riskAllowed / (riskPts * pv))
+    int qCap = researchMode ? maxContracts : math.floor((dailyProfitCap - dayPnL) / (rewardPts * pv))
+    math.max(0, math.min(q, qCap, maxContracts))
+
+// ─────────────────────────────── Execution ─────────────────────────────
+nyMins     = hour(time, "America/New_York") * 60 + minute(time, "America/New_York")
+flattenNow = nyMins >= flatH * 60 + flatM and nyMins < 18 * 60
+inWindow   = not na(time(timeframe.period, tradeSess, "America/New_York"))
+canTrade   = not halted and not dayLocked and inWindow and not flattenNow and strategy.position_size == 0 and not tradedThisH4
+
+if canTrade and (longSetup or shortSetup)
+    bool  isLong  = longSetup
+    float entry   = close
+    float stopPx  = math.round_to_mintick(isLong ? h4Low - stopBufTicks * tickSz : h4High + stopBufTicks * tickSz)
+    float riskPts = math.abs(entry - stopPx)
+    if riskPts > 0 and riskPts <= maxStopPts
+        float tgt = targetFor(isLong, entry, riskPts)
+        if not na(tgt)
+            tgt := math.round_to_mintick(tgt)
+            float rewardPts = math.abs(tgt - entry)
+            if rewardPts > 0 and rewardPts / riskPts >= minRR
+                int qty = calcQty(riskPts, rewardPts)
+                if qty >= 1
+                    string id = isLong ? "Long" : "Short"
+                    strategy.entry(id, isLong ? strategy.long : strategy.short, qty=qty, alert_message=jsonEntry(isLong ? "buy" : "sell", qty, stopPx, tgt))
+                    strategy.exit(id + " exit", from_entry=id, stop=stopPx, limit=tgt, alert_message=jsonExit())
+                    tradesToday  += 1
+                    tradedThisH4 := true
+
+if strategy.position_size != 0 and (flattenNow or halted)
+    strategy.close_all(comment = halted ? haltReason : "EOD flatten", alert_message=jsonExit())
+
+// ─────────────────────────────── Visuals ───────────────────────────────
+plot(h4Open, "4H open", color=color.new(color.gray, 0), style=plot.style_stepline)
+plot(prevH4High, "Prior 4H high", color=color.new(color.teal, 30), style=plot.style_stepline)
+plot(prevH4Low, "Prior 4H low", color=color.new(color.maroon, 30), style=plot.style_stepline)
+plot(ddFloor, "Drawdown floor", display=display.data_window)
+plotshape(longSetup, "Bullish IFVG after manipulation", shape.triangleup, location.belowbar, color.new(color.lime, 0), size=size.tiny)
+plotshape(shortSetup, "Bearish IFVG after manipulation", shape.triangledown, location.abovebar, color.new(color.red, 0), size=size.tiny)
+
+var table dash = table.new(position.top_right, 2, 7, bgcolor=color.new(color.black, 15), border_width=1)
+row(int r, string k, string v) =>
+    table.cell(dash, 0, r, k, text_color=color.silver, text_size=size.small, text_halign=text.align_left)
+    table.cell(dash, 1, r, v, text_color=color.white, text_size=size.small, text_halign=text.align_right)
+
+if barstate.islast
+    status = halted ? haltReason : dayLossHit ? "Daily loss hit" : tradesToday >= maxTradesDay ? "Done for day" : "Active"
+    row(0, "Mode", mode + " | risk " + str.tostring(riskPct) + "%")
+    row(1, "Balance", "$" + str.tostring(balance, "#,##0"))
+    row(2, "Drawdown floor", "$" + str.tostring(ddFloor, "#,##0"))
+    row(3, "Room to floor", "$" + str.tostring(equity - ddFloor, "#,##0"))
+    row(4, "Day P&L / cap", "$" + str.tostring(dayPnL, "#,##0") + " / $" + str.tostring(dailyProfitCap, "#,##0"))
+    row(5, "Trades today", str.tostring(tradesToday) + " / " + str.tostring(maxTradesDay))
+    row(6, "Status", researchMode ? "RESEARCH MODE" : status)
