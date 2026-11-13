@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Made by Belle</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Made by Belle: handmade fresh and forever (faux) bouquets for graduations, Mother's Day, Valentine's, birthdays, weddings and just because.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=Great+Vibes&family=Jost:wght@400;500;600&display=swap">
+<style>
+/* Layout: a florist's workbench. Hero bouquet you can reshuffle, a shop that filters by occasion,
+   and a bouquet builder where every choice redraws the arrangement. Blush paper, plum ink, sage stems. */
+:root {
+  --bg: #FBF2F1;          /* blush tissue paper */
+  --bg-alt: #F5E4E4;      /* deeper tissue for bands */
+  --surface: #FFFFFF;
+  --ink: #3B1C29;         /* plum ink */
+  --ink-soft: #6E4A58;
+  --line: #E8D2D5;
+  --rose: #B3365C;        /* the accent: garden rose */
+  --rose-ink: #FFFFFF;
+  --rose-soft: #F7D9E1;
+  --sage: #5E7C5B;
+  --sage-soft: #E3EBDF;
+  --gold: #A9802F;
+  --stem: #5D7A4E;
+  --leaf: #87A27A;
+  --shadow: 0 18px 40px -22px rgba(91, 33, 55, .35);
+  --font-script: "Great Vibes", "Snell Roundhand", "Apple Chancery", cursive;
+  --font-display: "Cormorant Garamond", "Cormorant", Garamond, "Times New Roman", serif;
+  --font-body: "Jost", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --r-sm: 10px; --r-md: 18px; --r-lg: 32px;
+  --max: 1160px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1C1216; --bg-alt: #24171D; --surface: #2B1C23; --ink: #F6E6EA; --ink-soft: #CFB2BC;
+    --line: #48303A; --rose: #EE8AA8; --rose-ink: #2A0F19; --rose-soft: #4A2333; --sage: #A8C49F;
+    --sage-soft: #2A3527; --gold: #DDB767; --stem: #7E9D6C; --leaf: #6F8C63;
+    --shadow: 0 18px 40px -22px rgba(0, 0, 0, .7); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1C1216; --bg-alt: #24171D; --surface: #2B1C23; --ink: #F6E6EA; --ink-soft: #CFB2BC;
+  --line: #48303A; --rose: #EE8AA8; --rose-ink: #2A0F19; --rose-soft: #4A2333; --sage: #A8C49F;
+  --sage-soft: #2A3527; --gold: #DDB767; --stem: #7E9D6C; --leaf: #6F8C63;
+  --shadow: 0 18px 40px -22px rgba(0, 0, 0, .7); color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 40; background: var(--bg); }
+img, svg { max-width: 100%; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2.5px solid var(--rose); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 500; line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h2 { font-size: clamp(2.2rem, 4.5vw, 3.4rem); }
+h3 { font-size: 1.6rem; }
+p { margin: 0; }
+em.accent { font-style: italic; color: var(--rose); }
+.wrap {
+  max-width: var(--max); margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.eyebrow { font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; color: var(--sage); font-weight: 500; }
+.section { padding-block: clamp(64px, 9vw, 112px); }
+.section-head { display: grid; gap: 14px; max-width: 640px; margin-bottom: 40px; }
+.section-head p { color: var(--ink-soft); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 24px; border-radius: 999px; border: 1.5px solid transparent;
+  font-weight: 500; text-decoration: none; transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
+}
+.btn-primary { background: var(--rose); color: var(--rose-ink); }
+.btn-primary:hover { box-shadow: 0 10px 24px -12px var(--rose); }
+.btn-ghost { border-color: var(--ink); color: var(--ink); background: transparent; }
+.btn-ghost:hover { background: var(--ink); color: var(--bg); }
+.btn-small { min-height: 44px; padding: 0 18px; font-size: .92rem; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+/* Header */
+.site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
+.logo { font-family: var(--font-script); font-size: 2.1rem; text-decoration: none; color: var(--rose); line-height: 1; padding-top: 4px; }
+.nav-links { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; font-size: .95rem; color: var(--ink-soft); transition: color .2s; }
+.nav-links a:hover { color: var(--rose); }
+.nav-actions { display: flex; gap: 10px; align-items: center; }
+.order-btn { position: relative; }
+.count { min-width: 22px; height: 22px; border-radius: 999px; background: var(--rose-ink); color: var(--rose); font-size: .78rem; display: inline-grid; place-items: center; padding: 0 6px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.menu-btn { display: none; width: 48px; height: 48px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); place-items: center; }
+.menu-btn svg { width: 22px; height: 22px; }
+@media (max-width: 880px) {
+  .menu-btn { display: inline-grid; }
+  .nav-links { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; gap: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px max(20px, env(safe-area-inset-left, 0px)) 16px; }
+  .nav-links.open { display: flex; }
+  .nav-links a { display: block; padding: 12px 0; font-size: 1.05rem; }
+  .order-btn .label { display: none; }
+}
+
+/* Hero */
+.hero { position: relative; overflow: hidden; }
+#petals { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hero-grid { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; padding-block: clamp(40px, 7vw, 88px); }
+.hero h1 { font-size: clamp(3rem, 7.4vw, 5.6rem); line-height: .98; }
+.hero h1 .script { font-family: var(--font-script); font-weight: 400; color: var(--rose); font-size: 1.12em; letter-spacing: 0; display: inline-block; transform: translateY(.08em); }
+.hero-copy { display: grid; gap: 24px; min-width: 0; }
+.hero-copy .lede { font-size: 1.15rem; color: var(--ink-soft); max-width: 34ch; }
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.hero-tags button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 16px; min-height: 40px; font-size: .9rem; color: var(--ink-soft); transition: border-color .2s, color .2s; }
+.hero-tags button:hover { border-color: var(--rose); color: var(--rose); }
+.hero-art { position: relative; display: grid; justify-items: center; gap: 16px; }
+.hero-blob {
+  width: min(100%, 470px); aspect-ratio: 1 / 1.08; max-width: 100%;
+  background: var(--rose-soft);
+  border-radius: 58% 42% 46% 54% / 48% 56% 44% 52%;
+  display: grid; place-items: center; position: relative;
+}
+.hero-blob svg { width: 94%; height: auto; }
+.hero-caption { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; text-align: center; }
+.hero-caption p { font-family: var(--font-display); font-style: italic; font-size: 1.2rem; color: var(--ink-soft); }
+.stamp { position: absolute; top: 6%; right: 2%; width: 104px; height: 104px; border-radius: 50%; background: var(--surface); box-shadow: var(--shadow); display: grid; place-items: center; text-align: center; font-family: var(--font-display); font-style: italic; font-size: .95rem; line-height: 1.15; color: var(--ink); transform: rotate(8deg); padding: 12px; }
+.stamp b { display: block; font-family: var(--font-script); font-style: normal; font-weight: 400; font-size: 1.6rem; color: var(--rose); }
+@media (max-width: 880px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+  .stamp { width: 88px; height: 88px; font-size: .8rem; }
+}
+
+/* Bouquet SVG bits */
+.head { transform-box: fill-box; transform-origin: center; animation: bloom .7s cubic-bezier(.2, .9, .3, 1.25) both; animation-delay: var(--d, 0ms); }
+@keyframes bloom { from { transform: scale(.15) rotate(-40deg); } to { transform: scale(1) rotate(0); } }
+.sway { transform-origin: 50% 90%; animation: sway 7s ease-in-out infinite; }
+@keyframes sway { 0%, 100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.2deg); } }
+
+/* Fresh vs Forever */
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.duo-card { padding: clamp(28px, 4vw, 44px); border-radius: var(--r-lg); display: grid; gap: 16px; align-content: start; }
+.duo-card.fresh { background: var(--sage-soft); }
+.duo-card.forever { background: var(--rose-soft); }
+.duo-card h3 { font-size: 2.2rem; }
+.duo-card h3 span { font-family: var(--font-script); color: var(--rose); font-size: 1.15em; }
+.duo-card.fresh h3 span { color: var(--sage); }
+.duo-card ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.duo-card li { display: flex; gap: 12px; align-items: flex-start; }
+.duo-card li svg { width: 20px; height: 20px; flex: none; margin-top: 4px; color: var(--sage); }
+.duo-card.forever li svg { color: var(--rose); }
+.duo-meta { font-size: .9rem; color: var(--ink-soft); border-top: 1px solid color-mix(in srgb, var(--ink) 15%, transparent); padding-top: 14px; }
+@media (max-width: 760px) { .duo { grid-template-columns: 1fr; } }
+
+/* Shop */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+.chip { border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; min-height: 44px; padding: 0 18px; font-size: .95rem; color: var(--ink-soft); transition: background-color .2s, color .2s, border-color .2s; }
+.chip:hover { border-color: var(--rose); color: var(--rose); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 22px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; display: grid; grid-template-rows: auto 1fr; transition: box-shadow .25s, border-color .25s; }
+.card:hover { box-shadow: var(--shadow); border-color: transparent; }
+.card-art { background: var(--bg-alt); aspect-ratio: 1 / 1; display: grid; place-items: center; position: relative; }
+.card-art svg { width: 82%; height: auto; }
+.card-badge { position: absolute; top: 12px; left: 12px; background: var(--surface); color: var(--ink); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+.card-body { padding: 18px 20px 20px; display: grid; gap: 12px; align-content: start; }
+.card-body h3 { font-size: 1.55rem; }
+.card-body .desc { color: var(--ink-soft); font-size: .95rem; }
+.seg { justify-self: start; display: inline-grid; grid-auto-flow: column; background: var(--bg-alt); border-radius: 999px; padding: 4px; gap: 2px; }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.seg span { display: block; padding: 6px 14px; border-radius: 999px; font-size: .88rem; color: var(--ink-soft); transition: background-color .2s, color .2s; white-space: nowrap; }
+.seg input:checked + span { background: var(--surface); color: var(--ink); box-shadow: 0 2px 8px -4px rgba(0,0,0,.3); }
+.seg input:focus-visible + span { outline: 2.5px solid var(--rose); outline-offset: 2px; }
+.price-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.price { font-family: var(--font-display); font-size: 1.7rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.price small { font-family: var(--font-body); font-size: .8rem; font-weight: 400; color: var(--ink-soft); }
+.card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.card-actions .btn { flex: 1 1 auto; }
+.link-btn { background: none; border: 0; padding: 0 4px; min-height: 44px; color: var(--rose); text-decoration: underline; text-underline-offset: 4px; font-size: .95rem; }
+
+/* Builder */
+.builder-band { background: var(--bg-alt); }
+.builder { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.preview { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 92px); background: var(--surface); border-radius: var(--r-lg); padding: 24px; display: grid; gap: 16px; box-shadow: var(--shadow); }
+.preview-stage { background: var(--bg); border-radius: var(--r-md); display: grid; place-items: center; aspect-ratio: 1 / 1.05; max-width: 100%; }
+.preview-stage svg { width: 86%; height: auto; }
+.summary { display: grid; gap: 4px; }
+.summary .line { color: var(--ink-soft); font-size: .95rem; }
+.total-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px dashed var(--line); padding-top: 14px; }
+.total-row .price { font-size: 2.2rem; }
+.controls { display: grid; gap: 30px; min-width: 0; }
+fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 12px; min-width: 0; }
+legend { font-family: var(--font-display); font-size: 1.45rem; font-weight: 600; padding: 0; margin-bottom: 4px; display: flex; gap: 10px; align-items: baseline; }
+legend small { font-family: var(--font-body); font-size: .85rem; font-weight: 400; color: var(--ink-soft); }
+.opt-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.opt { position: relative; }
+.opt input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
+.opt .box { display: grid; gap: 2px; justify-items: center; text-align: center; border: 1.5px solid var(--line); background: var(--surface); border-radius: 14px; padding: 10px 14px; min-height: 44px; min-width: 84px; transition: border-color .2s, background-color .2s; }
+.opt .box b { font-weight: 500; font-size: .95rem; }
+.opt .box small { font-size: .78rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.opt .box svg { width: 46px; height: 46px; }
+.opt input:checked + .box { border-color: var(--rose); background: var(--rose-soft); }
+.opt input:focus-visible + .box { outline: 2.5px solid var(--rose); outline-offset: 2px; }
+.opt:hover .box { border-color: var(--rose); }
+.swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+.swatch { position: relative; }
+.swatch input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
+.swatch .dot { display: block; width: 44px; height: 44px; border-radius: 50%; background: var(--c); border: 3px solid var(--surface); box-shadow: 0 0 0 1.5px var(--line); transition: box-shadow .2s; }
+.swatch input:checked + .dot { box-shadow: 0 0 0 2.5px var(--rose); }
+.swatch input:checked + .dot::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 18px; border: solid #fff; border-width: 0 3px 3px 0; transform: translate(-50%, -62%) rotate(45deg); filter: drop-shadow(0 0 1.5px rgba(0,0,0,.6)); }
+.swatch input:focus-visible + .dot { outline: 2.5px solid var(--rose); outline-offset: 3px; }
+.swatch-name { font-size: .88rem; color: var(--ink-soft); }
+.hint { font-size: .88rem; color: var(--ink-soft); }
+.hint.warn { color: var(--rose); }
+textarea, input[type="text"], input[type="date"], input[type="tel"], select {
+  width: 100%; border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; padding: 12px 14px; min-height: 48px; transition: border-color .2s;
+}
+textarea:focus, input:focus, select:focus { border-color: var(--rose); outline: none; }
+textarea { resize: vertical; min-height: 84px; }
+@media (max-width: 900px) {
+  .builder { grid-template-columns: 1fr; }
+  .preview { position: relative; top: 0; }
+}
+
+/* Dates */
+.dates { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+.date-card { border: 1px solid var(--line); border-radius: var(--r-md); padding: 24px; display: grid; gap: 10px; background: var(--surface); }
+.date-card .days { font-family: var(--font-display); font-size: 3.4rem; line-height: 1; color: var(--rose); font-variant-numeric: tabular-nums; font-weight: 600; }
+.date-card .days small { font-family: var(--font-body); font-size: .95rem; color: var(--ink-soft); font-weight: 400; margin-left: 6px; }
+.date-card h3 { font-size: 1.6rem; }
+.date-card p { color: var(--ink-soft); font-size: .93rem; }
+
+/* Steps */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; list-style: none; padding: 0; margin: 0; counter-reset: s; }
+.steps li { display: grid; gap: 10px; align-content: start; counter-increment: s; }
+.steps li::before { content: counter(s); font-family: var(--font-script); font-size: 3rem; line-height: 1; color: var(--rose); }
+.steps h3 { font-size: 1.45rem; }
+.steps p { color: var(--ink-soft); font-size: .95rem; }
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .steps { grid-template-columns: 1fr; } }
+
+/* About + FAQ */
+.about { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(28px, 5vw, 72px); align-items: center; }
+.about-art { background: var(--sage-soft); border-radius: 46% 54% 50% 50% / 55% 45% 55% 45%; aspect-ratio: 1; display: grid; place-items: center; max-width: 100%; }
+.about-art svg { width: 78%; }
+.about-copy { display: grid; gap: 18px; min-width: 0; }
+.about-copy p { color: var(--ink-soft); max-width: 58ch; }
+.signature { font-family: var(--font-script); font-size: 2.6rem; color: var(--rose); line-height: 1; }
+@media (max-width: 800px) { .about { grid-template-columns: 1fr; } .about-art { max-width: 380px; } }
+.faq { display: grid; gap: 12px; max-width: 820px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 0 22px; }
+summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 64px; font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-family: var(--font-body); font-weight: 400; font-size: 1.6rem; color: var(--rose); transition: transform .25s; }
+details[open] summary::after { transform: rotate(45deg); }
+details p { padding-bottom: 20px; color: var(--ink-soft); max-width: 65ch; }
+
+/* Order form */
+.order-band { background: var(--ink); color: var(--bg); }
+.order-band .eyebrow { color: var(--rose-soft); }
+.order-band .section-head p { color: color-mix(in srgb, var(--bg) 75%, transparent); }
+.order-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.order-form { background: var(--surface); color: var(--ink); border-radius: var(--r-lg); padding: clamp(22px, 4vw, 36px); display: grid; gap: 18px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-weight: 500; font-size: .95rem; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.error { color: var(--rose); font-size: .85rem; min-height: 0; }
+.order-side { display: grid; gap: 18px; min-width: 0; }
+.mini-list { display: grid; gap: 10px; }
+.mini-item { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid color-mix(in srgb, var(--bg) 20%, transparent); padding-bottom: 10px; }
+.mini-item span:last-child { font-variant-numeric: tabular-nums; }
+.output { background: color-mix(in srgb, var(--bg) 8%, var(--ink)); border: 1px solid color-mix(in srgb, var(--bg) 22%, transparent); border-radius: var(--r-md); padding: 20px; display: grid; gap: 14px; }
+.output pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: var(--font-body); font-size: .95rem; line-height: 1.6; max-height: 320px; overflow: auto; }
+.handle { font-family: var(--font-display); font-size: 1.5rem; font-style: italic; }
+.order-band .btn-ghost { border-color: var(--bg); color: var(--bg); }
+.order-band .btn-ghost:hover { background: var(--bg); color: var(--ink); }
+@media (max-width: 860px) { .order-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
+
+/* Drawer */
+.scrim { position: fixed; inset: 0; background: rgba(30, 10, 18, .45); z-index: 50; }
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100%); z-index: 60;
+  background: var(--bg); box-shadow: -20px 0 50px -20px rgba(0,0,0,.4);
+  display: grid; grid-template-rows: auto 1fr auto;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-right: env(safe-area-inset-right, 0px);
+  transform: translateX(100%); transition: transform .3s ease; visibility: hidden;
+}
+.drawer.open { transform: none; visibility: visible; }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+.drawer-head h2 { font-size: 2rem; }
+.icon-btn { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); display: grid; place-items: center; }
+.icon-btn svg { width: 20px; height: 20px; }
+.drawer-body { overflow: auto; padding: 18px 22px; display: grid; gap: 14px; align-content: start; }
+.line-item { display: grid; grid-template-columns: 64px 1fr; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+.line-item .thumb { background: var(--bg-alt); border-radius: 10px; display: grid; place-items: center; aspect-ratio: 1; }
+.line-item h3 { font-size: 1.25rem; }
+.line-item .meta { font-size: .84rem; color: var(--ink-soft); }
+.qty { display: flex; align-items: center; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.qty button { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--bg); }
+.qty .n { min-width: 22px; text-align: center; font-variant-numeric: tabular-nums; }
+.qty .remove { width: auto; border: 0; background: none; color: var(--rose); text-decoration: underline; margin-left: auto; padding: 0 4px; }
+.drawer-foot { padding: 18px 22px; border-top: 1px solid var(--line); display: grid; gap: 12px; }
+.empty { text-align: center; color: var(--ink-soft); padding: 40px 10px; display: grid; gap: 12px; justify-items: center; }
+.empty svg { width: 120px; }
+
+/* Toast */
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 140%); background: var(--ink); color: var(--bg); padding: 12px 22px; border-radius: 999px; z-index: 70; transition: transform .3s ease, visibility .3s; visibility: hidden; font-size: .95rem; max-width: calc(100% - 32px); text-align: center; }
+.toast.show { transform: translate(-50%, 0); visibility: visible; }
+
+footer { padding-block: 48px; border-top: 1px solid var(--line); }
+.foot { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: center; }
+.foot p { color: var(--ink-soft); font-size: .9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="#top" class="logo" aria-label="Made by Belle, home">Made by Belle</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#build">Build a bouquet</a></li>
+      <li><a href="#fresh-forever">Fresh &amp; Forever</a></li>
+      <li><a href="#dates">Key dates</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn btn-primary btn-small order-btn" id="openDrawer" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span class="label">My order</span>
+        <span class="count" id="orderCount">0</span>
+      </button>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <canvas id="petals" aria-hidden="true"></canvas>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Handmade bouquets · fresh &amp; forever</p>
+        <h1>Flowers for the moments you <span class="script">keep</span></h1>
+        <p class="lede">Graduations, Mother's Day, Valentine's, birthdays or a Tuesday that needs it. Every bouquet is arranged by hand, in real blooms or faux flowers that last for years.</p>
+        <div class="hero-ctas">
+          <a href="#build" class="btn btn-primary">Build your bouquet</a>
+          <a href="#shop" class="btn btn-ghost">Shop by occasion</a>
+        </div>
+        <div class="hero-tags" aria-label="Jump to an occasion">
+          <button data-jump="graduation">Graduation</button>
+          <button data-jump="mothers">Mother's Day</button>
+          <button data-jump="valentines">Valentine's</button>
+          <button data-jump="birthday">Birthdays</button>
+          <button data-jump="wedding">Weddings</button>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="hero-blob">
+          <div class="stamp" aria-hidden="true"><span><b>Belle</b>arranged<br>by hand</span></div>
+          <div id="heroBouquet" class="sway" role="img" aria-label="Illustrated bouquet"></div>
+        </div>
+        <div class="hero-caption">
+          <p id="heroCaption">Twelve blush roses in kraft paper</p>
+          <button class="btn btn-ghost btn-small" id="shuffle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+            Shuffle a bouquet
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="fresh-forever">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Two ways to give flowers</p>
+        <h2>Fresh for the day, or <em class="accent">forever</em> for the shelf</h2>
+        <p>Every design in the shop comes both ways. Pick fresh for scent and the real thing, or forever for a keepsake that never wilts.</p>
+      </div>
+      <div class="duo">
+        <article class="duo-card fresh">
+          <h3><span>Fresh</span> blooms</h3>
+          <p>Real seasonal flowers, picked and arranged close to your date.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Scent, texture and that just-cut look</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Lasts about 7–10 days in a vase</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Best for the day itself: ceremonies, dates, surprises</li>
+          </ul>
+          <p class="duo-meta">Comes with a care card: trim stems, fresh water every two days.</p>
+        </article>
+        <article class="duo-card forever">
+          <h3><span>Forever</span> faux</h3>
+          <p>Premium silk and foam flowers, styled to look real and made to last.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>No water, no wilting, no pollen</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Keeps for years on a desk or shelf</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Can be made weeks ahead, perfect for busy dates</li>
+          </ul>
+          <p class="duo-meta">Dust gently with a hairdryer on the cool setting to keep it bright.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="shop" style="padding-top: 0">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The shop</p>
+        <h2>Bouquets for every <em class="accent">occasion</em></h2>
+        <p>Choose fresh or forever on any design. Want it in different colours? Tap Customise and it opens in the builder.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter by occasion" id="filters"></div>
+      <div class="grid" id="productGrid"></div>
+    </div>
+  </section>
+
+  <section class="section builder-band" id="build">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Bouquet builder</p>
+        <h2>Design it <em class="accent">yourself</em></h2>
+        <p>Every choice redraws the bouquet. Belle will match your colours as closely as the season allows.</p>
+      </div>
+      <div class="builder">
+        <div class="preview">
+          <div class="preview-stage" id="builderPreview" role="img" aria-label="Preview of your bouquet"></div>
+          <div class="summary">
+            <h3 id="sumTitle">Classic rose bouquet</h3>
+            <p class="line" id="sumLine"></p>
+          </div>
+          <div class="total-row">
+            <div class="price" id="sumPrice">$0</div>
+            <button class="btn btn-primary" id="addCustom">Add to my order</button>
+          </div>
+        </div>
+
+        <form class="controls" id="builderForm" onsubmit="return false">
+          <fieldset>
+            <legend>Fresh or forever</legend>
+            <div class="seg" role="radiogroup">
+              <label><input type="radio" name="b-type" id="b-type-fresh" value="fresh" checked><span>Fresh blooms</span></label>
+              <label><input type="radio" name="b-type" id="b-type-forever" value="forever"><span>Forever faux</span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Size</legend>
+            <div class="opt-row" id="sizeOpts"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Flower</legend>
+            <div class="opt-row" id="flowerOpts"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Colours <small>pick up to 3</small></legend>
+            <div class="swatches" id="colorOpts"></div>
+            <p class="hint" id="colorHint">Blush</p>
+          </fieldset>
+          <fieldset>
+            <legend>Wrapping paper</legend>
+            <div class="swatches" id="wrapOpts"></div>
+            <p class="hint" id="wrapHint"></p>
+          </fieldset>
+          <fieldset>
+            <legend>Ribbon</legend>
+            <div class="swatches" id="ribbonOpts"></div>
+            <p class="hint" id="ribbonHint"></p>
+          </fieldset>
+          <fieldset>
+            <legend>Little extras</legend>
+            <div class="opt-row" id="addonOpts"></div>
+          </fieldset>
+          <fieldset>
+            <legend><label for="b-msg">Gift card message</label> <small id="msgCount">0/80</small></legend>
+            <textarea id="b-msg" maxlength="80" placeholder="Congratulations, graduate! So proud of you."></textarea>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="dates">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Coming up</p>
+        <h2>Order early for the <em class="accent">big days</em></h2>
+        <p>These dates book out first. Forever bouquets can be made weeks ahead, so you can tick it off the list now.</p>
+      </div>
+      <div class="dates" id="dateCards"></div>
+    </div>
+  </section>
+
+  <section class="section builder-band" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How ordering works</p>
+        <h2>From idea to <em class="accent">bouquet</em></h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Pick or build</h3><p>Choose a design from the shop, or build your own with your colours and extras.</p></li>
+        <li><h3>Send your order</h3><p>Fill in your details and send the order summary to Belle by message.</p></li>
+        <li><h3>Belle confirms</h3><p>She'll reply to confirm flowers, timing and the final price.</p></li>
+        <li><h3>Pick up or delivery</h3><p>Collect your bouquet or have it dropped off on the day.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap about">
+      <div class="about-art" id="aboutArt" role="img" aria-label="Illustrated peony bouquet"></div>
+      <div class="about-copy">
+        <p class="eyebrow">Hello, I'm Belle</p>
+        <h2>Small studio, <em class="accent">big</em> feelings</h2>
+        <p>Made by Belle started with one bouquet for a friend's graduation and grew from there. Every arrangement is put together by hand, one stem at a time, whether it's a single rose or a bouquet for the whole bridal party.</p>
+        <p>I love working with your ideas: school colours, a favourite flower, the shade of a dress. Send me a photo and we'll make something that feels like it was made just for them, because it was.</p>
+        <p class="signature">Belle</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq" style="padding-top: 0">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2>Good to <em class="accent">know</em></h2>
+      </div>
+      <div class="faq">
+        <details open><summary>How far ahead should I order?</summary><p>For fresh bouquets, a few days' notice is ideal. For Valentine's Day, Mother's Day and graduation season, order as early as you can since spots fill up. Forever bouquets can be made weeks in advance.</p></details>
+        <details><summary>Can you match school or wedding colours?</summary><p>Yes. Send a photo or the colour names with your order and Belle will match them as closely as possible. Faux flowers come in more shades, so they're great for exact colour matches.</p></details>
+        <details><summary>What's the difference in price between fresh and forever?</summary><p>Forever bouquets cost a little more because the faux stems are reusable keepsakes. Both prices show on every design, and the builder updates the price as you go.</p></details>
+        <details><summary>Do you deliver?</summary><p>Pick up is always available, and local delivery can be arranged. Mention your suburb in the order form and Belle will confirm.</p></details>
+        <details><summary>Can I add something that isn't listed?</summary><p>Of course. Use the notes box in the order form for anything special: a photo print, chocolates, a plushie, a specific flower.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section order-band" id="order">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Send your order</p>
+        <h2>Let's make your <em class="accent" style="color: var(--rose-soft)">bouquet</em></h2>
+        <p>Fill this in and we'll write the message for you. Copy it and send it to Belle on Instagram or by text.</p>
+      </div>
+      <div class="order-grid">
+        <form class="order-form" id="orderForm" novalidate>
+          <div class="field-row">
+            <div class="field"><label for="f-name">Your name</label><input type="text" id="f-name" autocomplete="name" required><span class="error" id="e-name"></span></div>
+            <div class="field"><label for="f-contact">Phone or Instagram</label><input type="text" id="f-contact" placeholder="@yourname" required><span class="error" id="e-contact"></span></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="f-date">Date needed</label><input type="date" id="f-date" required><span class="error" id="e-date"></span></div>
+            <div class="field"><label for="f-method">Pick up or delivery</label>
+              <select id="f-method"><option>Pick up</option><option>Delivery</option></select></div>
+          </div>
+          <div class="field"><label for="f-notes">Notes</label><textarea id="f-notes" placeholder="Colours, recipient, suburb for delivery, anything special"></textarea></div>
+          <span class="error" id="e-items"></span>
+          <button class="btn btn-primary" type="submit">Write my order message</button>
+        </form>
+        <div class="order-side">
+          <div>
+            <h3 style="margin-bottom: 12px">Your order</h3>
+            <div class="mini-list" id="miniList"></div>
+          </div>
+          <div class="output" id="output" hidden>
+            <pre id="outputText"></pre>
+            <div class="hero-ctas">
+              <button class="btn btn-primary btn-small" id="copyBtn">Copy message</button>
+              <a class="btn btn-ghost btn-small" href="https://instagram.com/madebybelle" target="_blank" rel="noopener">Open Instagram</a>
+            </div>
+            <p style="font-size: .9rem; opacity: .8">Send it to <span class="handle">@madebybelle</span> and Belle will confirm your order.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a href="#top" class="logo">Made by Belle</a>
+    <p>Handmade fresh &amp; forever bouquets · Instagram <span class="handle" style="font-size: 1.1rem">@madebybelle</span></p>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <div class="drawer-head">
+    <h2 id="drawerTitle">My order</h2>
+    <button class="icon-btn" id="closeDrawer" aria-label="Close order">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <div class="price-row"><span>Estimated total</span><span class="price" id="drawerTotal">$0</span></div>
+    <a href="#order" class="btn btn-primary" id="checkout">Continue to order</a>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  /* ---------- Data ---------- */
+  const COLORS = {
+    blush: ['Blush', '#F2A6B8'], rose: ['Rose red', '#C7324E'], ivory: ['Ivory', '#F6EBDD'],
+    lilac: ['Lilac', '#B49AD8'], peach: ['Peach', '#F5B08A'], butter: ['Buttercup', '#F1CB5A'],
+    sky: ['Sky blue', '#9CC2E5'], wine: ['Burgundy', '#7B1F3B'], coral: ['Coral', '#EE7B6B']
+  };
+  const WRAPS = {
+    kraft: ['Kraft', '#C9A27A'], blush: ['Blush tissue', '#F1C3CC'], noir: ['Noir', '#2D2428'],
+    cloud: ['Cloud white', '#F3EEEE'], sage: ['Sage', '#A7BC9F'], lavender: ['Lavender', '#CFC2E8'], navy: ['Navy', '#2E3E62']
+  };
+  const RIBBONS = {
+    ivory: ['Ivory satin', '#F7F1E8'], gold: ['Gold', '#C9A24A'], red: ['Red velvet', '#B3203A'],
+    pink: ['Pink', '#E58AA5'], black: ['Black', '#1F1A1C'], sage: ['Sage', '#7E9A78']
+  };
+  const FLOWERS = { rose: 'Roses', tulip: 'Tulips', daisy: 'Daisies', peony: 'Peonies', mixed: 'Mixed' };
+  const SIZES = [
+    { stems: 6, name: 'Petite', fresh: 45, forever: 55 },
+    { stems: 12, name: 'Classic', fresh: 75, forever: 90 },
+    { stems: 24, name: 'Grand', fresh: 130, forever: 160 },
+    { stems: 36, name: 'Showstopper', fresh: 185, forever: 225 }
+  ];
+  const ADDONS = {
+    cap: ['Grad cap topper', 8], butterfly: ['Butterflies', 5], pearls: ['Pearl pins', 6], lights: ['Fairy lights', 10]
+  };
+  const OCCASIONS = [
+    ['all', 'All'], ['graduation', 'Graduation'], ['mothers', "Mother's Day"], ['valentines', "Valentine's"],
+    ['birthday', 'Birthdays'], ['wedding', 'Weddings'], ['holiday', 'Holidays'], ['just', 'Just because']
+  ];
+  const PRODUCTS = [
+    { id: 'cap-gown', name: 'Cap & Gown', occ: ['graduation'], desc: 'White and sky roses with a tiny grad cap on top. Swap to school colours in the builder.',
+      cfg: { flower: 'rose', colors: ['ivory', 'sky'], stems: 12, wrap: 'navy', ribbon: 'gold', addons: ['cap'] } },
+    { id: 'sunny-grad', name: 'Bright Futures', occ: ['graduation', 'birthday'], desc: 'Sunny daisies and peach roses for the proudest day of the year.',
+      cfg: { flower: 'mixed', colors: ['butter', 'peach', 'ivory'], stems: 12, wrap: 'kraft', ribbon: 'ivory', addons: ['cap'] } },
+    { id: 'mums-garden', name: "Mum's Garden", occ: ['mothers'], desc: 'Soft blush and peach peonies, like the garden she always talks about.',
+      cfg: { flower: 'peony', colors: ['blush', 'peach'], stems: 12, wrap: 'sage', ribbon: 'ivory', addons: ['pearls'] } },
+    { id: 'morning-tea', name: 'Morning Tea', occ: ['mothers', 'just'], desc: 'Lilac and ivory tulips, gentle and pretty on a kitchen table.',
+      cfg: { flower: 'tulip', colors: ['lilac', 'ivory'], stems: 12, wrap: 'cloud', ribbon: 'sage', addons: [] } },
+    { id: 'forever-yours', name: 'Forever Yours', occ: ['valentines'], desc: 'Two dozen deep red roses in noir paper. The classic, done properly.',
+      cfg: { flower: 'rose', colors: ['rose', 'wine'], stems: 24, wrap: 'noir', ribbon: 'red', addons: ['pearls'] } },
+    { id: 'first-date', name: 'First Date', occ: ['valentines', 'just'], desc: 'Six blush roses. Sweet, simple and never too much.',
+      cfg: { flower: 'rose', colors: ['blush'], stems: 6, wrap: 'blush', ribbon: 'pink', addons: [] } },
+    { id: 'confetti', name: 'Birthday Confetti', occ: ['birthday'], desc: 'A happy jumble of daisies in every colour, with butterflies.',
+      cfg: { flower: 'daisy', colors: ['coral', 'butter', 'sky'], stems: 12, wrap: 'cloud', ribbon: 'pink', addons: ['butterfly'] } },
+    { id: 'bridal', name: 'Bridal Whisper', occ: ['wedding'], desc: 'Ivory peonies and roses with pearl pins. Made to match your bridal party.',
+      cfg: { flower: 'mixed', colors: ['ivory', 'blush'], stems: 24, wrap: 'cloud', ribbon: 'ivory', addons: ['pearls'] } },
+    { id: 'winter-berry', name: 'Winter Berry', occ: ['holiday'], desc: 'Burgundy and ivory roses with fairy lights, for December gifting.',
+      cfg: { flower: 'rose', colors: ['wine', 'ivory'], stems: 12, wrap: 'sage', ribbon: 'gold', addons: ['lights'] } },
+    { id: 'lilac-hour', name: 'Lilac Hour', occ: ['just', 'birthday'], desc: 'Lilac daisies and butterflies. A little bit of spring in a bouquet.',
+      cfg: { flower: 'daisy', colors: ['lilac', 'ivory'], stems: 12, wrap: 'lavender', ribbon: 'ivory', addons: ['butterfly'] } },
+    { id: 'showstopper', name: 'The Showstopper', occ: ['birthday', 'valentines', 'wedding'], desc: 'Three dozen mixed blooms in blush and coral. Walks into the room first.',
+      cfg: { flower: 'mixed', colors: ['blush', 'coral', 'ivory'], stems: 36, wrap: 'blush', ribbon: 'pink', addons: ['lights'] } },
+    { id: 'peach-tulips', name: 'Just Because', occ: ['just', 'mothers'], desc: 'Peach tulips in kraft paper. No reason needed.',
+      cfg: { flower: 'tulip', colors: ['peach', 'coral'], stems: 6, wrap: 'kraft', ribbon: 'ivory', addons: [] } }
+  ];
+
+  /* ---------- Helpers ---------- */
+  const $ = (s, el = document) => el.querySelector(s);
+  const money = n => '$' + n.toLocaleString('en', { maximumFractionDigits: 0 });
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+  };
+  function shade(hex, amt) {
+    const n = parseInt(hex.slice(1), 16);
+    let r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+    const t = amt < 0 ? 0 : 255, p = Math.abs(amt);
+    r = Math.round((t - r) * p + r); g = Math.round((t - g) * p + g); b = Math.round((t - b) * p + b);
+    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  }
+  function rng(seed) { // mulberry32
+    let a = seed >>> 0;
+    return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  }
+  const hashStr = s => [...s].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 16777619), 2166136261);
+  const priceOf = (cfg, type) => {
+    const size = SIZES.find(s => s.stems === cfg.stems) || SIZES[1];
+    return size[type] + cfg.addons.reduce((t, a) => t + ADDONS[a][1], 0);
+  };
+  const describe = cfg => {
+    const size = SIZES.find(s => s.stems === cfg.stems);
+    const cols = cfg.colors.map(c => COLORS[c][0].toLowerCase());
+    const colStr = cols.length > 1 ? cols.slice(0, -1).join(', ') + ' & ' + cols.at(-1) : cols[0];
+    const extras = cfg.addons.map(a => ADDONS[a][0].toLowerCase());
+    return `${size.name} · ${cfg.stems} ${colStr} ${FLOWERS[cfg.flower].toLowerCase()} · ${WRAPS[cfg.wrap][0].toLowerCase()} paper, ${RIBBONS[cfg.ribbon][0].toLowerCase()} ribbon${extras.length ? ' · ' + extras.join(', ') : ''}`;
+  };
+
+  /* ---------- Flower drawing ---------- */
+  const F = {
+    rose(x, y, s, c) {
+      const d = shade(c, -0.28);
+      let pts = [];
+      for (let t = 0; t <= Math.PI * 5; t += 0.35) { const r = s * 0.62 * (t / (Math.PI * 5)); pts.push((x + Math.cos(t) * r).toFixed(1) + ',' + (y + Math.sin(t) * r).toFixed(1)); }
+      let outer = '';
+      for (let i = 0; i < 5; i++) { const a = i * 1.2566 + 0.3; outer += `<circle cx="${(x + Math.cos(a) * s * 0.42).toFixed(1)}" cy="${(y + Math.sin(a) * s * 0.42).toFixed(1)}" r="${(s * 0.56).toFixed(1)}" fill="${shade(c, -0.08)}" stroke="${d}" stroke-width="${(s * .04).toFixed(2)}"/>`; }
+      return outer + `<circle cx="${x}" cy="${y}" r="${(s * 0.68).toFixed(1)}" fill="${c}" stroke="${d}" stroke-width="${(s * .04).toFixed(2)}"/><polyline points="${pts.join(' ')}" fill="none" stroke="${d}" stroke-width="${(s * 0.07).toFixed(2)}" stroke-linecap="round"/>`;
+    },
+    tulip(x, y, s, c) {
+      const d = shade(c, -0.25), l = shade(c, 0.18);
+      return `<path d="M${x - s * .72},${y - s * .35} Q${x - s * .85},${y + s * .85} ${x},${y + s * .85} Q${x + s * .85},${y + s * .85} ${x + s * .72},${y - s * .35} L${x + s * .36},${y + s * .05} L${x},${y - s * .7} L${x - s * .36},${y + s * .05} Z" fill="${c}" stroke="${d}" stroke-width="${(s * .05).toFixed(2)}" stroke-linejoin="round"/><path d="M${x - s * .3},${y + s * .1} Q${x},${y - s * .75} ${x + s * .3},${y + s * .1} Q${x},${y + s * .7} ${x - s * .3},${y + s * .1}Z" fill="${l}" opacity=".75"/>`;
+    },
+    daisy(x, y, s, c) {
+      const d = shade(c, -0.25);
+      let p = '';
+      for (let i = 0; i < 12; i++) { const a = i * 30; p += `<ellipse cx="${x}" cy="${(y - s * .52).toFixed(1)}" rx="${(s * .2).toFixed(1)}" ry="${(s * .48).toFixed(1)}" fill="${c}" stroke="${d}" stroke-width="${(s * .035).toFixed(2)}" transform="rotate(${a} ${x} ${y})"/>`; }
+      return p + `<circle cx="${x}" cy="${y}" r="${(s * .3).toFixed(1)}" fill="#E7A93A" stroke="#B87A1E" stroke-width="${(s * .04).toFixed(2)}"/><circle cx="${x - s * .08}" cy="${y - s * .08}" r="${(s * .1).toFixed(1)}" fill="#F6CF6E"/>`;
+    },
+    peony(x, y, s, c) {
+      const d = shade(c, -0.2);
+      let p = '';
+      for (let i = 0; i < 8; i++) { const a = i * .785; p += `<circle cx="${(x + Math.cos(a) * s * .55).toFixed(1)}" cy="${(y + Math.sin(a) * s * .55).toFixed(1)}" r="${(s * .42).toFixed(1)}" fill="${shade(c, -0.07)}" stroke="${d}" stroke-width="${(s * .035).toFixed(2)}"/>`; }
+      for (let i = 0; i < 6; i++) { const a = i * 1.047 + .5; p += `<circle cx="${(x + Math.cos(a) * s * .3).toFixed(1)}" cy="${(y + Math.sin(a) * s * .3).toFixed(1)}" r="${(s * .34).toFixed(1)}" fill="${c}" stroke="${d}" stroke-width="${(s * .03).toFixed(2)}"/>`; }
+      return p + `<circle cx="${x}" cy="${y}" r="${(s * .28).toFixed(1)}" fill="${shade(c, 0.22)}" stroke="${d}" stroke-width="${(s * .03).toFixed(2)}"/>`;
+    }
+  };
+  const TYPES = ['rose', 'peony', 'daisy', 'tulip'];
+
+  function bouquetSVG(cfg, opts = {}) {
+    const r = rng(opts.seed ?? hashStr(JSON.stringify(cfg)));
+    const n = Math.min(cfg.stems, 30);
+    const W = WRAPS[cfg.wrap][1], R = RIBBONS[cfg.ribbon][1];
+    const cx = 150, cy = 122;
+    const scale = Math.min(1, .62 + n / 45);
+    const Rx = 84 * scale, Ry = 64 * scale;
+    const s = Math.max(14, Math.min(33, 1.3 * Math.sqrt((Math.PI * Rx * Ry / n) / Math.PI)));
+    const heads = [];
+    for (let i = 0; i < n; i++) {
+      const rad = Math.sqrt((i + .5) / n), th = i * 2.39996 + r() * .3;
+      heads.push({
+        x: cx + Math.cos(th) * Rx * rad, y: cy + Math.sin(th) * Ry * rad - (1 - rad) * 8,
+        type: cfg.flower === 'mixed' ? TYPES[Math.floor(r() * TYPES.length)] : cfg.flower,
+        color: COLORS[cfg.colors[Math.floor(r() * cfg.colors.length)]][1],
+        rot: Math.round((r() - .5) * 50)
+      });
+    }
+    heads.sort((a, b) => a.y - b.y);
+    const tieX = 150, tieY = 268;
+    let out = `<svg viewBox="18 4 264 354" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">`;
+    // back paper
+    out += `<path d="M${cx - Rx - 34},${cy - 4} Q${cx},${cy - Ry - 70} ${cx + Rx + 34},${cy - 4} L${tieX + 22},${tieY + 4} L${tieX - 22},${tieY + 4} Z" fill="${shade(W, -0.14)}"/>`;
+    out += `<path d="M${cx - Rx - 34},${cy - 4} Q${cx - 30},${cy - Ry - 40} ${cx},${cy - Ry - 34} L${tieX},${tieY} Z" fill="${shade(W, -0.06)}" opacity=".7"/>`;
+    // stems
+    out += `<g stroke="#5D7A4E" stroke-width="2.6" stroke-linecap="round" fill="none">`;
+    heads.forEach((h, i) => { if (i % 2 === 0) out += `<path d="M${h.x.toFixed(1)},${h.y.toFixed(1)} Q${((h.x + tieX) / 2).toFixed(1)},${(h.y + 70).toFixed(1)} ${tieX},${tieY}"/>`; });
+    out += `</g>`;
+    // leaves
+    for (let i = 0; i < 11; i++) {
+      const a = Math.PI * (.95 + i * .1) + (r() - .5) * .12;
+      const lx = cx + Math.cos(a) * (Rx + 6), ly = cy + Math.sin(a) * (Ry + 6) + 20;
+      const deg = a * 180 / Math.PI + 90;
+      if (ly > cy + 40) continue;
+      out += `<ellipse cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" rx="7.5" ry="21" fill="${i % 2 ? '#87A27A' : '#6F8C63'}" stroke="#4F6B45" stroke-width=".8" transform="rotate(${deg.toFixed(0)} ${lx.toFixed(1)} ${ly.toFixed(1)})"/>`;
+    }
+    for (let i = 0; i < 4; i++) {
+      const a = i < 2 ? Math.PI * (.08 + i * .1) : Math.PI * (.82 + (i - 2) * .1);
+      const lx = cx + Math.cos(a) * (Rx - 2), ly = cy + Math.sin(a) * (Ry) + 18;
+      out += `<ellipse cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" rx="7" ry="20" fill="#87A27A" stroke="#4F6B45" stroke-width=".8" transform="rotate(${(a * 180 / Math.PI + 90).toFixed(0)} ${lx.toFixed(1)} ${ly.toFixed(1)})"/>`;
+    }
+    // baby's breath filler
+    out += `<g fill="#FFFDF8" stroke="#D9CFC4" stroke-width=".5">`;
+    for (let i = 0; i < 26; i++) {
+      const a = r() * Math.PI * 2, d = Math.sqrt(r());
+      out += `<circle cx="${(cx + Math.cos(a) * (Rx + 8) * d).toFixed(1)}" cy="${(cy + Math.sin(a) * (Ry + 8) * d - 6).toFixed(1)}" r="${(1.6 + r() * 1.8).toFixed(1)}"/>`;
+    }
+    out += `</g>`;
+    // heads
+    heads.forEach((h, i) => {
+      out += `<g class="${opts.animate ? 'head' : ''}" style="--d:${i * 35}ms"><g transform="rotate(${h.rot} ${h.x.toFixed(1)} ${h.y.toFixed(1)})">${F[h.type](+h.x.toFixed(1), +h.y.toFixed(1), s, h.color)}</g></g>`;
+    });
+    // pearls
+    if (cfg.addons.includes('pearls')) {
+      out += `<g fill="#FFFDF7" stroke="#CBBFAF" stroke-width=".7">`;
+      for (let i = 0; i < 12; i++) { const a = r() * Math.PI * 2, d = Math.sqrt(r()) * .9; out += `<circle cx="${(cx + Math.cos(a) * Rx * d).toFixed(1)}" cy="${(cy + Math.sin(a) * Ry * d).toFixed(1)}" r="2.6"/>`; }
+      out += `</g>`;
+    }
+    // fairy lights
+    if (cfg.addons.includes('lights')) {
+      let path = `M${cx - Rx - 10},${cy - 10}`;
+      const bulbs = [];
+      for (let i = 1; i <= 8; i++) {
+        const t = i / 8, x = cx - Rx - 10 + t * (2 * Rx + 20), y = cy - 10 + Math.sin(t * Math.PI * 2.2) * 20 + t * 24;
+        path += ` L${x.toFixed(1)},${y.toFixed(1)}`; bulbs.push([x, y]);
+      }
+      out += `<path d="${path}" stroke="#8C7A5A" stroke-width="1" fill="none" opacity=".7"/>`;
+      bulbs.forEach(([x, y]) => { out += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7" fill="#FFE59A" opacity=".35"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.8" fill="#FFD45A"/>`; });
+    }
+    // grad cap
+    if (cfg.addons.includes('cap')) {
+      const gx = cx + 8, gy = cy - Ry - 4;
+      out += `<g transform="rotate(-10 ${gx} ${gy})"><path d="M${gx - 15},${gy + 2} L${gx - 15},${gy + 13} Q${gx},${gy + 19} ${gx + 15},${gy + 13} L${gx + 15},${gy + 2} Z" fill="#1E1A1D"/><path d="M${gx},${gy - 12} L${gx + 32},${gy} L${gx},${gy + 12} L${gx - 32},${gy} Z" fill="#2A2529" stroke="#000" stroke-width=".6"/><path d="M${gx},${gy} L${gx + 24},${gy + 4} L${gx + 24},${gy + 20}" stroke="#D4AE45" stroke-width="2" fill="none"/><rect x="${gx + 21}" y="${gy + 18}" width="6" height="9" rx="2" fill="#D4AE45"/><circle cx="${gx}" cy="${gy}" r="2.4" fill="#D4AE45"/></g>`;
+    }
+    // butterflies
+    if (cfg.addons.includes('butterfly')) {
+      [[cx - Rx + 4, cy - Ry + 10, '#B49AD8', -15], [cx + Rx - 6, cy - 6, '#9CC2E5', 18]].forEach(([x, y, c, rot]) => {
+        out += `<g transform="rotate(${rot} ${x} ${y})"><ellipse cx="${x - 6}" cy="${y - 4}" rx="7" ry="9" fill="${c}" stroke="${shade(c, -.3)}" stroke-width=".8"/><ellipse cx="${x + 6}" cy="${y - 4}" rx="7" ry="9" fill="${c}" stroke="${shade(c, -.3)}" stroke-width=".8"/><ellipse cx="${x - 5}" cy="${y + 6}" rx="5" ry="5.5" fill="${shade(c, .2)}" stroke="${shade(c, -.3)}" stroke-width=".8"/><ellipse cx="${x + 5}" cy="${y + 6}" rx="5" ry="5.5" fill="${shade(c, .2)}" stroke="${shade(c, -.3)}" stroke-width=".8"/><rect x="${x - 1.3}" y="${y - 10}" width="2.6" height="20" rx="1.3" fill="#3B2A30"/></g>`;
+      });
+    }
+    // front paper
+    const fy = cy + Ry * .78 + 14;
+    out += `<path d="M${cx - Rx - 14},${fy} Q${cx},${fy + 44} ${cx + Rx + 14},${fy} L${tieX + 20},${tieY + 34} Q${tieX},${tieY + 42} ${tieX - 20},${tieY + 34} Z" fill="${W}" stroke="${shade(W, -.18)}" stroke-width="1"/>`;
+    out += `<path d="M${cx - Rx + 8},${fy + 10} L${tieX - 6},${tieY + 30}" stroke="${shade(W, -.15)}" stroke-width="1" fill="none"/><path d="M${cx + Rx - 12},${fy + 12} L${tieX + 8},${tieY + 28}" stroke="${shade(W, .2)}" stroke-width="1.4" fill="none"/>`;
+    // stems below wrap
+    out += `<g stroke="#5D7A4E" stroke-width="3" stroke-linecap="round"><path d="M${tieX - 8},${tieY + 36} L${tieX - 14},350"/><path d="M${tieX},${tieY + 38} L${tieX},354"/><path d="M${tieX + 8},${tieY + 36} L${tieX + 13},349"/><path d="M${tieX - 3},${tieY + 38} L${tieX - 5},352"/></g>`;
+    // bow
+    const by = tieY + 4, rd = shade(R, -.25);
+    out += `<g stroke="${rd}" stroke-width="1" stroke-linejoin="round"><path d="M${tieX},${by} C${tieX - 30},${by - 26} ${tieX - 44},${by + 2} ${tieX},${by}Z" fill="${R}"/><path d="M${tieX},${by} C${tieX + 30},${by - 26} ${tieX + 44},${by + 2} ${tieX},${by}Z" fill="${R}"/><path d="M${tieX - 3},${by + 2} L${tieX - 20},${by + 44} L${tieX - 12},${by + 40} L${tieX - 8},${by + 48} Z" fill="${R}"/><path d="M${tieX + 3},${by + 2} L${tieX + 18},${by + 46} L${tieX + 11},${by + 41} L${tieX + 6},${by + 49} Z" fill="${R}"/><ellipse cx="${tieX}" cy="${by}" rx="6" ry="5" fill="${shade(R, -.1)}"/></g>`;
+    // gift tag
+    if (opts.message) {
+      const msg = opts.message.trim();
+      const words = msg.split(/\s+/); const lines = ['', '', ''];
+      let li = 0;
+      for (const w of words) { if ((lines[li] + ' ' + w).trim().length > 15 && lines[li]) li++; if (li > 2) break; lines[li] = (lines[li] + ' ' + w).trim(); }
+      if (li > 2) lines[2] = lines[2].slice(0, 13) + '…';
+      out += `<path d="M${tieX + 4},${by + 4} Q${tieX + 40},${by + 20} ${tieX + 66},${by + 10}" stroke="${rd}" stroke-width="1" fill="none"/>`;
+      out += `<g transform="rotate(8 ${tieX + 100} ${by + 30})"><rect x="${tieX + 62}" y="${by + 2}" width="84" height="56" rx="5" fill="#FFFDF8" stroke="#D9C8BE"/><circle cx="${tieX + 70}" cy="${by + 10}" r="2.5" fill="none" stroke="#B9A79B"/>`;
+      lines.filter(Boolean).forEach((l, i) => { out += `<text x="${tieX + 104}" y="${by + 24 + i * 13}" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="11.5" fill="#4A2A36">${esc(l)}</text>`; });
+      out += `</g>`;
+    }
+    return out + `</svg>`;
+  }
+
+  /* ---------- Hero ---------- */
+  const heroEl = $('#heroBouquet'), heroCap = $('#heroCaption');
+  const heroPresets = [
+    { flower: 'rose', colors: ['blush'], stems: 12, wrap: 'kraft', ribbon: 'ivory', addons: [] },
+    ...PRODUCTS.map(p => p.cfg)
+  ];
+  let heroIdx = 0;
+  function drawHero(cfg, seed) {
+    heroEl.innerHTML = bouquetSVG(cfg, { animate: true, seed });
+    const cols = cfg.colors.map(c => COLORS[c][0].toLowerCase());
+    heroCap.textContent = `${cfg.stems} ${cols.join(' & ')} ${FLOWERS[cfg.flower].toLowerCase()} in ${WRAPS[cfg.wrap][0].toLowerCase()} paper`;
+    heroEl.setAttribute('aria-label', 'Illustrated bouquet: ' + heroCap.textContent);
+  }
+  drawHero(heroPresets[0], 7);
+  $('#shuffle').addEventListener('click', () => {
+    const keys = Object.keys(COLORS), r = Math.random;
+    const random = r() < .5 ? heroPresets[(++heroIdx) % heroPresets.length] : {
+      flower: Object.keys(FLOWERS)[Math.floor(r() * 5)],
+      colors: [...new Set([keys[Math.floor(r() * keys.length)], keys[Math.floor(r() * keys.length)]])],
+      stems: [12, 24][Math.floor(r() * 2)], wrap: Object.keys(WRAPS)[Math.floor(r() * 7)],
+      ribbon: Object.keys(RIBBONS)[Math.floor(r() * 6)], addons: r() < .3 ? ['butterfly'] : []
+    };
+    drawHero(random, Math.floor(r() * 1e6));
+  });
+  $('#aboutArt').innerHTML = bouquetSVG({ flower: 'peony', colors: ['blush', 'ivory', 'peach'], stems: 12, wrap: 'cloud', ribbon: 'sage', addons: ['butterfly'] }, { seed: 3 });
+
+  /* ---------- Petals canvas ---------- */
+  (function petals() {
+    const cv = $('#petals'); const ctx = cv.getContext('2d');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let W = 0, H = 0, ps = [], running = true;
+    const cols = ['#F2A6B8', '#F7C9D4', '#EE8AA8', '#F6D3C4'];
+    function size() { const dpr = Math.min(devicePixelRatio || 1, 2); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    size(); addEventListener('resize', size);
+    for (let i = 0; i < 22; i++) ps.push({ x: Math.random() * W, y: Math.random() * H, r: 5 + Math.random() * 7, vy: .25 + Math.random() * .5, vx: (Math.random() - .5) * .4, a: Math.random() * 6, va: (Math.random() - .5) * .03, c: cols[i % 4], o: .35 + Math.random() * .4 });
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (const p of ps) {
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.globalAlpha = p.o; ctx.fillStyle = p.c;
+        ctx.beginPath(); ctx.ellipse(0, 0, p.r, p.r * .55, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      }
+    }
+    function tick(t) {
+      if (!running) return;
+      for (const p of ps) {
+        p.y += p.vy; p.x += p.vx + Math.sin(t / 1400 + p.a) * .3; p.a += p.va;
+        if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W; }
+        if (p.x > W + 20) p.x = -20; if (p.x < -20) p.x = W + 20;
+      }
+      draw(); requestAnimationFrame(tick);
+    }
+    if (reduce) { draw(); return; }
+    new IntersectionObserver(([e]) => { const was = running; running = e.isIntersecting; if (running && !was) requestAnimationFrame(tick); }).observe(cv);
+    requestAnimationFrame(tick);
+  })();
+
+  /* ---------- Shop ---------- */
+  let filter = store.get('mbb-filter', 'all');
+  const filtersEl = $('#filters'), grid = $('#productGrid');
+  filtersEl.innerHTML = OCCASIONS.map(([k, l]) => `<button class="chip" data-f="${k}" aria-pressed="${k === filter}">${l}</button>`).join('');
+  filtersEl.addEventListener('click', e => { const b = e.target.closest('[data-f]'); if (b) setFilter(b.dataset.f); });
+  function setFilter(f) {
+    filter = f; store.set('mbb-filter', f);
+    filtersEl.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.f === f));
+    renderShop();
+  }
+  function renderShop() {
+    const list = PRODUCTS.filter(p => filter === 'all' || p.occ.includes(filter));
+    grid.innerHTML = list.map(p => {
+      const occ = OCCASIONS.find(o => o[0] === p.occ[0])[1];
+      return `<article class="card">
+        <div class="card-art">${bouquetSVG(p.cfg)}<span class="card-badge">${occ}</span></div>
+        <div class="card-body">
+          <h3>${p.name}</h3>
+          <p class="desc">${p.desc}</p>
+          <div class="seg" role="radiogroup" aria-label="Fresh or forever for ${p.name}">
+            <label><input type="radio" name="t-${p.id}" id="t-${p.id}-fresh" value="fresh" checked><span>Fresh</span></label>
+            <label><input type="radio" name="t-${p.id}" id="t-${p.id}-forever" value="forever"><span>Forever</span></label>
+          </div>
+          <div class="price-row"><span class="price" data-price="${p.id}">${money(priceOf(p.cfg, 'fresh'))}</span><small style="color:var(--ink-soft)">${p.cfg.stems} stems</small></div>
+          <div class="card-actions">
+            <button class="btn btn-primary btn-small" data-add="${p.id}">Add to order</button>
+            <button class="link-btn" data-custom="${p.id}">Customise</button>
+          </div>
+        </div></article>`;
+    }).join('');
+  }
+  grid.addEventListener('change', e => {
+    if (e.target.name?.startsWith('t-')) {
+      const id = e.target.name.slice(2), p = PRODUCTS.find(x => x.id === id);
+      grid.querySelector(`[data-price="${id}"]`).textContent = money(priceOf(p.cfg, e.target.value));
+    }
+  });
+  grid.addEventListener('click', e => {
+    const add = e.target.closest('[data-add]'), cust = e.target.closest('[data-custom]');
+    if (add) {
+      const p = PRODUCTS.find(x => x.id === add.dataset.add);
+      const type = grid.querySelector(`input[name="t-${p.id}"]:checked`).value;
+      addItem({ name: p.name, cfg: structuredClone(p.cfg), type, message: '' });
+    }
+    if (cust) {
+      const p = PRODUCTS.find(x => x.id === cust.dataset.custom);
+      Object.assign(B, structuredClone(p.cfg), { name: p.name });
+      syncBuilder(); renderBuilder(true);
+      $('#build').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+  });
+  document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => { setFilter(b.dataset.jump); $('#shop').scrollIntoView({ behavior: 'smooth' }); }));
+  renderShop();
+
+  /* ---------- Builder ---------- */
+  const B = Object.assign({ name: '', type: 'fresh', flower: 'rose', colors: ['blush'], stems: 12, wrap: 'kraft', ribbon: 'ivory', addons: [], message: '' }, store.get('mbb-builder', {}));
+  const sw = (group, key, [name, hex], type, checked) =>
+    `<label class="swatch" title="${name}"><input type="${type}" name="${group}" id="${group}-${key}" value="${key}" ${checked ? 'checked' : ''} aria-label="${name}"><span class="dot" style="--c:${hex}"></span></label>`;
+  $('#sizeOpts').innerHTML = SIZES.map(s => `<label class="opt"><input type="radio" name="b-size" id="b-size-${s.stems}" value="${s.stems}"><span class="box"><b>${s.name}</b><small>${s.stems} stems</small></span></label>`).join('');
+  $('#flowerOpts').innerHTML = Object.entries(FLOWERS).map(([k, l]) => {
+    const icon = k === 'mixed'
+      ? `<svg viewBox="0 0 60 60">${F.rose(22, 24, 11, '#F2A6B8')}${F.daisy(40, 22, 10, '#F6EBDD')}${F.tulip(31, 40, 11, '#F5B08A')}</svg>`
+      : `<svg viewBox="0 0 60 60">${F[k](30, 30, 20, '#F2A6B8')}</svg>`;
+    return `<label class="opt"><input type="radio" name="b-flower" id="b-flower-${k}" value="${k}"><span class="box">${icon}<b>${l}</b></span></label>`;
+  }).join('');
+  $('#colorOpts').innerHTML = Object.entries(COLORS).map(([k, v]) => sw('b-color', k, v, 'checkbox', false)).join('');
+  $('#wrapOpts').innerHTML = Object.entries(WRAPS).map(([k, v]) => sw('b-wrap', k, v, 'radio', false)).join('');
+  $('#ribbonOpts').innerHTML = Object.entries(RIBBONS).map(([k, v]) => sw('b-ribbon', k, v, 'radio', false)).join('');
+  $('#addonOpts').innerHTML = Object.entries(ADDONS).map(([k, [l, p]]) => `<label class="opt"><input type="checkbox" name="b-addon" id="b-addon-${k}" value="${k}"><span class="box"><b>${l}</b><small>+${money(p)}</small></span></label>`).join('');
+
+  function syncBuilder() {
+    const f = $('#builderForm');
+    f.querySelector(`#b-type-${B.type}`).checked = true;
+    f.querySelector(`#b-size-${B.stems}`).checked = true;
+    f.querySelector(`#b-flower-${B.flower}`).checked = true;
+    f.querySelectorAll('[name="b-color"]').forEach(i => i.checked = B.colors.includes(i.value));
+    f.querySelector(`#b-wrap-${B.wrap}`).checked = true;
+    f.querySelector(`#b-ribbon-${B.ribbon}`).checked = true;
+    f.querySelectorAll('[name="b-addon"]').forEach(i => i.checked = B.addons.includes(i.value));
+    $('#b-msg').value = B.message;
+  }
+  function renderBuilder(animate) {
+    $('#builderPreview').innerHTML = bouquetSVG(B, { animate, message: B.message, seed: 11 });
+    const size = SIZES.find(s => s.stems === B.stems);
+    $('#sumTitle').textContent = B.name ? `${B.name}, your way` : `${size.name} ${FLOWERS[B.flower].toLowerCase()} bouquet`;
+    $('#sumLine').textContent = (B.type === 'fresh' ? 'Fresh blooms · ' : 'Forever faux · ') + describe(B).split(' · ').slice(1).join(' · ');
+    $('#sumPrice').textContent = money(priceOf(B, B.type));
+    $('#colorHint').textContent = B.colors.map(c => COLORS[c][0]).join(', ');
+    $('#colorHint').classList.remove('warn');
+    $('#wrapHint').textContent = WRAPS[B.wrap][0];
+    $('#ribbonHint').textContent = RIBBONS[B.ribbon][0];
+    $('#msgCount').textContent = `${B.message.length}/80`;
+    $('#builderPreview').setAttribute('aria-label', 'Preview: ' + $('#sumLine').textContent);
+    store.set('mbb-builder', B);
+  }
+  $('#builderForm').addEventListener('input', e => {
+    const t = e.target; let anim = false;
+    if (t.name === 'b-type') B.type = t.value;
+    if (t.name === 'b-size') { B.stems = +t.value; anim = true; }
+    if (t.name === 'b-flower') { B.flower = t.value; anim = true; }
+    if (t.name === 'b-wrap') B.wrap = t.value;
+    if (t.name === 'b-ribbon') B.ribbon = t.value;
+    if (t.name === 'b-addon') B.addons = [...document.querySelectorAll('[name="b-addon"]:checked')].map(i => i.value);
+    if (t.id === 'b-msg') B.message = t.value;
+    if (t.name === 'b-color') {
+      const sel = [...document.querySelectorAll('[name="b-color"]:checked')].map(i => i.value);
+      if (sel.length === 0) { t.checked = true; return; }
+      if (sel.length > 3) { t.checked = false; $('#colorHint').textContent = 'Up to 3 colours. Untick one to swap.'; $('#colorHint').classList.add('warn'); return; }
+      B.colors = sel; anim = true;
+    }
+    if (t.name && t.name !== 'b-color' && t.name !== 'b-type' && t.id !== 'b-msg') B.name = '';
+    renderBuilder(anim);
+  });
+  $('#addCustom').addEventListener('click', () => {
+    addItem({ name: B.name ? B.name + ' (custom)' : 'Custom bouquet', cfg: { flower: B.flower, colors: [...B.colors], stems: B.stems, wrap: B.wrap, ribbon: B.ribbon, addons: [...B.addons] }, type: B.type, message: B.message.trim() });
+  });
+  syncBuilder(); renderBuilder(false);
+
+  /* ---------- Key dates ---------- */
+  (function dates() {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const secondSunMay = y => { const d = new Date(y, 4, 1); d.setDate(1 + (7 - d.getDay()) % 7 + 7); return d; };
+    const next = fn => { const y = today.getFullYear(); const a = fn(y); return a >= today ? a : fn(y + 1); };
+    const list = [
+      { name: "Valentine's Day", d: next(y => new Date(y, 1, 14)), f: 'valentines', tip: 'Red roses go first. Forever bouquets can be ready weeks before.' },
+      { name: "Mother's Day", d: next(secondSunMay), f: 'mothers', tip: 'Peonies and tulips are the favourites. Book a pick-up time early.' },
+      { name: 'Christmas', d: next(y => new Date(y, 11, 25)), f: 'holiday', tip: 'Winter Berry with fairy lights makes a gift that lasts past New Year.' },
+      { name: "Women's Day", d: next(y => new Date(y, 2, 8)), f: 'just', tip: 'Send flowers to the women who keep everything running.' }
+    ].map(o => ({ ...o, days: Math.round((o.d - today) / 864e5) })).sort((a, b) => a.days - b.days).slice(0, 3);
+    const fmt = d => d.toLocaleDateString('en', { weekday: 'short', day: 'numeric', month: 'long' });
+    $('#dateCards').innerHTML = list.map(o => `<article class="date-card">
+      <div class="days">${o.days}<small>${o.days === 1 ? 'day' : 'days'} to go</small></div>
+      <h3>${o.name}</h3><p>${fmt(o.d)}. ${o.tip}</p>
+      <div><button class="btn btn-ghost btn-small" data-date-filter="${o.f}">See ${o.name} bouquets</button></div></article>`).join('');
+    $('#dateCards').addEventListener('click', e => { const b = e.target.closest('[data-date-filter]'); if (b) { setFilter(b.dataset.dateFilter); $('#shop').scrollIntoView({ behavior: 'smooth' }); } });
+  })();
+
+  /* ---------- Order ---------- */
+  let order = store.get('mbb-order', []);
+  const drawer = $('#drawer'), scrim = $('#scrim');
+  let lastFocus = null;
+  function addItem(item) {
+    const key = JSON.stringify([item.name, item.cfg, item.type, item.message]);
+    const found = order.find(o => o.key === key);
+    if (found) found.qty++; else order.push({ ...item, key, qty: 1, price: priceOf(item.cfg, item.type) });
+    saveOrder(); toast(`Added ${item.name} to your order`);
+  }
+  function saveOrder() { store.set('mbb-order', order); renderOrder(); }
+  const total = () => order.reduce((t, o) => t + o.price * o.qty, 0);
+  function renderOrder() {
+    const count = order.reduce((t, o) => t + o.qty, 0);
+    $('#orderCount').textContent = count;
+    $('#drawerTotal').textContent = money(total());
+    $('#drawerBody').innerHTML = order.length ? order.map((o, i) => `<div class="line-item">
+      <div class="thumb">${bouquetSVG(o.cfg)}</div>
+      <div><h3>${esc(o.name)}</h3>
+        <p class="meta">${o.type === 'fresh' ? 'Fresh' : 'Forever faux'} · ${esc(describe(o.cfg))}${o.message ? ` · Card: “${esc(o.message)}”` : ''}</p>
+        <div class="qty"><button data-dec="${i}" aria-label="One fewer ${esc(o.name)}">−</button><span class="n">${o.qty}</span><button data-inc="${i}" aria-label="One more ${esc(o.name)}">+</button>
+        <strong style="margin-left:8px;font-variant-numeric:tabular-nums">${money(o.price * o.qty)}</strong>
+        <button class="remove" data-rm="${i}">Remove</button></div></div></div>`).join('')
+      : `<div class="empty">${bouquetSVG({ flower: 'tulip', colors: ['blush'], stems: 6, wrap: 'kraft', ribbon: 'ivory', addons: [] }, { seed: 2 })}<p>Your order is empty. Add a bouquet from the shop or build your own.</p><a class="btn btn-ghost btn-small" href="#shop" data-close>Browse the shop</a></div>`;
+    $('#miniList').innerHTML = order.length
+      ? order.map(o => `<div class="mini-item"><span>${o.qty} × ${esc(o.name)} <span style="opacity:.7">(${o.type === 'fresh' ? 'fresh' : 'forever'})</span></span><span>${money(o.price * o.qty)}</span></div>`).join('') + `<div class="mini-item" style="border:0"><strong>Estimated total</strong><strong>${money(total())}</strong></div>`
+      : `<p style="opacity:.8">Nothing added yet. Pick something from the <a href="#shop">shop</a> or the <a href="#build">builder</a>, or just describe what you'd like in the notes.</p>`;
+  }
+  $('#drawerBody').addEventListener('click', e => {
+    const t = e.target;
+    if (t.dataset.inc) order[+t.dataset.inc].qty++;
+    else if (t.dataset.dec) { const o = order[+t.dataset.dec]; o.qty--; if (!o.qty) order.splice(+t.dataset.dec, 1); }
+    else if (t.dataset.rm) order.splice(+t.dataset.rm, 1);
+    else if (t.closest('[data-close]')) { closeDrawer(); return; }
+    else return;
+    saveOrder();
+  });
+  function openDrawer() { lastFocus = document.activeElement; scrim.hidden = false; drawer.classList.add('open'); $('#closeDrawer').focus(); }
+  function closeDrawer() { scrim.hidden = true; drawer.classList.remove('open'); lastFocus?.focus?.(); }
+  $('#openDrawer').addEventListener('click', openDrawer);
+  $('#closeDrawer').addEventListener('click', closeDrawer);
+  scrim.addEventListener('click', closeDrawer);
+  $('#checkout').addEventListener('click', closeDrawer);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+  renderOrder();
+
+  // Order form
+  const dateIn = $('#f-date');
+  const iso = d => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+  dateIn.min = iso(new Date());
+  $('#orderForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = id => $(id).value.trim();
+    const errs = {
+      name: v('#f-name') ? '' : 'Add your name so Belle knows who the order is from.',
+      contact: v('#f-contact') ? '' : 'Add a phone number or Instagram handle so Belle can reply.',
+      date: !v('#f-date') ? 'Choose the date you need the flowers.' : (v('#f-date') < dateIn.min ? 'That date has passed. Choose today or later.' : ''),
+      items: order.length || v('#f-notes') ? '' : 'Add a bouquet to your order, or describe what you want in the notes.'
+    };
+    Object.entries(errs).forEach(([k, m]) => { $('#e-' + k).textContent = m; const inp = $('#f-' + k); if (inp) inp.setAttribute('aria-invalid', !!m); });
+    const first = Object.keys(errs).find(k => errs[k]);
+    if (first) { ($('#f-' + first) || $('#f-notes')).focus(); return; }
+    const d = new Date(v('#f-date') + 'T12:00');
+    const lines = [
+      `Hi Belle! I'd love to order:`, '',
+      ...order.map(o => `• ${o.qty} × ${o.name} (${o.type === 'fresh' ? 'fresh' : 'forever faux'}) — ${money(o.price * o.qty)}\n   ${describe(o.cfg)}${o.message ? `\n   Card: "${o.message}"` : ''}`),
+      ...(order.length ? ['', `Estimated total: ${money(total())}`] : []),
+      `Needed: ${d.toLocaleDateString('en', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} (${v('#f-method')})`,
+      `Name: ${v('#f-name')}`, `Contact: ${v('#f-contact')}`,
+      ...(v('#f-notes') ? [`Notes: ${v('#f-notes')}`] : [])
+    ];
+    $('#outputText').textContent = lines.join('\n');
+    $('#output').hidden = false;
+    $('#output').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    toast('Order message ready to copy');
+  });
+  $('#copyBtn').addEventListener('click', () => {
+    const text = $('#outputText').textContent;
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents($('#outputText')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Text selected. Press copy to copy it.'); };
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(() => toast('Copied. Paste it into a message to Belle.'), fallback);
+    else fallback();
+  });
+
+  /* ---------- Misc ---------- */
+  let tt;
+  function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2600); }
+  const menuBtn = $('#menuBtn'), links = $('#navLinks');
+  menuBtn.addEventListener('click', () => { const o = links.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', o); });
+  links.addEventListener('click', e => { if (e.target.closest('a')) { links.classList.remove('open'); menuBtn.setAttribute('aria-expanded', false); } });
+})();
+</script>
+</body>
+</html>
