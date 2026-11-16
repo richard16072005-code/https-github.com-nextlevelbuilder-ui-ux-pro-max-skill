@@ -149,6 +149,10 @@ button { -webkit-tap-highlight-color: transparent; }
 .bottle svg { display: block; width: 28px; height: 42px; }
 .bottle:hover { transform: translateY(-4px) rotate(-6deg); }
 .bottle[aria-pressed="true"] { background: var(--chip); transform: translateY(-4px); }
+.tones { display: flex; gap: 8px; flex-wrap: wrap; }
+.tone { width: 30px; height: 30px; border-radius: 50%; border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--line); cursor: pointer; transition: transform .2s var(--ease); }
+.tone:hover { transform: scale(1.1); }
+.tone[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--ink); }
 .studio-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer; text-decoration: none; font-weight: 600; padding: 12px 20px; border-radius: 999px; transition: transform .2s var(--ease), box-shadow .2s; }
 .btn:hover { transform: translateY(-2px); }
@@ -382,6 +386,7 @@ footer small { opacity: .75; }
         <div class="ctrl"><span class="ctrl-title">Shape</span><div class="chips" id="shapeChips"></div></div>
         <div class="ctrl"><span class="ctrl-title">Length</span><div class="chips" id="lengthChips"></div></div>
       </div>
+      <div class="ctrl"><span class="ctrl-title">Skin tone · <span id="skinName">Light</span></span><div class="tones" id="tones"></div></div>
       <div class="studio-actions">
         <button class="btn btn-pink" type="button" id="priceThis">Price this set</button>
         <button class="btn btn-line" type="button" id="shuffle"><span class="spin" aria-hidden="true">↻</span> Surprise me</button>
@@ -654,36 +659,74 @@ footer small { opacity: .75; }
       default: return base;
     }
   }
-  // set = { shape, length, nails: [{c, d} x5] }
+  const SKIN = [["#F2C9B4", "#FBDFD0", "#D6A089"], ["#E5B091", "#F3C8AC", "#C38767"], ["#C68B65", "#DAA27D", "#9C6644"], ["#9E6745", "#B57B56", "#74452A"], ["#6B4029", "#83533B", "#462817"]];
+  const SKIN_N = ["Fair", "Light", "Medium", "Tan", "Deep"];
+  function defs(sid, skin) {
+    const k = SKIN[skin];
+    return `<defs>
+      <linearGradient id="cv${sid}" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".34"/><stop offset=".2" stop-color="#000" stop-opacity=".05"/><stop offset=".5" stop-color="#FFF" stop-opacity=".07"/><stop offset=".8" stop-color="#000" stop-opacity=".07"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient>
+      <linearGradient id="dp${sid}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".14"/><stop offset=".22" stop-color="#000" stop-opacity="0"/><stop offset=".86" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>
+      <linearGradient id="sk${sid}" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="${k[2]}"/><stop offset=".28" stop-color="${k[0]}"/><stop offset=".62" stop-color="${k[1]}"/><stop offset="1" stop-color="${k[2]}"/></linearGradient>
+      <radialGradient id="tp${sid}" cx=".5" cy=".35" r=".6"><stop offset="0" stop-color="${k[1]}"/><stop offset="1" stop-color="${k[1]}" stop-opacity="0"/></radialGradient>
+      <filter id="bl${sid}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.4"/></filter>
+      <filter id="sh${sid}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2"/></filter>
+    </defs>`;
+  }
+  const seedOf = (n, i) => n.c * 97 + DESIGNS.findIndex((x) => x[0] === n.d) * 13 + i;
+  // One nail (optionally on a fingertip), drawn at origin: width w, base at y = h
+  function nailBody(n, i, w, h, id, sid, o) {
+    const d = shapePath(o.shape, w, h), k = SKIN[o.skin];
+    let inner = art(n.d, i, w, h, POLISH[n.c].c, id, rng(seedOf(n, i)));
+    if (o.anim) {
+      const p = o.anim.p, delay = o.anim.delay;
+      const old = art(p.d, i, w, h, POLISH[p.c].c, id + "o", rng(seedOf(p, i)));
+      const sp = `dur="0.5s" begin="${delay}s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".5 0 .2 1"`;
+      inner = `${old}<clipPath id="r${id}"><rect x="-4" y="${h + 12}" width="${w + 8}" height="${h + 20}"><animate attributeName="y" from="${h + 12}" to="-6" ${sp}/></rect></clipPath>
+        <g clip-path="url(#r${id})">${inner}</g>
+        <rect x="-4" y="${h + 12}" width="${w + 8}" height="3" fill="#FFFFFF" opacity=".7"><animate attributeName="y" from="${h + 12}" to="-6" ${sp}/><animate attributeName="opacity" from=".7" to="0" dur="0.2s" begin="${(+delay + .45).toFixed(2)}s" fill="freeze"/></rect>`;
+    }
+    const base = `M-1 ${h} Q${w / 2} ${h + 9} ${w + 1} ${h}`;
+    let out = "", wallTop = h * .62;
+    if (o.finger) {
+      const fw = w * 1.36, fx = -(fw - w) / 2, r = fw / 2, ft = Math.min(h * .3, h - w * 1.12);
+      wallTop = Math.max(wallTop, ft + r * .9);
+      out += `<path d="M${fx} ${h + 300} L${fx} ${ft + r} A${r} ${r * 1.05} 0 0 1 ${fx + fw} ${ft + r} L${fx + fw} ${h + 300} Z" fill="url(#sk${sid})"/>`;
+      out += `<ellipse cx="${w / 2}" cy="${ft + r * .8}" rx="${r * .75}" ry="${r * .65}" fill="url(#tp${sid})" opacity=".7"/>`;
+      out += `<path d="M${w * .18} ${h + w * .95} q${w * .32} ${w * .13} ${w * .64} 0 M${w * .28} ${h + w * 1.1} q${w * .22} ${w * .08} ${w * .44} 0" stroke="${k[2]}" stroke-width="1.2" fill="none" opacity=".6" stroke-linecap="round"/>`;
+    }
+    out += `<path d="${d}" transform="translate(.6 2.2)" fill="#000" opacity="${o.finger ? .32 : .22}" filter="url(#sh${sid})"/>`;
+    out += `<clipPath id="c${id}"><path d="${d}"/></clipPath>
+      <g class="nail-art" clip-path="url(#c${id})">${inner}
+        <rect x="-2" y="-2" width="${w + 4}" height="${h + 14}" fill="url(#dp${sid})"/>
+        <rect x="-2" y="-2" width="${w + 4}" height="${h + 14}" fill="url(#cv${sid})"/>
+        ${o.finger ? `<path d="${base}" stroke="#000" stroke-opacity=".38" stroke-width="5" fill="none" filter="url(#bl${sid})"/>` : ""}
+        <path d="M${w * .24} ${h * .1} Q${w * .13} ${h * .45} ${w * .23} ${h * .84}" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="${w * .1}" stroke-linecap="round" fill="none" filter="url(#bl${sid})"/>
+        <path d="M${w * .25} ${h * .17} Q${w * .17} ${h * .45} ${w * .25} ${h * .72}" stroke="#FFFFFF" stroke-opacity=".85" stroke-width="${Math.max(1, w * .025)}" stroke-linecap="round" fill="none"/>
+        <ellipse cx="${w * .64}" cy="${h * .16}" rx="${w * .09}" ry="${Math.max(1.5, h * .025)}" fill="#FFFFFF" opacity=".5" filter="url(#bl${sid})"/>
+        <path d="M${w * .9} ${h * .28} Q${w * .95} ${h * .56} ${w * .88} ${h * .86}" stroke="#FFFFFF" stroke-opacity=".28" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </g>
+      <path d="${d}" fill="none" stroke="#2A0F2E" stroke-opacity=".22" stroke-width=".8"/>`;
+    if (o.finger) {
+      out += `<path d="${base}" stroke="${k[0]}" stroke-width="3.6" fill="none" stroke-linecap="round"/><path d="M1 ${h + 1.4} Q${w / 2} ${h + 10.6} ${w - 1} ${h + 1.4}" stroke="${k[1]}" stroke-width="1" fill="none" opacity=".75"/>`;
+      out += `<path d="M-.7 ${wallTop} L-.7 ${h}" stroke="${k[2]}" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><path d="M${w + .7} ${wallTop} L${w + .7} ${h}" stroke="${k[2]}" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>`;
+    }
+    return { svg: out, d };
+  }
+  // set = { shape, length, skin, nails: [{c, d} x5] }
   function renderSet(set, opt = {}) {
-    const widths = [58, 50, 54, 48, 40], lift = [0, 24, 32, 24, 8], gap = 12;
-    const f = LENGTHS[set.length].f;
-    const VW = 330, VH = 186, baseY = VH - 16;
+    const widths = [60, 50, 54, 48, 40], lift = [-6, 26, 36, 26, 6], gap = 12;
+    const f = LENGTHS[set.length].f, skin = set.skin ?? 1, sid = "s" + (++uid);
+    const VW = 350, VH = 210, baseY = VH - 34;
     const total = widths.reduce((a, b) => a + b, 0) + gap * 4;
-    let x = (VW - total) / 2, g = "", order = 0;
+    let x = (VW - total) / 2 + 10, g = defs(sid, skin), order = 0;
     widths.forEach((w, i) => {
       const n = set.nails[i], h = Math.round(w * f), id = "n" + (++uid), y = baseY - lift[i] - h;
-      const d = shapePath(set.shape, w, h);
-      const seed = n.c * 97 + DESIGNS.findIndex((x) => x[0] === n.d) * 13 + i;
-      let inner = art(n.d, i, w, h, POLISH[n.c].c, id, rng(seed));
-      if (opt.anim && opt.anim.has(i) && opt.prev && !reduced) {
-        const p = opt.prev.nails[i], delay = (order++ * .08).toFixed(2);
-        const old = art(p.d, i, w, h, POLISH[p.c].c, id + "o", rng(p.c * 97 + DESIGNS.findIndex((x) => x[0] === p.d) * 13 + i));
-        const sp = `dur="0.5s" begin="${delay}s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".5 0 .2 1"`;
-        inner = `${old}<clipPath id="r${id}"><rect x="-4" y="${h + 12}" width="${w + 8}" height="${h + 20}"><animate attributeName="y" from="${h + 12}" to="-6" ${sp}/></rect></clipPath>
-          <g clip-path="url(#r${id})">${inner}</g>
-          <rect x="-4" y="${h + 12}" width="${w + 8}" height="3" fill="#FFFFFF" opacity=".7"><animate attributeName="y" from="${h + 12}" to="-6" ${sp}/><animate attributeName="opacity" from=".7" to="0" dur="0.2s" begin="${(+delay + .45).toFixed(2)}s" fill="freeze"/></rect>`;
-      }
-      const sel = opt.sel === i ? `<path d="${d}" fill="none" stroke="var(--pink)" stroke-width="3" stroke-dasharray="5 4" transform="translate(-4 -4) scale(${(w + 8) / w} ${(h + 8) / h})"/><circle cx="${w / 2}" cy="-12" r="4" fill="var(--pink)"/>` : "";
-      g += `<g transform="translate(${x} ${y})" ${opt.interactive ? `data-nail="${i}"` : ""}>
-        <ellipse cx="${w / 2}" cy="${h + 6}" rx="${w * .45}" ry="4" fill="#2A0F2E" opacity=".12"/>
-        <clipPath id="c${id}"><path d="${d}"/></clipPath>
-        <g class="nail-art" clip-path="url(#c${id})">${inner}
-          <rect x="${w * .14}" y="${h * .12}" width="${w * .11}" height="${h * .5}" rx="${w * .055}" fill="#FFFFFF" opacity=".38"/>
-        </g>
-        <path d="${d}" fill="none" stroke="#2A0F2E" stroke-opacity=".14" stroke-width="1.2"/>${sel}
-        ${opt.interactive ? `<rect x="-6" y="-16" width="${w + 12}" height="${h + 30}" fill="transparent"/>` : ""}
-      </g>`;
+      const anim = opt.anim && opt.anim.has(i) && opt.prev && !reduced ? { p: opt.prev.nails[i], delay: (order++ * .08).toFixed(2) } : null;
+      const body = nailBody(n, i, w, h, id, sid, { shape: set.shape, skin, finger: true, anim });
+      const rot = i === 0 ? ` rotate(-16 ${w / 2} ${h + 40})` : i === 4 ? ` rotate(6 ${w / 2} ${h + 40})` : "";
+      const sel = opt.sel === i ? `<path d="${body.d}" fill="none" stroke="var(--pink)" stroke-width="3" stroke-dasharray="5 4" transform="translate(-4 -4) scale(${(w + 8) / w} ${(h + 8) / h})"/><circle cx="${w / 2}" cy="-12" r="4" fill="var(--pink)"/>` : "";
+      g += `<g transform="translate(${x} ${y})${rot}" ${opt.interactive ? `data-nail="${i}"` : ""}>${body.svg}${sel}
+        ${opt.interactive ? `<rect x="-6" y="-16" width="${w + 12}" height="${h + 40}" fill="transparent"/>` : ""}</g>`;
       x += w + gap;
     });
     return `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${g}</svg>`;
@@ -695,7 +738,7 @@ footer small { opacity: .75; }
   }
 
   // ---------- studio ----------
-  const DEFAULT = { shape: 2, length: 1, nails: [{ c: 0, d: "chrome" }, { c: 0, d: "chrome" }, { c: 0, d: "chrome" }, { c: 0, d: "glitter" }, { c: 0, d: "chrome" }] };
+  const DEFAULT = { shape: 2, length: 1, skin: 1, nails: [{ c: 0, d: "chrome" }, { c: 0, d: "chrome" }, { c: 0, d: "chrome" }, { c: 0, d: "glitter" }, { c: 0, d: "chrome" }] };
   let studio = clone(DEFAULT), sel = null, brush = { c: 0, d: "chrome" }, lastTier = 2;
 
   function chipRow(el, items, isOn, onPick, extra) {
@@ -753,6 +796,16 @@ footer small { opacity: .75; }
     chipRow($("designChips"), DESIGNS.map((d) => d[1]), (i) => DESIGNS[i][0] === cur.d,
       (i) => { brush.d = DESIGNS[i][0]; paint({ d: DESIGNS[i][0] }); },
       (i) => `<i class="tdot t${DESIGNS[i][2]}" aria-hidden="true"></i>`);
+    const tn = $("tones"); tn.innerHTML = "";
+    $("skinName").textContent = SKIN_N[studio.skin];
+    SKIN.forEach((k, i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "tone"; b.style.background = `linear-gradient(135deg, ${k[1]}, ${k[2]})`;
+      b.setAttribute("aria-label", SKIN_N[i] + " skin"); b.title = SKIN_N[i];
+      b.setAttribute("aria-pressed", studio.skin === i ? "true" : "false");
+      b.addEventListener("click", () => { studio.skin = i; drawStudio(); });
+      tn.appendChild(b);
+    });
     chipRow($("shapeChips"), SHAPES, (i) => i === studio.shape, (i) => { const prev = clone(studio); studio.shape = i; drawStudio({ prev, anim: new Set([0, 1, 2, 3, 4]) }); });
     chipRow($("lengthChips"), LENGTHS.map((l) => l.n), (i) => i === studio.length, (i) => { studio.length = i; drawStudio(); });
   }
@@ -772,14 +825,14 @@ footer small { opacity: .75; }
     sel = null; brush = { c: main, d: d1 };
     drawStudio({ prev, anim: new Set([0, 1, 2, 3, 4]) });
   });
-  $("reset").addEventListener("click", () => { const prev = clone(studio); studio = clone(DEFAULT); sel = null; brush = { c: 0, d: "chrome" }; drawStudio({ prev, anim: new Set([0, 1, 2, 3, 4]) }); });
+  $("reset").addEventListener("click", () => { const prev = clone(studio); studio = Object.assign(clone(DEFAULT), { skin: studio.skin }); sel = null; brush = { c: 0, d: "chrome" }; drawStudio({ prev, anim: new Set([0, 1, 2, 3, 4]) }); });
   $("priceThis").addEventListener("click", () => {
     est.tier = tierOf(studio); est.len = studio.length; est.fromStudio = true;
     drawEstOptions(); calc(); $("book").scrollIntoView();
   });
   function loadIntoStudio(set, label) {
     const prev = clone(studio);
-    studio = clone(set); sel = null; brush = clone(set.nails[0]);
+    studio = Object.assign(clone(set), { skin: studio.skin }); sel = null; brush = clone(set.nails[0]);
     drawStudio({ prev, anim: new Set([0, 1, 2, 3, 4]) });
     $("studio").scrollIntoView();
     toast(label + " is in the studio");
@@ -793,9 +846,9 @@ footer small { opacity: .75; }
 
   // ---------- tier dial ----------
   const DIAL_SETS = {
-    1: { shape: 1, length: 0, nails: [{ c: 1, d: "french" }, { c: 1, d: "french" }, { c: 1, d: "french" }, { c: 1, d: "glitter" }, { c: 1, d: "french" }] },
-    2: { shape: 2, length: 1, nails: all(2, "chrome") },
-    3: { shape: 3, length: 2, nails: [{ c: 5, d: "chrome" }, { c: 5, d: "floral" }, { c: 5, d: "gems" }, { c: 1, d: "hearts" }, { c: 5, d: "lines" }] }
+    1: { shape: 1, length: 0, skin: 0, nails: [{ c: 1, d: "french" }, { c: 1, d: "french" }, { c: 1, d: "french" }, { c: 1, d: "glitter" }, { c: 1, d: "french" }] },
+    2: { shape: 2, length: 1, skin: 2, nails: all(2, "chrome") },
+    3: { shape: 3, length: 2, skin: 4, nails: [{ c: 5, d: "chrome" }, { c: 5, d: "floral" }, { c: 5, d: "gems" }, { c: 1, d: "hearts" }, { c: 5, d: "lines" }] }
   };
   let dialTier = 2, dialSet = DIAL_SETS[2];
   function countTo(el, to, fmt, from) {
@@ -864,7 +917,7 @@ footer small { opacity: .75; }
     if (tier === 3) { nails[1] = { c: palette[1], d: "chrome" }; nails[3] = { c: palette[2], d: designs[(vibe + 1) % 3] }; }
     else if (tier === 2) nails[3] = { c, d: "glitter" };
     else if (vibe !== 0) nails[3] = { c: palette[1], d: "glitter" };
-    const prev = quizSet; quizSet = { shape, length, nails };
+    const prev = quizSet; quizSet = { shape, length, skin: studio.skin, nails };
     tier = tierOf(quizSet);
     const S = SERVICES.find((s) => s.id === svc);
     const why = hands === 0 ? "BIAB adds strength so your nails survive busy hands." : hands === 2 ? "Extensions give you the length to show off the art." : "A great all-rounder for your lifestyle.";
@@ -874,7 +927,7 @@ footer small { opacity: .75; }
       <div class="q-tags"><span>${SHAPES[shape]}</span><span>${LENGTHS[length].n}</span><span>${POLISH[c].n}</span><span>${D[d].n}</span></div>
       <div class="studio-actions"><button class="btn btn-pink" type="button" id="qLoad">Edit in the studio</button><button class="btn btn-line" type="button" id="qPrice">Price it</button></div>`;
     $("qLoad").addEventListener("click", () => loadIntoStudio(quizSet, "Your quiz set"));
-    $("qPrice").addEventListener("click", () => { studio = clone(quizSet); sel = null; drawStudio(); est.svc = svc; est.tier = tier; est.len = length; est.fromStudio = true; drawEstOptions(); calc(); $("book").scrollIntoView(); });
+    $("qPrice").addEventListener("click", () => { studio = Object.assign(clone(quizSet), { skin: studio.skin }); sel = null; drawStudio(); est.svc = svc; est.tier = tier; est.len = length; est.fromStudio = true; drawEstOptions(); calc(); $("book").scrollIntoView(); });
   }
 
   // ---------- looks strip ----------
@@ -892,6 +945,7 @@ footer small { opacity: .75; }
     { t: "Lover girl", s: { shape: 2, length: 0, nails: mixNails([[4, "hearts"], [1, "solid"], [4, "hearts"], [1, "glitter"], [4, "hearts"]]) } },
     { t: "Midnight mix & match", s: { shape: 3, length: 2, nails: mixNails([[5, "chrome"], [5, "floral"], [5, "french"], [5, "gems"], [5, "lines"]]) } }
   ];
+  LOOKS.forEach((l, i) => { l.s.skin = [1, 3, 0, 4, 2, 1, 3, 0, 4, 2, 1][i]; });
   let lookFilter = 0;
   function drawLooks() {
     chipRow($("lookFilter"), ["All", "Tier 1 · Classic", "Tier 2 · Signature", "Tier 3 · Couture"], (i) => i === lookFilter, (i) => { lookFilter = i; drawLooks(); $("strip").scrollLeft = 0; },
@@ -1043,11 +1097,10 @@ footer small { opacity: .75; }
       { x: 24, y: 8, w: 40, r: 28, s: 3, f: 1.7, c: 1, d: "hearts", d2: .4, t: 4.4, wide: 1 }
     ];
     $("floaters").innerHTML = FL.map((n) => {
-      const w = 50, h = Math.round(w * n.f), id = "fl" + (++uid), d = shapePath(n.s, w, h);
+      const w = 50, h = Math.round(w * n.f), id = "fl" + (++uid), sid = "fs" + uid;
+      const body = nailBody({ c: n.c, d: n.d }, 2, w, h, id, sid, { shape: n.s, skin: 1, finger: false });
       return `<div class="floater${n.wide ? " wide" : ""}" style="left:${n.x}%;top:${n.y}%;--w:${n.w}px;--r:${n.r}deg;--d:${n.d2};--t:${n.t}s">
-        <svg viewBox="-2 -2 ${w + 4} ${h + 14}"><clipPath id="c${id}"><path d="${d}"/></clipPath>
-        <g clip-path="url(#c${id})">${art(n.d, 2, w, h, POLISH[n.c].c, id, rng(n.c * 11 + 5))}<rect x="${w * .14}" y="${h * .12}" width="${w * .11}" height="${h * .5}" rx="${w * .055}" fill="#FFFFFF" opacity=".45"/></g>
-        <path d="${d}" fill="none" stroke="#2A0F2E" stroke-opacity=".12"/></svg></div>`;
+        <svg viewBox="-6 -6 ${w + 12} ${h + 22}">${defs(sid, 1)}${body.svg}</svg></div>`;
     }).join("");
 
     // waves
