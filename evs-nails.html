@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ev's Nails</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Outfit:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a fuchsia "lacquer" hero band holding a live nail-tip rack, then calm blush sections; one inverted plum receipt card for pricing. */
+:root {
+  --bg: #FFF4F8;
+  --surface: #FFFFFF;
+  --ink: #2A0F2E;
+  --muted: #76566F;
+  --line: #F0D2E0;
+  --pink: #E8197D;
+  --pink-deep: #B80E60;
+  --on-pink: #FFFFFF;
+  --lilac: #CFC2FF;
+  --butter: #FFE27A;
+  --chip: #FBE3EE;
+  --font-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --font-body: "Outfit", "Segoe UI", system-ui, sans-serif;
+  --radius: 18px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #170A1A; --surface: #241228; --ink: #FCEAF3; --muted: #C7A6C1; --line: #3D2241;
+    --pink: #FF3D98; --pink-deep: #D61F78; --on-pink: #FFFFFF; --lilac: #8F7BE0; --butter: #F5D25E; --chip: #351A39;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #170A1A; --surface: #241228; --ink: #FCEAF3; --muted: #C7A6C1; --line: #3D2241;
+  --pink: #FF3D98; --pink-deep: #D61F78; --on-pink: #FFFFFF; --lilac: #8F7BE0; --butter: #F5D25E; --chip: #351A39;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.05; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--butter); outline-offset: 2px; border-radius: 8px; }
+
+.wrap { max-width: 1140px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--pink); }
+
+/* Nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--surface); border-bottom: 1px solid var(--line); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.logo { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.logo-dot { width: 14px; height: 20px; border-radius: 7px 7px 4px 4px; background: var(--pink); display: inline-block; }
+.nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav-links a { text-decoration: none; font-weight: 500; font-size: 0.95rem; padding: 6px 12px; border-radius: 999px; }
+.nav-links a:hover { background: var(--chip); }
+.nav-links a.book { background: var(--pink); color: var(--on-pink); }
+@media (max-width: 720px) { .nav-links a:not(.book) { display: none; } }
+
+/* Hero */
+.hero { background: var(--pink); color: var(--on-pink); position: relative; overflow: hidden; }
+.hero::after { content: ""; position: absolute; inset: auto -10% -60% 40%; height: 120%; background: radial-gradient(closest-side, rgba(255,255,255,.22), transparent); pointer-events: none; }
+.hero .wrap { display: grid; grid-template-columns: 1fr 1.05fr; gap: 40px; padding-block: 56px 64px; align-items: center; position: relative; z-index: 1; }
+@media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; padding-block: 36px 44px; } }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.4rem); font-weight: 800; letter-spacing: -0.03em; }
+.hero h1 span { display: block; font-size: 0.38em; font-weight: 500; letter-spacing: 0; margin-top: 10px; opacity: .92; }
+.hero-copy { display: grid; gap: 22px; min-width: 0; }
+.hero-copy p { font-size: 1.15rem; max-width: 34ch; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer; text-decoration: none; font-weight: 600; padding: 13px 22px; border-radius: 999px; transition: transform .15s ease, box-shadow .15s ease; }
+.btn:hover { transform: translateY(-2px); }
+.btn-light { background: #FFFFFF; color: #2A0F2E; box-shadow: 0 6px 0 rgba(0,0,0,.15); }
+.btn-ghost { background: transparent; color: var(--on-pink); box-shadow: inset 0 0 0 2px rgba(255,255,255,.7); }
+.btn-pink { background: var(--pink); color: var(--on-pink); }
+.hero-facts { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .92rem; opacity: .95; }
+.hero-facts b { font-family: var(--font-display); }
+
+/* Try-on rack */
+.rack { background: var(--surface); color: var(--ink); border-radius: 26px; padding: 18px; box-shadow: 0 24px 60px rgba(60, 0, 30, .28); display: grid; gap: 14px; min-width: 0; }
+.rack-stage { background: linear-gradient(180deg, var(--chip), var(--surface)); border-radius: 18px; padding: 10px 6px 0; }
+.rack-stage svg { display: block; width: 100%; height: auto; }
+.rack-label { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; font-size: .9rem; color: var(--muted); }
+.rack-label b { color: var(--ink); font-family: var(--font-display); font-size: 1.05rem; }
+.ctrl { display: grid; gap: 6px; }
+.ctrl-title { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: var(--surface); padding: 6px 12px; border-radius: 999px; cursor: pointer; font-size: .9rem; font-weight: 500; }
+.chip:hover { border-color: var(--pink); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+.swatch { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--line); cursor: pointer; position: relative; }
+.swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--ink); transform: scale(1.08); }
+.swatch::after { content: ""; position: absolute; left: 6px; top: 5px; width: 7px; height: 11px; border-radius: 4px; background: rgba(255,255,255,.55); }
+
+/* Sections */
+section { scroll-margin-top: 72px; }
+.section { padding-block: 72px; }
+.section-head { display: grid; gap: 10px; margin-bottom: 32px; max-width: 62ch; }
+.section-head h2 { font-size: clamp(2rem, 4.6vw, 3rem); font-weight: 800; letter-spacing: -0.02em; }
+.section-head p { color: var(--muted); font-size: 1.08rem; }
+
+/* Services */
+.services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .services { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .services { grid-template-columns: 1fr; } }
+.service { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: grid; gap: 10px; align-content: start; transition: border-color .15s ease, transform .15s ease; }
+.service:hover { border-color: var(--pink); transform: translateY(-3px); }
+.service h3 { font-size: 1.3rem; font-weight: 700; }
+.service p { color: var(--muted); }
+.service-meta { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px dashed var(--line); padding-top: 12px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.service-meta .price { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; color: var(--pink); }
+.service-meta .time { font-size: .9rem; color: var(--muted); }
+
+/* Tiers */
+.tiers-band { background: var(--surface); border-block: 1px solid var(--line); }
+.tiers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
+@media (max-width: 900px) { .tiers { grid-template-columns: 1fr; } }
+.tier { border-radius: 22px; padding: 22px; display: grid; gap: 14px; align-content: start; border: 1px solid var(--line); background: var(--bg); }
+.tier.t3 { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tier.t3 .tier-list li::before { background: var(--butter); }
+.tier.t3 .tier-blurb, .tier.t3 .tier-add small { color: inherit; opacity: .8; }
+.tier-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.tier-num { font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--pink); }
+.tier h3 { font-size: 1.9rem; font-weight: 800; }
+.tier-add { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; text-align: right; font-variant-numeric: tabular-nums; }
+.tier-add small { display: block; font-family: var(--font-body); font-size: .78rem; font-weight: 500; color: var(--muted); }
+.tier-blurb { color: var(--muted); }
+.tier-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.tier-list li { display: flex; gap: 10px; align-items: baseline; }
+.tier-list li::before { content: ""; flex: none; width: 8px; height: 12px; border-radius: 4px 4px 2px 2px; background: var(--pink); transform: translateY(1px); }
+.tier-preview { border-radius: 14px; background: var(--chip); padding: 8px 4px 0; }
+.tier.t3 .tier-preview { background: rgba(255,255,255,.08); }
+.tier-preview svg { display: block; width: 100%; height: auto; }
+.tier .btn { justify-self: start; }
+
+/* Gallery */
+.filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .gallery { grid-template-columns: 1fr; } }
+.look { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: grid; cursor: pointer; text-align: left; padding: 0; transition: transform .15s ease, border-color .15s ease; }
+.look:hover { transform: translateY(-3px); border-color: var(--pink); }
+.look-art { background: var(--chip); padding: 12px 6px 0; }
+.look-art svg { display: block; width: 100%; height: auto; }
+.look-info { padding: 14px 16px; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.look-info b { font-family: var(--font-display); font-size: 1.05rem; }
+.look-info small { display: block; color: var(--muted); }
+.pill { flex: none; font-size: .75rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--chip); color: var(--pink); white-space: nowrap; }
+.pill.p3 { background: var(--ink); color: var(--bg); }
+.pill.p2 { background: var(--lilac); color: #2A0F2E; }
+.gallery-note { margin-top: 14px; color: var(--muted); font-size: .9rem; }
+
+/* Estimator */
+.estimate { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: start; }
+@media (max-width: 900px) { .estimate { grid-template-columns: 1fr; } }
+.form { display: grid; gap: 22px; min-width: 0; }
+.field { display: grid; gap: 8px; }
+.field > label, .field > .ctrl-title { font-weight: 600; font-size: .95rem; color: var(--ink); letter-spacing: 0; text-transform: none; }
+.opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 520px) { .opts { grid-template-columns: 1fr; } }
+.opt { position: relative; }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt label { display: flex; justify-content: space-between; gap: 10px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-variant-numeric: tabular-nums; }
+.opt label span:last-child { color: var(--muted); white-space: nowrap; }
+.opt input:checked + label { border-color: var(--pink); box-shadow: inset 0 0 0 1px var(--pink); background: var(--chip); }
+.opt input:focus-visible + label { outline: 3px solid var(--butter); outline-offset: 2px; }
+.opt input:disabled + label { opacity: .45; cursor: not-allowed; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; }
+.row > * { flex: 1 1 180px; min-width: 0; }
+input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); }
+textarea { resize: vertical; min-height: 84px; }
+.hint { font-size: .85rem; color: var(--muted); }
+
+.receipt { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 80px); background: var(--ink); color: var(--bg); border-radius: 24px; padding: 24px; display: grid; gap: 16px; min-width: 0; }
+.receipt h3 { font-size: 1.4rem; }
+.lines { display: grid; gap: 8px; font-variant-numeric: tabular-nums; }
+.line-item { display: flex; justify-content: space-between; gap: 12px; font-size: .95rem; }
+.line-item span:first-child { opacity: .85; }
+.total { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px dashed currentColor; padding-top: 14px; }
+.total b { font-family: var(--font-display); font-size: 2.6rem; font-weight: 800; color: var(--butter); font-variant-numeric: tabular-nums; }
+.duration { font-size: .95rem; opacity: .85; }
+.msg { background: rgba(255,255,255,.08); color: inherit; border: 1px solid rgba(255,255,255,.18); font-size: .9rem; min-height: 160px; }
+.copy-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.copy-row .btn { background: var(--butter); color: #2A0F2E; }
+.copied { font-size: .9rem; color: var(--butter); }
+.contact { font-size: .9rem; opacity: .85; }
+
+/* Aftercare */
+.faq { display: grid; gap: 10px; max-width: 820px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 4px 18px; }
+.faq summary { cursor: pointer; font-weight: 600; padding: 14px 0; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-family: var(--font-display); font-size: 1.4rem; line-height: 1; color: var(--pink); }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { padding-bottom: 16px; color: var(--muted); max-width: 65ch; }
+
+footer { background: var(--ink); color: var(--bg); }
+footer .wrap { padding-block: 40px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; }
+footer .logo-dot { background: var(--butter); }
+footer small { opacity: .75; }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="logo-dot" aria-hidden="true"></span>Ev's Nails</a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#tiers">Design tiers</a>
+      <a href="#gallery">Looks</a>
+      <a href="#aftercare">Aftercare</a>
+      <a class="book" href="#book">Price &amp; book</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="eyebrow" style="color:var(--on-pink);opacity:.85">Nail technician · By appointment</p>
+      <h1>Ev's Nails<span>Gel, BIAB, acrylic and extensions, done properly.</span></h1>
+      <p>Every set is priced in three design tiers, so you only pay for the detail you actually want. Build your set on the right, then see the price.</p>
+      <div class="hero-actions">
+        <button class="btn btn-light" id="priceThis" type="button">Price this set</button>
+        <a class="btn btn-ghost" href="#tiers">Compare tiers</a>
+      </div>
+      <div class="hero-facts">
+        <span><b>6</b> services</span>
+        <span><b>5</b> nail shapes</span>
+        <span><b>3</b> design tiers</span>
+      </div>
+    </div>
+
+    <div class="rack" aria-label="Try a set">
+      <div class="rack-stage" id="rackStage" role="img" aria-live="polite"></div>
+      <div class="rack-label"><b id="rackName">Almond · Medium</b><span id="rackTier">Tier 2 · Signature</span></div>
+      <div class="ctrl"><span class="ctrl-title">Shape</span><div class="chips" id="shapeChips"></div></div>
+      <div class="ctrl"><span class="ctrl-title">Length</span><div class="chips" id="lengthChips"></div></div>
+      <div class="ctrl"><span class="ctrl-title">Colour · <span id="colourName">Cherry Cola</span></span><div class="swatches" id="swatches"></div></div>
+      <div class="ctrl"><span class="ctrl-title">Design tier</span><div class="chips" id="tierChips"></div></div>
+      <div class="ctrl"><span class="ctrl-title">Design</span><div class="chips" id="designChips"></div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="services" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Services</p>
+        <h2>Pick your base, then your design</h2>
+        <p>Prices below are for plain colour. Any design is added on top using the tier it falls into.</p>
+      </div>
+      <div class="services" id="servicesGrid"></div>
+    </div>
+  </section>
+
+  <section id="tiers" class="tiers-band">
+    <div class="wrap section">
+      <div class="section-head">
+        <p class="eyebrow">Design tiers</p>
+        <h2>Three tiers, one for every mood</h2>
+        <p>Tiers are priced per full set and include the extra time the art takes. Not sure which tier your inspo photo falls into? Send it over and Ev will tell you.</p>
+      </div>
+      <div class="tiers" id="tiersGrid"></div>
+    </div>
+  </section>
+
+  <section id="gallery" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Looks</p>
+        <h2>Popular sets</h2>
+        <p>Tap a look to load it onto the try-on rack.</p>
+      </div>
+      <div class="filter chips" id="galleryFilter"></div>
+      <div class="gallery" id="galleryGrid"></div>
+      <p class="gallery-note">Illustrated previews. Ask Ev for photos of real sets.</p>
+    </div>
+  </section>
+
+  <section id="book" class="tiers-band">
+    <div class="wrap section">
+      <div class="section-head">
+        <p class="eyebrow">Price &amp; book</p>
+        <h2>Work out your price</h2>
+        <p>Choose your options and you'll get an estimate plus a booking message ready to send to Ev.</p>
+      </div>
+      <div class="estimate">
+        <form class="form" id="estForm" autocomplete="off">
+          <div class="field"><span class="ctrl-title">Service</span><div class="opts" id="svcOpts"></div></div>
+          <div class="field"><span class="ctrl-title">Design tier</span><div class="opts" id="tierOpts"></div></div>
+          <div class="field"><span class="ctrl-title">Length</span><div class="opts" id="lenOpts"></div><p class="hint" id="lenHint">Length only changes the price on extensions and infills.</p></div>
+          <div class="field">
+            <span class="ctrl-title">Extras</span>
+            <div class="opts">
+              <div class="opt"><input type="checkbox" id="exRemoval"><label for="exRemoval"><span>Removal of another tech's work</span><span>+£8</span></label></div>
+              <div class="opt"><input type="checkbox" id="exGems"><label for="exGems"><span>Extra gems or charms</span><span>+£5</span></label></div>
+            </div>
+            <div class="row">
+              <div class="field"><label for="exRepair">Broken nails to repair (£3 each)</label><input type="number" id="exRepair" min="0" max="10" value="0" inputmode="numeric"></div>
+            </div>
+          </div>
+          <div class="field">
+            <span class="ctrl-title">Your details</span>
+            <div class="row">
+              <div class="field"><label for="bName">Name</label><input type="text" id="bName" placeholder="e.g. Jess"></div>
+              <div class="field"><label for="bDay">Preferred day</label>
+                <select id="bDay"><option>Any day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option></select>
+              </div>
+              <div class="field"><label for="bTime">Time of day</label>
+                <select id="bTime"><option>Any time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
+              </div>
+            </div>
+            <div class="field"><label for="bNotes">Inspo or notes</label><textarea id="bNotes" placeholder="Colours, a description of your inspo pic, any allergies…"></textarea></div>
+          </div>
+        </form>
+
+        <aside class="receipt" aria-live="polite">
+          <h3>Your estimate</h3>
+          <div class="lines" id="lines"></div>
+          <div class="total"><span>Total</span><b id="total">£0</b></div>
+          <p class="duration" id="duration">About 1 hr</p>
+          <label class="ctrl-title" for="msg" style="color:inherit;opacity:.8">Booking message</label>
+          <textarea class="msg" id="msg" readonly></textarea>
+          <div class="copy-row">
+            <button class="btn" type="button" id="copyBtn">Copy message</button>
+            <span class="copied" id="copied" hidden>Copied. Paste it into a DM to Ev.</span>
+          </div>
+          <p class="contact" id="contact">Send this to Ev by DM or text to request your slot. A small deposit secures the booking.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="aftercare" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Aftercare &amp; FAQs</p>
+        <h2>Keep them looking fresh</h2>
+      </div>
+      <div class="faq">
+        <details open><summary>How long will my nails last?</summary><p>Gel polish lasts 2 to 3 weeks. BIAB, acrylic and gel extensions are best infilled every 3 weeks so the balance of the nail stays strong.</p></details>
+        <details><summary>Which tier is my inspo picture?</summary><p>As a guide: plain colour, French and a single accent nail are Tier 1. Chrome, ombré and simple line art are Tier 2. Hand-painted pictures, 3D charms, heavy gems or every nail different is Tier 3. Send your photo and Ev will confirm before you book.</p></details>
+        <details><summary>Can I come in with another tech's set on?</summary><p>Yes. Add "Removal of another tech's work" so there's enough time to soak off safely without damaging your natural nails.</p></details>
+        <details><summary>What should I do after my appointment?</summary><p>Apply cuticle oil every day, wear gloves for cleaning and washing up, and don't use your nails as tools. If anything lifts in the first 5 days, message Ev for a free fix.</p></details>
+        <details><summary>Do you take deposits?</summary><p>A small deposit holds your slot and comes off your final price. Please give 24 hours' notice if you need to move your appointment.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo"><span class="logo-dot" aria-hidden="true"></span>Ev's Nails</span>
+    <small>Prices are a guide. Final price is confirmed when you book.</small>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Edit these to update the site
+  const CONFIG = {
+    instagram: "",   // e.g. "@evsnails"
+    phone: ""        // e.g. "07123 456789"
+  };
+
+  const POLISH = [
+    { n: "Cherry Cola", c: "#8E0F2A" }, { n: "Bubblegum", c: "#FF8DC7" }, { n: "Lilac Haze", c: "#B9A7FF" },
+    { n: "Butter", c: "#FFE27A" }, { n: "Milk Bath", c: "#F4EEE8" }, { n: "Midnight", c: "#1F1C45" },
+    { n: "Matcha", c: "#9DBB6B" }, { n: "Peach Fizz", c: "#FF9E7A" }, { n: "Hot Fuchsia", c: "#E8197D" }
+  ];
+  const SHAPES = ["Square", "Round", "Almond", "Coffin", "Stiletto"];
+  const LENGTHS = [
+    { n: "Short", f: 1.05, p: 0 }, { n: "Medium", f: 1.45, p: 3 }, { n: "Long", f: 1.9, p: 6 }
+  ];
+  const TIERS = {
+    1: { name: "Classic", price: 0, time: 0, blurb: "Clean, simple and always in style.",
+         designs: [["solid", "Solid gloss"], ["french", "French tip"], ["accent", "Glitter accent"]],
+         list: ["One solid colour", "Classic or coloured French", "Up to 2 glitter or accent nails"] },
+    2: { name: "Signature", price: 8, time: 20, blurb: "A little extra: finishes and simple art.",
+         designs: [["ombre", "Ombré"], ["chrome", "Chrome"], ["lines", "Line art"]],
+         list: ["Chrome, aura or ombré", "Minimal line art, dots or swirls", "Simple art on up to 4 nails"] },
+    3: { name: "Couture", price: 18, time: 45, blurb: "Full statement sets with hand-painted detail.",
+         designs: [["floral", "Freehand florals"], ["gems", "Gems & charms"], ["mix", "Mix & match"]],
+         list: ["Hand-painted art on every nail", "3D gel, gems and charms", "Every nail different"] }
+  };
+  const SERVICES = [
+    { id: "gel", n: "Gel polish", p: 25, t: 60, ext: false, d: "Glossy, chip-resistant colour on your natural nails. Lasts 2 to 3 weeks." },
+    { id: "biab", n: "BIAB overlay", p: 32, t: 75, ext: false, d: "Builder gel that strengthens natural nails and helps them grow." },
+    { id: "acrylic", n: "Acrylic full set", p: 38, t: 105, ext: true, d: "Tips or sculpted acrylic in any shape and length." },
+    { id: "gelx", n: "Gel extensions", p: 40, t: 105, ext: true, d: "Soft-gel tips for a lighter, natural-feeling extension." },
+    { id: "infill", n: "Infills", p: 30, t: 75, ext: true, d: "Rebalance and fill the grow-out on an existing set from Ev." },
+    { id: "toes", n: "Gel toes", p: 22, t: 45, ext: false, d: "Toes shaped, cuticles tidied and finished in gel colour." }
+  ];
+
+  const state = { shape: 2, length: 1, color: 0, tier: 2, design: "chrome" };
+
+  // ---------- helpers ----------
+  const $ = (id) => document.getElementById(id);
+  const money = (v) => "£" + v;
+  const mins = (m) => { const h = Math.floor(m / 60), r = m % 60; return (h ? h + " hr" : "") + (h && r ? " " : "") + (r ? r + " min" : ""); };
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function isLight(hex) { const n = parseInt(hex.slice(1), 16); const r = n >> 16, g = n >> 8 & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 160; }
+  let uidCounter = 0;
+
+  // ---------- nail renderer ----------
+  function shapePath(shape, w, h) {
+    const cut = `L${w} ${h} Q${w / 2} ${h + 9} 0 ${h} Z`;
+    switch (shape) {
+      case 0: return `M0 ${h} L0 6 Q0 0 6 0 L${w - 6} 0 Q${w} 0 ${w} 6 ${cut}`;
+      case 1: return `M0 ${h} L0 ${w / 2} A${w / 2} ${w / 2} 0 0 1 ${w} ${w / 2} ${cut}`;
+      case 2: return `M0 ${h} L0 ${h * .48} Q${w * .04} ${h * .1} ${w / 2} 0 Q${w * .96} ${h * .1} ${w} ${h * .48} ${cut}`;
+      case 3: return `M0 ${h} L${w * .13} ${h * .1} Q${w * .16} 0 ${w * .3} 0 L${w * .7} 0 Q${w * .84} 0 ${w * .87} ${h * .1} ${cut}`;
+      default: return `M0 ${h} L0 ${h * .6} Q${w * .12} ${h * .22} ${w / 2} 0 Q${w * .88} ${h * .22} ${w} ${h * .6} ${cut}`;
+    }
+  }
+  function flower(cx, cy, r, petal, mid) {
+    let s = "";
+    for (let k = 0; k < 5; k++) { const a = k / 5 * Math.PI * 2; s += `<circle cx="${cx + Math.cos(a) * r}" cy="${cy + Math.sin(a) * r}" r="${r * .8}" fill="${petal}"/>`; }
+    return s + `<circle cx="${cx}" cy="${cy}" r="${r * .55}" fill="${mid}"/>`;
+  }
+  function designArt(design, i, w, h, c, id, rand) {
+    const contrast = isLight(c) ? "#2A0F2E" : "#FFFFFF";
+    const nude = "#F5D7CF";
+    switch (design) {
+      case "french":
+        return `<rect width="${w}" height="${h + 12}" fill="${nude}"/><path d="M-2 -2 H${w + 2} V${h * .34} Q${w / 2} ${h * .12} -2 ${h * .34} Z" fill="${c === "#F4EEE8" ? "#FFFFFF" : c}"/>`;
+      case "accent":
+        if (i === 3 || i === 1 && h > 70) {
+          let g = `<rect width="${w}" height="${h + 12}" fill="${c}"/>`;
+          for (let k = 0; k < 40; k++) g += `<circle cx="${rand() * w}" cy="${rand() * h}" r="${0.8 + rand() * 1.8}" fill="${rand() > .5 ? "#FFFFFF" : "#FFE27A"}" opacity="${.5 + rand() * .5}"/>`;
+          return g;
+        }
+        return `<rect width="${w}" height="${h + 12}" fill="${c}"/>`;
+      case "ombre":
+        return `<defs><linearGradient id="g${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}"/><stop offset=".85" stop-color="${nude}"/></linearGradient></defs><rect width="${w}" height="${h + 12}" fill="url(#g${id})"/>`;
+      case "chrome":
+        return `<defs><linearGradient id="g${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c}"/><stop offset=".38" stop-color="#FFFFFF" stop-opacity=".9"/><stop offset=".55" stop-color="${c}"/><stop offset="1" stop-color="#2A0F2E" stop-opacity=".55"/></linearGradient></defs><rect width="${w}" height="${h + 12}" fill="${c}"/><rect width="${w}" height="${h + 12}" fill="url(#g${id})"/>`;
+      case "lines": {
+        const o = i * 7;
+        return `<rect width="${w}" height="${h + 12}" fill="${c}"/>
+          <path d="M-4 ${h * .25 + o} C${w * .3} ${h * .05 + o}, ${w * .65} ${h * .55}, ${w + 4} ${h * .35}" stroke="${contrast}" stroke-width="2" fill="none"/>
+          <path d="M-4 ${h * .6} C${w * .35} ${h * .45}, ${w * .6} ${h * .85 - o}, ${w + 4} ${h * .68}" stroke="#FFE27A" stroke-width="2" fill="none"/>
+          <circle cx="${w * .7}" cy="${h * .2}" r="2.2" fill="${contrast}"/>`;
+      }
+      case "floral": {
+        const petal = isLight(c) ? "#E8197D" : "#FFFFFF";
+        let s = `<rect width="${w}" height="${h + 12}" fill="${c}"/>`;
+        s += flower(w * (.35 + rand() * .3), h * (.25 + rand() * .2), w * .12, petal, "#FFE27A");
+        if (h > 60) s += flower(w * (.2 + rand() * .2), h * .7, w * .09, petal, "#FFE27A");
+        s += `<path d="M${w * .5} ${h * .45} q ${w * .2} ${h * .1} ${w * .1} ${h * .25}" stroke="#7FA65A" stroke-width="2" fill="none"/>`;
+        return s;
+      }
+      case "gems": {
+        let s = designArt("chrome", i, w, h, c, id, rand);
+        const gy = h * .78;
+        s += `<circle cx="${w / 2}" cy="${gy}" r="${w * .1}" fill="#FFFFFF" stroke="#C9B8FF" stroke-width="1.5"/><circle cx="${w / 2 - w * .03}" cy="${gy - w * .03}" r="${w * .035}" fill="#C9B8FF"/>`;
+        s += `<circle cx="${w * .26}" cy="${gy + 2}" r="${w * .05}" fill="#FFFFFF"/><circle cx="${w * .74}" cy="${gy + 2}" r="${w * .05}" fill="#FFFFFF"/>`;
+        if (i === 2) { const cx = w / 2, cy = h * .4, R = w * .17, r = R * .45; let pts = ""; for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r : R; pts += `${cx + Math.cos(a) * rr},${cy + Math.sin(a) * rr} `; } s += `<polygon points="${pts}" fill="#FFE27A" stroke="#C99A00" stroke-width="1"/>`; }
+        return s;
+      }
+      case "mix": {
+        const set = ["chrome", "floral", "french", "gems", "lines"];
+        return designArt(set[i], i, w, h, c, id, rand);
+      }
+      default:
+        return `<rect width="${w}" height="${h + 12}" fill="${c}"/>`;
+    }
+  }
+  function renderSet(o) {
+    const widths = [58, 50, 54, 48, 40], lift = [0, 24, 32, 24, 8], gap = 12;
+    const f = LENGTHS[o.length].f, c = POLISH[o.color].c, rand = rng(o.color * 31 + o.shape * 7 + 3);
+    const VW = 330, VH = 186, baseY = VH - 16;
+    const total = widths.reduce((a, b) => a + b, 0) + gap * 4;
+    let x = (VW - total) / 2, g = "";
+    widths.forEach((w, i) => {
+      const h = Math.round(w * f), id = "n" + (++uidCounter), y = baseY - lift[i] - h;
+      const d = shapePath(o.shape, w, h);
+      g += `<g transform="translate(${x} ${y})">
+        <ellipse cx="${w / 2}" cy="${h + 6}" rx="${w * .45}" ry="4" fill="#2A0F2E" opacity=".12"/>
+        <clipPath id="c${id}"><path d="${d}"/></clipPath>
+        <g clip-path="url(#c${id})">${designArt(o.design, i, w, h, c, id, rand)}
+          <rect x="${w * .14}" y="${h * .12}" width="${w * .11}" height="${h * .5}" rx="${w * .055}" fill="#FFFFFF" opacity=".38"/>
+        </g>
+        <path d="${d}" fill="none" stroke="#2A0F2E" stroke-opacity=".14" stroke-width="1.2"/>
+      </g>`;
+      x += w + gap;
+    });
+    return `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${g}</svg>`;
+  }
+  const designName = (o) => { for (const t of Object.values(TIERS)) for (const d of t.designs) if (d[0] === o.design) return d[1]; return ""; };
+  const describe = (o) => `${POLISH[o.color].n} ${designName(o).toLowerCase()}, ${SHAPES[o.shape].toLowerCase()}, ${LENGTHS[o.length].n.toLowerCase()}`;
+
+  // ---------- try-on rack ----------
+  function chipRow(el, items, isOn, onPick) {
+    el.innerHTML = "";
+    items.forEach((label, idx) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = label;
+      b.setAttribute("aria-pressed", isOn(idx) ? "true" : "false");
+      b.addEventListener("click", () => onPick(idx));
+      el.appendChild(b);
+    });
+  }
+  function drawRack() {
+    $("rackStage").innerHTML = renderSet(state);
+    $("rackStage").setAttribute("aria-label", "Preview: " + describe(state));
+    $("rackName").textContent = `${SHAPES[state.shape]} · ${LENGTHS[state.length].n}`;
+    $("rackTier").textContent = `Tier ${state.tier} · ${TIERS[state.tier].name} · ${designName(state)}`;
+    $("colourName").textContent = POLISH[state.color].n;
+    chipRow($("shapeChips"), SHAPES, (i) => i === state.shape, (i) => { state.shape = i; drawRack(); });
+    chipRow($("lengthChips"), LENGTHS.map((l) => l.n), (i) => i === state.length, (i) => { state.length = i; drawRack(); });
+    chipRow($("tierChips"), ["1 · Classic", "2 · Signature", "3 · Couture"], (i) => i + 1 === state.tier, (i) => { state.tier = i + 1; state.design = TIERS[i + 1].designs[0][0]; drawRack(); });
+    const ds = TIERS[state.tier].designs;
+    chipRow($("designChips"), ds.map((d) => d[1]), (i) => ds[i][0] === state.design, (i) => { state.design = ds[i][0]; drawRack(); });
+    const sw = $("swatches"); sw.innerHTML = "";
+    POLISH.forEach((p, i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "swatch"; b.style.background = p.c;
+      b.setAttribute("aria-label", p.n); b.title = p.n;
+      b.setAttribute("aria-pressed", i === state.color ? "true" : "false");
+      b.addEventListener("click", () => { state.color = i; drawRack(); });
+      sw.appendChild(b);
+    });
+  }
+
+  // ---------- services ----------
+  $("servicesGrid").innerHTML = SERVICES.map((s) => `
+    <article class="service">
+      <h3>${s.n}</h3><p>${s.d}</p>
+      <div class="service-meta"><span class="price">from ${money(s.p)}</span><span class="time">${mins(s.t)}</span></div>
+    </article>`).join("");
+
+  // ---------- tiers ----------
+  const tierSamples = { 1: { shape: 1, length: 0, color: 1, design: "french" }, 2: { shape: 2, length: 1, color: 2, design: "chrome" }, 3: { shape: 3, length: 2, color: 5, design: "mix" } };
+  $("tiersGrid").innerHTML = [1, 2, 3].map((n) => {
+    const t = TIERS[n];
+    return `<article class="tier t${n}">
+      <div class="tier-top"><div><p class="tier-num">Tier ${n}</p><h3>${t.name}</h3></div>
+        <div class="tier-add">${t.price ? "+" + money(t.price) : "Included"}<small>${t.time ? "+" + mins(t.time) : "no extra time"}</small></div></div>
+      <div class="tier-preview">${renderSet(tierSamples[n])}</div>
+      <p class="tier-blurb">${t.blurb}</p>
+      <ul class="tier-list">${t.list.map((l) => `<li>${l}</li>`).join("")}</ul>
+      <button class="btn ${n === 3 ? "btn-light" : "btn-pink"}" type="button" data-tier="${n}">Choose ${t.name}</button>
+    </article>`;
+  }).join("");
+  $("tiersGrid").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-tier]"); if (!b) return;
+    setEst({ tier: +b.dataset.tier }); $("book").scrollIntoView();
+  });
+
+  // ---------- gallery ----------
+  const LOOKS = [
+    { t: "Strawberry milk French", tier: 1, o: { shape: 1, length: 0, color: 1, design: "french" } },
+    { t: "Cherry Cola gloss", tier: 1, o: { shape: 2, length: 1, color: 0, design: "solid" } },
+    { t: "Midnight sparkle", tier: 1, o: { shape: 0, length: 0, color: 5, design: "accent" } },
+    { t: "Lilac glazed chrome", tier: 2, o: { shape: 2, length: 1, color: 2, design: "chrome" } },
+    { t: "Peach sunset ombré", tier: 2, o: { shape: 3, length: 2, color: 7, design: "ombre" } },
+    { t: "Matcha swirls", tier: 2, o: { shape: 1, length: 1, color: 6, design: "lines" } },
+    { t: "Butter daisies", tier: 3, o: { shape: 2, length: 1, color: 3, design: "floral" } },
+    { t: "Fuchsia charm set", tier: 3, o: { shape: 4, length: 2, color: 8, design: "gems" } },
+    { t: "Midnight mix & match", tier: 3, o: { shape: 3, length: 2, color: 5, design: "mix" } }
+  ];
+  let filter = 0;
+  function drawGallery() {
+    chipRow($("galleryFilter"), ["All", "Tier 1 · Classic", "Tier 2 · Signature", "Tier 3 · Couture"], (i) => i === filter, (i) => { filter = i; drawGallery(); });
+    $("galleryGrid").innerHTML = LOOKS.filter((l) => !filter || l.tier === filter).map((l) => `
+      <button class="look" type="button" data-look="${LOOKS.indexOf(l)}" aria-label="Try ${l.t} on the rack">
+        <div class="look-art">${renderSet(l.o)}</div>
+        <div class="look-info"><span><b>${l.t}</b><small>${SHAPES[l.o.shape]} · ${LENGTHS[l.o.length].n}</small></span>
+        <span class="pill p${l.tier}">Tier ${l.tier}</span></div>
+      </button>`).join("");
+  }
+  $("galleryGrid").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-look]"); if (!b) return;
+    const l = LOOKS[+b.dataset.look];
+    Object.assign(state, l.o, { tier: l.tier });
+    drawRack(); $("top").scrollIntoView();
+  });
+
+  // ---------- estimator ----------
+  const est = { svc: "biab", tier: 2, len: 1 };
+  function radios(el, name, items, cur) {
+    el.innerHTML = items.map((it) => `<div class="opt"><input type="radio" name="${name}" id="${name}-${it.v}" value="${it.v}" ${String(it.v) === String(cur) ? "checked" : ""} ${it.dis ? "disabled" : ""}><label for="${name}-${it.v}"><span>${it.l}</span><span>${it.r}</span></label></div>`).join("");
+  }
+  function drawEstOptions() {
+    const svc = SERVICES.find((s) => s.id === est.svc);
+    radios($("svcOpts"), "svc", SERVICES.map((s) => ({ v: s.id, l: s.n, r: money(s.p) })), est.svc);
+    radios($("tierOpts"), "tier", [1, 2, 3].map((n) => ({ v: n, l: `Tier ${n} · ${TIERS[n].name}`, r: TIERS[n].price ? "+" + money(TIERS[n].price) : "included" })), est.tier);
+    radios($("lenOpts"), "len", LENGTHS.map((l, i) => ({ v: i, l: l.n, r: svc.ext ? (l.p ? "+" + money(l.p) : "included") : "n/a", dis: !svc.ext && i > 0 })), svc.ext ? est.len : 0);
+  }
+  function setEst(patch) { Object.assign(est, patch); drawEstOptions(); calc(); }
+  $("estForm").addEventListener("change", (e) => {
+    const t = e.target;
+    if (t.name === "svc") { est.svc = t.value; drawEstOptions(); }
+    if (t.name === "tier") est.tier = +t.value;
+    if (t.name === "len") est.len = +t.value;
+    calc();
+  });
+  $("estForm").addEventListener("input", calc);
+  $("estForm").addEventListener("submit", (e) => e.preventDefault());
+
+  let lookNote = "";
+  function calc() {
+    const svc = SERVICES.find((s) => s.id === est.svc), tier = TIERS[est.tier];
+    const len = svc.ext ? LENGTHS[est.len] : null;
+    const repairs = Math.max(0, Math.min(10, parseInt($("exRepair").value, 10) || 0));
+    const items = [[svc.n, svc.p, svc.t], [`Tier ${est.tier} · ${tier.name} design`, tier.price, tier.time]];
+    if (len && len.p) items.push([`${len.n} length`, len.p, len.p > 3 ? 15 : 10]);
+    if ($("exRemoval").checked) items.push(["Removal (another tech)", 8, 20]);
+    if ($("exGems").checked) items.push(["Extra gems / charms", 5, 10]);
+    if (repairs) items.push([`Repairs × ${repairs}`, repairs * 3, repairs * 10]);
+    const total = items.reduce((a, i) => a + i[1], 0), time = items.reduce((a, i) => a + i[2], 0);
+    $("lines").innerHTML = items.map((i) => `<div class="line-item"><span>${i[0]}</span><span>${i[1] ? money(i[1]) : "—"}</span></div>`).join("");
+    $("total").textContent = money(total);
+    $("duration").textContent = "About " + mins(time) + " in the chair";
+    const name = $("bName").value.trim(), notes = $("bNotes").value.trim();
+    const lines = [
+      `Hi Ev! ${name ? "It's " + name + ". " : ""}I'd love to book in please.`,
+      ``,
+      `Service: ${svc.n}${len ? " (" + len.n.toLowerCase() + ")" : ""}`,
+      `Design: Tier ${est.tier} · ${tier.name}`,
+      lookNote ? `Look: ${lookNote}` : null,
+      $("exRemoval").checked ? `I'll need a removal of another tech's set` : null,
+      $("exGems").checked ? `Extra gems / charms please` : null,
+      repairs ? `${repairs} broken nail${repairs > 1 ? "s" : ""} to repair` : null,
+      `When: ${$("bDay").value}, ${$("bTime").value.toLowerCase()}`,
+      notes ? `Notes: ${notes}` : null,
+      ``,
+      `Estimate from your site: ${money(total)}, about ${mins(time)}.`
+    ].filter((l) => l !== null);
+    $("msg").value = lines.join("\n");
+  }
+  $("priceThis").addEventListener("click", () => {
+    lookNote = describe(state);
+    setEst({ tier: state.tier, len: state.length });
+    $("book").scrollIntoView();
+  });
+  $("copyBtn").addEventListener("click", () => {
+    const ta = $("msg"), done = () => { $("copied").hidden = false; setTimeout(() => { $("copied").hidden = true; }, 3000); };
+    try {
+      navigator.clipboard.writeText(ta.value).then(done, () => { ta.focus(); ta.select(); });
+    } catch (e) { ta.focus(); ta.select(); }
+  });
+  if (CONFIG.instagram || CONFIG.phone) {
+    $("contact").textContent = "Send this to Ev" + (CONFIG.instagram ? " on Instagram " + CONFIG.instagram : "") + (CONFIG.instagram && CONFIG.phone ? " or" : "") + (CONFIG.phone ? " by text on " + CONFIG.phone : "") + " to request your slot. A small deposit secures the booking.";
+  }
+
+  drawRack(); drawGallery(); drawEstOptions(); calc();
+})();
+</script>
+</body>
+</html>
