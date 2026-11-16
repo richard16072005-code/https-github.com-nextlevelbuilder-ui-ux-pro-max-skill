@@ -7,9 +7,9 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Outfit:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Unbounded:wght@400;500;600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: fuchsia lacquer band with a hands-on paint studio that drips into the page; then a tier dial, a quiz, a swipe strip of looks and a plum receipt. */
+/* Layout: a living liquid-polish hero with a hand-drawn script lockup and floating tips, flowing on waves into the paint studio; wavy bands carry the tier dial, quiz, looks and a plum receipt. */
 :root {
   --bg: #FFF4F8;
   --surface: #FFFFFF;
@@ -22,8 +22,10 @@
   --lilac: #CFC2FF;
   --butter: #FFE27A;
   --chip: #FBE3EE;
-  --font-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
-  --font-body: "Outfit", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --font-script: "Ballet", "Snell Roundhand", "Brush Script MT", cursive;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --brush: #E8197D;
   --radius: 18px;
   --ease: cubic-bezier(.2, .9, .3, 1.2);
 }
@@ -61,8 +63,14 @@ button { -webkit-tap-highlight-color: transparent; }
 /* Nav */
 .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--surface); border-bottom: 1px solid var(--line); }
 .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
-.logo { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-.logo-dot { width: 14px; height: 20px; border-radius: 7px 7px 4px 4px; background: var(--pink); display: inline-block; transition: background .3s; }
+.logo { text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.logo-mark { width: 30px; height: 40px; flex: none; transition: transform .4s var(--ease); }
+.logo:hover .logo-mark { transform: rotate(-10deg) scale(1.08); }
+.logo-mark text { font-family: var(--font-script); }
+.wm { display: grid; line-height: .9; }
+.wm-script { font-family: var(--font-script); font-size: 1.9rem; color: var(--pink); }
+.wm-sans { font-family: var(--font-display); font-size: .56rem; font-weight: 700; letter-spacing: .42em; margin-top: -2px; }
+.s { font-family: var(--font-script); font-style: normal; font-weight: 400; color: var(--pink); font-size: 1.7em; letter-spacing: 0; line-height: .6; padding-inline: .08em; font-variation-settings: "opsz" 72; -webkit-text-stroke: .6px var(--pink); }
 .nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
 .nav-links a { text-decoration: none; font-weight: 500; font-size: .95rem; padding: 6px 12px; border-radius: 999px; }
 .nav-links a:hover { background: var(--chip); }
@@ -70,25 +78,49 @@ button { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 760px) { .nav-links a:not(.book) { display: none; } }
 
 /* Hero */
-.hero { background: var(--pink); color: var(--on-pink); position: relative; }
-.hero .wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 36px; padding-block: 44px 28px; align-items: center; }
-@media (max-width: 960px) { .hero .wrap { grid-template-columns: 1fr; padding-block: 28px 20px; } }
-.hero-copy { display: grid; gap: 18px; min-width: 0; }
-.hero h1 { font-size: clamp(3.2rem, 8.4vw, 6.2rem); font-weight: 800; letter-spacing: -.035em; }
-.hero h1 .word { display: inline-block; transition: transform .35s var(--ease); }
-.hero h1 .word:hover { transform: rotate(-4deg) scale(1.06); }
-.hero-copy > p { font-size: 1.12rem; max-width: 34ch; }
-.hero-steps { display: grid; gap: 8px; font-size: .98rem; list-style: none; padding: 0; margin: 0; counter-reset: s; }
-.hero-steps li { display: flex; gap: 10px; align-items: center; counter-increment: s; }
-.hero-steps li::before { content: counter(s); flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--on-pink); color: var(--pink-deep); font-weight: 700; font-size: .8rem; display: grid; place-items: center; }
+.hero { position: relative; background: #E8197D; color: #FFFFFF; overflow: hidden; isolation: isolate; }
+#flow { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+.grain { position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(60, 0, 35, .28)); pointer-events: none; }
+.floaters { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.floater { position: absolute; width: var(--w); transform: translate(calc(var(--px, 0) * var(--d)), calc(var(--py, 0) * var(--d))) rotate(var(--r)); transition: transform .6s cubic-bezier(.2,.8,.2,1); filter: drop-shadow(0 14px 18px rgba(70, 0, 40, .35)); }
+.floater svg { display: block; width: 100%; height: auto; animation: bob var(--t) ease-in-out infinite alternate; }
+@keyframes bob { from { transform: translateY(-10px) rotate(-4deg); } to { transform: translateY(12px) rotate(5deg); } }
+@media (max-width: 760px) { .floater.wide { display: none; } }
+.hero-inner { display: grid; justify-items: center; text-align: center; gap: 18px; padding-block: 56px 150px; position: relative; }
+.hero-kicker { font-size: .78rem; letter-spacing: .3em; text-transform: uppercase; font-weight: 600; background: rgba(255,255,255,.16); padding: 8px 16px; border-radius: 999px; backdrop-filter: blur(6px); }
+.lockup { display: grid; justify-items: center; margin: 0; text-shadow: 0 4px 30px rgba(80, 0, 40, .3); }
+.lockup-script { width: min(620px, 92vw); height: auto; overflow: visible; display: block; }
+.lockup-script text { font-family: var(--font-script); font-size: 250px; fill: #FFFFFF; stroke: #FFFFFF; stroke-width: 0; }
+.draw .lockup-script text { stroke-width: 1.6; stroke-dasharray: 1600; stroke-dashoffset: 1600; fill-opacity: 0; animation: draw 3s cubic-bezier(.6,.1,.3,1) .2s forwards; }
+@keyframes draw { 65% { stroke-dashoffset: 0; fill-opacity: 0; } 100% { stroke-dashoffset: 0; fill-opacity: 1; stroke-width: 0; } }
+.lockup-sans { font-family: var(--font-display); font-weight: 700; font-size: clamp(1rem, 3.2vw, 1.7rem); letter-spacing: .85em; margin-right: -.85em; margin-top: 4px; }
+.hero-line { font-size: clamp(1.05rem, 2.2vw, 1.3rem); max-width: 40ch; text-shadow: 0 2px 16px rgba(80, 0, 40, .35); }
+.hero-line b { font-family: var(--font-display); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.scroll-cue { width: 28px; height: 44px; border: 2px solid rgba(255,255,255,.8); border-radius: 14px; display: grid; justify-items: center; padding-top: 7px; margin-top: 10px; }
+.scroll-cue::before { content: ""; width: 4px; height: 9px; border-radius: 2px; background: #FFFFFF; animation: cue 1.6s ease-in-out infinite; }
+@keyframes cue { 0% { transform: translateY(0); opacity: 1; } 80% { transform: translateY(12px); opacity: 0; } 100% { opacity: 0; } }
+.waves { position: absolute; left: 0; right: 0; bottom: -1px; height: 110px; overflow: hidden; pointer-events: none; }
+.waves svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
+.waves .w1 { animation: flowx 22s linear infinite; }
+.waves .w2 { animation: flowx 14s linear infinite reverse; }
+.waves .w1 path { fill: var(--bg); opacity: .45; }
+.waves .w2 path { fill: var(--bg); }
+@keyframes flowx { to { transform: translateX(-50%); } }
 
-.drips { display: block; width: 100%; height: 56px; margin-top: -1px; }
-.drips path, .drips rect { fill: var(--pink); }
-.drip { transform-box: fill-box; transform-origin: 50% 0; animation: drip 2.4s var(--ease) both; }
-@keyframes drip { from { transform: scaleY(.15); } to { transform: scaleY(1); } }
+/* Studio section */
+.studio-grid { display: grid; grid-template-columns: .75fr 1.25fr; gap: 40px; align-items: center; }
+@media (max-width: 960px) { .studio-grid { grid-template-columns: 1fr; gap: 24px; } }
+.studio-copy { display: grid; gap: 18px; min-width: 0; }
+.studio-copy h2 { font-size: clamp(1.9rem, 4.2vw, 2.9rem); font-weight: 700; letter-spacing: -.02em; }
+.studio-copy > p { color: var(--muted); font-size: 1.08rem; max-width: 40ch; }
+.hero-steps { display: grid; gap: 10px; font-size: 1rem; list-style: none; padding: 0; margin: 0; counter-reset: s; }
+.hero-steps li { display: flex; gap: 12px; align-items: center; counter-increment: s; }
+.hero-steps li::before { content: counter(s); flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--pink); color: var(--on-pink); font-weight: 700; font-size: .8rem; display: grid; place-items: center; }
+.studio-sec { padding-top: 24px; }
 
 /* Studio */
-.studio { background: var(--surface); color: var(--ink); border-radius: 28px; padding: 16px; box-shadow: 0 28px 70px rgba(60, 0, 30, .32); display: grid; gap: 12px; min-width: 0; }
+.studio { background: var(--surface); color: var(--ink); border-radius: 28px; padding: 16px; box-shadow: 0 28px 70px rgba(120, 0, 60, .18), 0 0 0 1px var(--line); display: grid; gap: 12px; min-width: 0; }
 .stage { position: relative; background: radial-gradient(120% 90% at 50% 100%, var(--chip), var(--surface)); border-radius: 20px; padding: 8px 4px 0; overflow: hidden; }
 .stage svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
 .stage [data-nail] { cursor: pointer; }
@@ -131,8 +163,9 @@ button { -webkit-tap-highlight-color: transparent; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* Marquee */
-.marquee { overflow: hidden; border-block: 1px solid var(--line); background: var(--surface); }
-.marquee-track { display: flex; width: max-content; gap: 32px; padding-block: 14px; animation: slide 38s linear infinite; font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; white-space: nowrap; }
+.ribbon { overflow: hidden; padding-block: 28px; }
+.marquee { background: var(--ink); color: var(--bg); transform: rotate(-2deg); margin-inline: -5%; box-shadow: 0 10px 30px rgba(60, 0, 30, .2); }
+.marquee-track { display: flex; width: max-content; gap: 36px; padding-block: 12px; animation: slide 40s linear infinite; font-family: var(--font-script); font-size: 2.1rem; line-height: 1.2; white-space: nowrap; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 .marquee-track span { display: inline-flex; align-items: center; gap: 12px; }
 .marquee-track i { width: 14px; height: 20px; border-radius: 7px 7px 4px 4px; display: inline-block; }
@@ -142,9 +175,14 @@ button { -webkit-tap-highlight-color: transparent; }
 section { scroll-margin-top: 72px; }
 .section { padding-block: 72px; }
 .section-head { display: grid; gap: 10px; margin-bottom: 28px; max-width: 62ch; }
-.section-head h2 { font-size: clamp(2rem, 4.6vw, 3.1rem); font-weight: 800; letter-spacing: -.02em; }
+.section-head h2 { font-size: clamp(1.8rem, 4.2vw, 2.8rem); font-weight: 700; letter-spacing: -.02em; }
 .section-head p { color: var(--muted); font-size: 1.08rem; }
-.band { background: var(--surface); border-block: 1px solid var(--line); }
+.band { background: var(--surface); position: relative; }
+.band::before, .band::after { content: ""; position: absolute; left: 0; right: 0; height: 50px; background: var(--surface); pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 50' preserveAspectRatio='none'%3E%3Cpath d='M0 50 C220 4 470 0 720 26 C980 52 1210 46 1440 6 V50 Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 50' preserveAspectRatio='none'%3E%3Cpath d='M0 50 C220 4 470 0 720 26 C980 52 1210 46 1440 6 V50 Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }
+.band::before { top: -49px; }
+.band::after { bottom: -49px; transform: scale(-1, -1); }
 
 /* Tier dial */
 .dial { display: grid; grid-template-columns: 1.05fr 1fr; gap: 28px; align-items: center; }
@@ -153,7 +191,7 @@ section { scroll-margin-top: 72px; }
 .dial-stage svg { display: block; width: 100%; height: auto; }
 .dial-info { display: grid; gap: 16px; min-width: 0; }
 .dial-name { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.dial-name h3 { font-size: clamp(2.4rem, 6vw, 3.6rem); font-weight: 800; letter-spacing: -.02em; }
+.dial-name h3 { font-family: var(--font-script); font-weight: 400; font-size: clamp(3.4rem, 9vw, 5rem); color: var(--pink); line-height: 1; }
 .dial-price { font-family: var(--font-display); font-weight: 800; font-size: 2.2rem; color: var(--pink); font-variant-numeric: tabular-nums; text-align: right; }
 .dial-price small { display: block; font-family: var(--font-body); font-weight: 500; font-size: .85rem; color: var(--muted); }
 .slider { display: grid; gap: 8px; }
@@ -178,7 +216,7 @@ section { scroll-margin-top: 72px; }
 .q-progress { display: flex; gap: 6px; }
 .q-progress i { flex: 1; height: 6px; border-radius: 3px; background: rgba(255,255,255,.18); transition: background .3s; }
 .q-progress i.on { background: var(--butter); }
-.q-card h3 { font-size: clamp(1.6rem, 3.4vw, 2.2rem); font-weight: 800; }
+.q-card h3 { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 700; }
 .q-step { display: grid; gap: 18px; animation: slidein .45s var(--ease) both; }
 @keyframes slidein { from { transform: translateX(30px); opacity: .1; } to { transform: none; opacity: 1; } }
 .q-answers { display: grid; gap: 10px; }
@@ -189,7 +227,7 @@ section { scroll-margin-top: 72px; }
 .q-result { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 22px; display: grid; gap: 14px; align-content: start; min-width: 0; }
 .q-result .art { background: var(--chip); border-radius: 18px; padding: 8px 4px 0; }
 .q-result .art svg { display: block; width: 100%; height: auto; }
-.q-result h3 { font-size: 1.6rem; font-weight: 800; }
+.q-result h3 { font-size: 1.35rem; font-weight: 700; }
 .q-result p { color: var(--muted); }
 .q-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .q-tags span { background: var(--chip); padding: 4px 10px; border-radius: 999px; font-size: .85rem; font-weight: 600; }
@@ -208,7 +246,7 @@ section { scroll-margin-top: 72px; }
 .look-art { background: var(--chip); padding: 14px 6px 0; }
 .look-art svg { display: block; width: 100%; height: auto; }
 .look-info { padding: 14px 16px; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
-.look-info b { font-family: var(--font-display); font-size: 1.08rem; }
+.look-info b { font-family: var(--font-display); font-size: .95rem; font-weight: 600; }
 .look-info small { display: block; color: var(--muted); }
 .pill { flex: none; font-size: .75rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
 .pill.p1 { background: var(--chip); color: var(--pink); }
@@ -247,7 +285,7 @@ textarea { resize: vertical; min-height: 84px; }
 
 .receipt { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 80px); background: var(--ink); color: var(--bg); border-radius: 24px; padding: 24px; display: grid; gap: 14px; min-width: 0; }
 .receipt::after { content: ""; position: absolute; left: 0; right: 0; bottom: -10px; height: 12px; background: radial-gradient(circle at 10px -2px, transparent 9px, var(--ink) 10px) 0 0 / 20px 12px repeat-x; }
-.receipt h3 { font-size: 1.4rem; }
+.receipt h3 { font-family: var(--font-script); font-weight: 400; font-size: 2.6rem; line-height: 1; color: var(--butter); }
 .receipt-set { background: rgba(255,255,255,.07); border-radius: 14px; padding: 4px 2px 0; }
 .receipt-set svg { display: block; width: 100%; height: auto; }
 .lines { display: grid; gap: 8px; font-variant-numeric: tabular-nums; }
@@ -273,7 +311,7 @@ textarea { resize: vertical; min-height: 84px; }
 
 footer { background: var(--ink); color: var(--bg); }
 footer .wrap { padding-block: 40px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; }
-footer .logo-dot { background: var(--butter); }
+footer .wm-script { color: var(--butter); }
 footer small { opacity: .75; }
 
 .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 140%); background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 999px; font-weight: 600; z-index: 40; transition: transform .35s var(--ease); max-width: calc(100% - 32px); text-align: center; }
@@ -287,8 +325,9 @@ footer small { opacity: .75; }
 
 <nav class="nav" aria-label="Main">
   <div class="wrap">
-    <a class="logo" href="#top"><span class="logo-dot" id="logoDot" aria-hidden="true"></span>Ev's Nails</a>
+    <a class="logo" href="#top" aria-label="Ev's Nails, back to top"><svg class="logo-mark" viewBox="0 0 40 52" aria-hidden="true"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--brush)"/><stop offset=".55" stop-color="#FF8DC7"/><stop offset="1" stop-color="#B9A7FF"/></linearGradient></defs><path d="M4 49 L4 24 Q5 3 20 1 Q35 3 36 24 L36 49 Q20 53 4 49 Z" fill="url(#lgA)"/><rect x="8" y="12" width="4" height="22" rx="2" fill="#FFFFFF" opacity=".45"/><text x="21" y="39" text-anchor="middle" font-size="21" fill="#FFFFFF">Ev</text><path d="M33 2 l1.4 3.6 3.6 1.4 -3.6 1.4 -1.4 3.6 -1.4 -3.6 -3.6 -1.4 3.6 -1.4 z" fill="#FFE27A" stroke="#C99A00" stroke-width=".5"/></svg><span class="wm"><span class="wm-script">Ev's</span><span class="wm-sans">NAILS</span></span></a>
     <div class="nav-links">
+      <a href="#studio">Studio</a>
       <a href="#tiers">Design tiers</a>
       <a href="#quiz">Find your set</a>
       <a href="#looks">Looks</a>
@@ -299,18 +338,37 @@ footer small { opacity: .75; }
 </nav>
 
 <header class="hero" id="top">
-  <div class="wrap">
-    <div class="hero-copy">
-      <p class="eyebrow" style="color:var(--on-pink);opacity:.85">Nail technician · By appointment</p>
-      <h1><span class="word">Ev's</span> <span class="word">Nails</span></h1>
-      <p>Gel, BIAB, acrylic and extensions. Design your set right here, and it'll tell you the tier and the price.</p>
+  <canvas id="flow" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="floaters" id="floaters" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <p class="hero-kicker">Nail technician · By appointment</p>
+    <h1 class="lockup" aria-label="Ev's Nails">
+      <svg class="lockup-script" viewBox="0 0 640 250" aria-hidden="true"><text x="320" y="200" text-anchor="middle">Ev's</text></svg>
+      <span class="lockup-sans" aria-hidden="true">NAILS</span>
+    </h1>
+    <p class="hero-line">Gel, BIAB, acrylic and extensions with hand-painted art. Every full set from <b>$50</b>.</p>
+    <div class="hero-actions">
+      <a class="btn btn-light" href="#studio">Design your set</a>
+      <a class="btn btn-ghost" href="#quiz">Take the quiz</a>
+    </div>
+    <a class="scroll-cue" href="#studio" aria-label="Scroll to the studio"></a>
+  </div>
+  <div class="waves" aria-hidden="true"><svg class="w1" id="w1" viewBox="0 0 2880 110" preserveAspectRatio="none"></svg><svg class="w2" id="w2" viewBox="0 0 2880 110" preserveAspectRatio="none"></svg></div>
+</header>
+
+<section id="studio" class="section studio-sec">
+  <div class="wrap studio-grid">
+    <div class="studio-copy">
+      <p class="eyebrow">The studio</p>
+      <h2>Paint your <em class="s">dream</em> set</h2>
+      <p>Play with shapes, colours and designs. The studio works out your tier and price as you go.</p>
       <ol class="hero-steps">
         <li>Tap a nail, or paint all five at once</li>
         <li>Pick a bottle and a design</li>
         <li>Hit “Price this set” to book</li>
       </ol>
     </div>
-
     <div class="studio" aria-label="Nail paint studio">
       <div class="stage">
         <span class="stage-hint" id="stageHint">Painting all nails</span>
@@ -331,17 +389,16 @@ footer small { opacity: .75; }
       </div>
     </div>
   </div>
-  <svg class="drips" id="drips" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true"></svg>
-</header>
+</section>
 
-<div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+<div class="ribbon" aria-hidden="true"><div class="marquee"><div class="marquee-track" id="marquee"></div></div></div>
 
 <main>
   <section id="tiers" class="section">
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Design tiers</p>
-        <h2>Slide to turn up the detail</h2>
+        <h2>Slide to turn up the <em class="s">detail</em></h2>
         <p>Every set is priced by its design tier, whichever nail type you choose. Drag the slider to see what each tier looks like and what it costs.</p>
       </div>
       <div class="dial">
@@ -367,7 +424,7 @@ footer small { opacity: .75; }
     <div class="wrap section">
       <div class="section-head">
         <p class="eyebrow">Find your set</p>
-        <h2>Not sure what to get?</h2>
+        <h2>Not sure what to <em class="s">get?</em></h2>
         <p>Three quick questions and you'll get a set made for your hands, your week and your vibe.</p>
       </div>
       <div class="quiz">
@@ -382,7 +439,7 @@ footer small { opacity: .75; }
       <div class="strip-head">
         <div class="section-head" style="margin:0">
           <p class="eyebrow">Looks</p>
-          <h2>Swipe for inspo</h2>
+          <h2>Swipe for <em class="s">inspo</em></h2>
           <p>Tap any set to load it into the studio and make it your own.</p>
         </div>
         <div class="strip-nav">
@@ -399,7 +456,7 @@ footer small { opacity: .75; }
     <div class="wrap section">
       <div class="section-head">
         <p class="eyebrow">Price &amp; book</p>
-        <h2>Your set, priced up</h2>
+        <h2>Your set, <em class="s">priced up</em></h2>
         <p>Your studio design is already on the receipt. Your tier sets the price and any nail type is included. Add extras, then send the message to Ev.</p>
       </div>
       <div class="estimate">
@@ -454,7 +511,7 @@ footer small { opacity: .75; }
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Aftercare &amp; FAQs</p>
-        <h2>Keep them looking fresh</h2>
+        <h2>Keep them looking <em class="s">fresh</em></h2>
       </div>
       <div class="faq">
         <details open><summary>How long will my nails last?</summary><p>Gel polish lasts 2 to 3 weeks. BIAB, acrylic and gel extensions are best infilled every 3 weeks so the nail stays strong and balanced.</p></details>
@@ -469,7 +526,7 @@ footer small { opacity: .75; }
 
 <footer>
   <div class="wrap">
-    <span class="logo"><span class="logo-dot" aria-hidden="true"></span>Ev's Nails</span>
+    <span class="logo"><svg class="logo-mark" viewBox="0 0 40 52" aria-hidden="true"><defs><linearGradient id="lgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--brush)"/><stop offset=".55" stop-color="#FF8DC7"/><stop offset="1" stop-color="#B9A7FF"/></linearGradient></defs><path d="M4 49 L4 24 Q5 3 20 1 Q35 3 36 24 L36 49 Q20 53 4 49 Z" fill="url(#lgB)"/><rect x="8" y="12" width="4" height="22" rx="2" fill="#FFFFFF" opacity=".45"/><text x="21" y="39" text-anchor="middle" font-size="21" fill="#FFFFFF">Ev</text><path d="M33 2 l1.4 3.6 3.6 1.4 -3.6 1.4 -1.4 3.6 -1.4 -3.6 -3.6 -1.4 3.6 -1.4 z" fill="#FFE27A" stroke="#C99A00" stroke-width=".5"/></svg><span class="wm"><span class="wm-script">Ev's</span><span class="wm-sans">NAILS</span></span></span>
     <small>All prices in AUD. Your final price is confirmed when you book.</small>
   </div>
 </footer>
@@ -673,7 +730,6 @@ footer small { opacity: .75; }
     const cur = sel === null ? brush : studio.nails[sel];
     $("colourName").textContent = POLISH[cur.c].n;
     document.documentElement.style.setProperty("--brush", POLISH[cur.c].c);
-    $("logoDot").style.background = POLISH[cur.c].c;
     blob.style.background = POLISH[cur.c].c;
     // fingers
     const fg = $("fingers"); fg.innerHTML = "";
@@ -725,20 +781,11 @@ footer small { opacity: .75; }
     const prev = clone(studio);
     studio = clone(set); sel = null; brush = clone(set.nails[0]);
     drawStudio({ prev, anim: new Set([0, 1, 2, 3, 4]) });
-    $("top").scrollIntoView();
+    $("studio").scrollIntoView();
     toast(label + " is in the studio");
   }
 
   // ---------- drips & marquee ----------
-  (function drips() {
-    let s = `<rect x="0" y="0" width="1200" height="8"/>`;
-    const r = rng(7);
-    for (let x = 30; x < 1200; x += 70 + r() * 80) {
-      const w = 14 + r() * 18, len = 14 + r() * 34;
-      s += `<path class="drip" style="animation-delay:${(r() * .6).toFixed(2)}s" d="M${x - w} 0 C${x - w * .6} 6, ${x - w * .45} ${len * .6}, ${x - w * .45} ${len} A${w * .45} ${w * .45} 0 0 0 ${x + w * .45} ${len} C${x + w * .45} ${len * .6}, ${x + w * .6} 6, ${x + w} 0 Z"/>`;
-    }
-    $("drips").innerHTML = s;
-  })();
   (function marquee() {
     const words = POLISH.map((p) => `<span><i style="background:${p.c}"></i>${p.n}</span>`).join("") + ["Gel", "BIAB", "Acrylic", "Gel-X", "Chrome", "3D charms", "Freehand art"].map((w) => `<span><i style="background:var(--pink)"></i>${w}</span>`).join("");
     $("marquee").innerHTML = words + words;
@@ -945,6 +992,81 @@ footer small { opacity: .75; }
     document.addEventListener("pointerleave", () => { tx = ty = -50; });
     (function loop() { bx += (tx - bx) * .2; by += (ty - by) * .2; blob.style.transform = `translate(${bx}px, ${by}px) rotate(-45deg)`; requestAnimationFrame(loop); })();
   }
+
+
+  // ---------- hero: liquid polish, floating tips, waves, script draw ----------
+  (function hero() {
+    const hero = $("top"), cv = $("flow"), ctx = cv.getContext("2d");
+    const BLOBS = [
+      { c: "#FF3D98", r: .55, sx: .00021, sy: .00017, ox: .2, oy: .3 },
+      { c: "#B9A7FF", r: .45, sx: .00016, sy: .00023, ox: .8, oy: .25 },
+      { c: "#FF9E7A", r: .40, sx: .00026, sy: .00014, ox: .7, oy: .8 },
+      { c: "#8E0F2A", r: .50, sx: .00012, sy: .00019, ox: .15, oy: .85 },
+      { c: "#FF8DC7", r: .38, sx: .00019, sy: .00027, ox: .5, oy: .5 },
+      { c: "#FFE27A", r: .18, sx: .00031, sy: .00022, ox: .4, oy: .2 }
+    ];
+    let W = 0, H = 0, mx = .5, my = .4, tx = .5, ty = .4, running = true;
+    function size() { const r = hero.getBoundingClientRect(); W = cv.width = Math.max(40, Math.round(r.width / 5)); H = cv.height = Math.max(40, Math.round(r.height / 5)); }
+    function frame(t) {
+      mx += (tx - mx) * .04; my += (ty - my) * .04;
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "#E8197D"; ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = "lighter";
+      ctx.globalAlpha = .55;
+      const m = Math.max(W, H);
+      BLOBS.forEach((b, i) => {
+        const x = (b.ox + Math.sin(t * b.sx + i) * .28) * W, y = (b.oy + Math.cos(t * b.sy + i * 2) * .3) * H, r = b.r * m;
+        const g = ctx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, b.c); g.addColorStop(1, "rgba(232,25,125,0)");
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      });
+      ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = .9;
+      const g = ctx.createRadialGradient(mx * W, my * H, 0, mx * W, my * H, .3 * m);
+      g.addColorStop(0, "rgba(255,226,250,.75)"); g.addColorStop(1, "rgba(255,226,250,0)");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1;
+      if (running && !reduced) requestAnimationFrame(frame);
+    }
+    size(); frame(performance.now());
+    addEventListener("resize", size);
+    if ("IntersectionObserver" in window) new IntersectionObserver(([e]) => { const was = running; running = e.isIntersecting; if (running && !was && !reduced) requestAnimationFrame(frame); }).observe(hero);
+    hero.addEventListener("pointermove", (e) => {
+      const r = hero.getBoundingClientRect(); tx = (e.clientX - r.left) / r.width; ty = (e.clientY - r.top) / r.height;
+      $("floaters").style.setProperty("--px", ((tx - .5) * 40) + "px"); $("floaters").style.setProperty("--py", ((ty - .5) * 40) + "px");
+    });
+
+    // floating tips
+    const FL = [
+      { x: 6, y: 16, w: 64, r: -18, s: 2, f: 1.6, c: 4, d: "chrome", d2: 1.2, t: 4.2 },
+      { x: 14, y: 62, w: 52, r: 14, s: 3, f: 1.5, c: 3, d: "floral", d2: .6, t: 5.1, wide: 1 },
+      { x: 80, y: 12, w: 58, r: 20, s: 4, f: 1.9, c: 5, d: "gems", d2: 1, t: 4.7 },
+      { x: 86, y: 58, w: 70, r: -12, s: 2, f: 1.5, c: 2, d: "chrome", d2: 1.4, t: 5.6 },
+      { x: 70, y: 74, w: 44, r: 30, s: 1, f: 1.2, c: 9, d: "lines", d2: .5, t: 3.9, wide: 1 },
+      { x: 24, y: 8, w: 40, r: 28, s: 3, f: 1.7, c: 1, d: "hearts", d2: .4, t: 4.4, wide: 1 }
+    ];
+    $("floaters").innerHTML = FL.map((n) => {
+      const w = 50, h = Math.round(w * n.f), id = "fl" + (++uid), d = shapePath(n.s, w, h);
+      return `<div class="floater${n.wide ? " wide" : ""}" style="left:${n.x}%;top:${n.y}%;--w:${n.w}px;--r:${n.r}deg;--d:${n.d2};--t:${n.t}s">
+        <svg viewBox="-2 -2 ${w + 4} ${h + 14}"><clipPath id="c${id}"><path d="${d}"/></clipPath>
+        <g clip-path="url(#c${id})">${art(n.d, 2, w, h, POLISH[n.c].c, id, rng(n.c * 11 + 5))}<rect x="${w * .14}" y="${h * .12}" width="${w * .11}" height="${h * .5}" rx="${w * .055}" fill="#FFFFFF" opacity=".45"/></g>
+        <path d="${d}" fill="none" stroke="#2A0F2E" stroke-opacity=".12"/></svg></div>`;
+    }).join("");
+
+    // waves
+    function wave(amp, len, phase, base) {
+      let d = `M0 110 L0 ${base}`;
+      for (let x = 0; x <= 2880; x += 20) d += ` L${x} ${(base + Math.sin((x / len) * Math.PI * 2 + phase) * amp).toFixed(1)}`;
+      return `<path d="${d} L2880 110 Z"/>`;
+    }
+    $("w1").innerHTML = wave(16, 720, 0, 46);
+    $("w2").innerHTML = wave(14, 960, 1.6, 70);
+
+    // script draw-on
+    if (!reduced) {
+      const go = () => hero.classList.add("draw");
+      let started = false; const once = () => { if (!started) { started = true; go(); } };
+      if (document.fonts && document.fonts.load) document.fonts.load('250px "Ballet"').then(once, once);
+      setTimeout(once, 1500);
+    }
+  })();
 
   drawStudio(); drawDial(false); drawQuiz(); drawResult(); drawLooks(); drawEstOptions(); calc();
 })();
