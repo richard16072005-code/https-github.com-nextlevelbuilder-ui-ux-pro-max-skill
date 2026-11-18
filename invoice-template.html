@@ -12,7 +12,9 @@
   --brand:#D2743A; --heart:#D03C2C; --brand-soft:#FBEADB; --bg:#F6E7D3; --paper:#FCF6EF;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;padding:24px 16px}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body.exporting .toolbar,body.exporting .rm,body.exporting .add,body.exporting .no-print,body.exporting .logo .tip{display:none!important}
+body.exporting [contenteditable]{background:none!important;box-shadow:none!important}
 .toolbar{max-width:820px;margin:0 auto 16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .toolbar button{font:500 13px 'Plus Jakarta Sans',sans-serif;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 14px;border-radius:8px;cursor:pointer}
 .toolbar button{border-radius:999px!important}
@@ -82,13 +84,16 @@ footer .thanks{font-family:'Fraunces',serif;font-weight:600;font-size:17px;color
   .parties,.totals .grand span:last-child,.title h2{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
 <div class="toolbar">
   <span class="hint">Click any text to edit · Click the logo to upload yours</span>
   <button onclick="resetInvoice()">New invoice</button>
-  <button class="primary" onclick="window.print()">Print / Save PDF</button>
+  <button class="primary" id="pdfBtn" onclick="downloadPdf()">Download PDF</button>
+  <span class="hint" id="pdfMsg" role="status" style="margin:0"></span>
 </div>
 
 <main class="page">
@@ -243,6 +248,31 @@ document.getElementById('logoInput').addEventListener('change', e => {
   r.readAsDataURL(f);
 });
 try { const saved = localStorage.getItem('lyh-logo'); if (saved) showLogo(saved); } catch(_){}
+
+// PDF: inside the shared link, build a PDF and offer it as a download; opened as a file, use the browser's print dialog.
+async function downloadPdf(){
+  const btn = document.getElementById('pdfBtn'), msg = document.getElementById('pdfMsg');
+  const dl = window.claude ? await window.claude.use('downloads').catch(() => null) : null;
+  if (!dl || !window.html2canvas || !window.jspdf){ window.print(); return; }
+  btn.disabled = true; msg.textContent = 'Preparing PDF…';
+  document.activeElement && document.activeElement.blur();
+  document.body.classList.add('exporting');
+  try {
+    const page = document.querySelector('.page');
+    const canvas = await html2canvas(page, {scale:2, backgroundColor:'#FCF6EF', useCORS:true});
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({unit:'mm', format:'a4'});
+    const W = 190, H = canvas.height * W / canvas.width;
+    pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 10, 10, W, Math.min(H, 277));
+    const name = (document.getElementById('invNo').textContent.trim() || 'invoice').replace(/[^\w-]+/g,'-');
+    await dl.save({filename: 'LuvYourHomey-' + name + '.pdf', data: pdf.output('blob')});
+    msg.textContent = 'PDF saved';
+  } catch(e){
+    msg.textContent = e && e.code === 'declined' ? '' : 'Could not create the PDF. Try again.';
+  } finally {
+    document.body.classList.remove('exporting'); btn.disabled = false;
+  }
+}
 
 setDates();
 addRow('Corporate stay — 1 bedroom apartment', 'Sydney CBD · check-in 02 Dec, check-out 09 Dec (7 nights)', 7, 210);
