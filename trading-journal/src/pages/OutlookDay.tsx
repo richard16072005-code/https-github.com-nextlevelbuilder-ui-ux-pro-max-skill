@@ -6,7 +6,7 @@ import { ImageSlots } from '../components/ImageSlots';
 import { RichText } from '../components/RichText';
 import { useApp } from '../components/Shell';
 import {
-  Button, Checkbox, cx, IconButton, OutcomePill, PositionPill, PropRow, RuleBreakBadge, Scale, SectionTitle, Segmented, Select, TagPill, TextField,
+  Button, Checkbox, confirmDialog, cx, IconButton, OutcomePill, PositionPill, PropRow, RuleBreakBadge, Scale, SectionTitle, Segmented, Select, TagPill, TextField,
 } from '../components/ui';
 import { db, uid } from '../db/db';
 import type { Bias, NewsEvent, Outlook } from '../db/types';
@@ -64,7 +64,7 @@ export default function OutlookDay() {
           {date !== todayISO() && <Button size="sm" variant="ghost" onClick={() => nav(`/outlook/${todayISO()}`)}>Today</Button>}
           <IconButton title="Next day (⌥→)" onClick={() => nav(`/outlook/${addDays(date, 1)}`)}><ChevronRight size={16} /></IconButton>
           {stored && (
-            <IconButton title="Delete outlook" className="hover:!text-loss" onClick={async () => { if (confirm('Delete this outlook page?')) { await db.outlooks.delete(date); await db.images.where({ ownerType: 'outlook', ownerId: date }).delete(); } }}>
+            <IconButton title="Delete outlook" className="hover:!text-loss" onClick={async () => { if (await confirmDialog('Delete this outlook page and its screenshots?', 'Delete outlook')) { await db.outlooks.delete(date); await db.images.where({ ownerType: 'outlook', ownerId: date }).delete(); } }}>
               <Trash2 size={15} />
             </IconButton>
           )}

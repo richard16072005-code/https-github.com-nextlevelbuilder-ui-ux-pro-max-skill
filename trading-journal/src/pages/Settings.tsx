@@ -1,7 +1,7 @@
 import { ArrowDown, ArrowUp, Database, Download, FileUp, Plus, Sparkles, Trash2, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Button, cx, IconButton, Kbd, PageHeader, Popover, SectionTitle, Select, TagPill, TextField, useToast } from '../components/ui';
+import { Button, confirmDialog, cx, IconButton, Kbd, PageHeader, Popover, SectionTitle, Select, TagPill, TextField, useToast } from '../components/ui';
 import { db, DEFAULT_SETTINGS, patchSettings, uid } from '../db/db';
 import { clearDemo, seedDemo } from '../db/seed';
 import type { ChecklistItem, Tag } from '../db/types';
@@ -71,7 +71,7 @@ export default function SettingsPage() {
         <div className="flex flex-wrap gap-2">
           <Button variant="primary" disabled={!!busy} onClick={() => run('export', async () => {
             const blob = await exportBackup();
-            download(`ledger-backup-${todayISO()}.zip`, blob);
+            await download(`ledger-backup-${todayISO()}.zip`, blob);
             toast(`Backup exported (${(blob.size / 1024 / 1024).toFixed(1)} MB)`);
           })}>
             <Download size={14} /> {busy === 'export' ? 'Exporting…' : 'Export backup (.zip)'}
@@ -79,15 +79,14 @@ export default function SettingsPage() {
           <Button disabled={!!busy} onClick={() => fileRef.current?.click()}><FileUp size={14} /> {busy === 'import' ? 'Importing…' : 'Import backup'}</Button>
           <Button disabled={!!busy} onClick={() => run('csv', async () => {
             const [trades, accounts] = await Promise.all([db.trades.orderBy('date').toArray(), db.accounts.toArray()]);
-            download(`trades-${todayISO()}.csv`, tradesToCsv(trades, s, accounts), 'text/csv');
+            await download(`trades-${todayISO()}.csv`, tradesToCsv(trades, s, accounts), 'text/csv');
             toast(`${trades.length} trades exported to CSV`);
           })}><Download size={14} /> Trades CSV</Button>
           <input ref={fileRef} type="file" accept=".zip,application/zip" className="hidden" data-testid="import-input" onChange={(e) => {
             const f = e.target.files?.[0];
             e.target.value = '';
             if (!f) return;
-            if (!confirm('Importing replaces ALL current data with the backup. Continue?')) return;
-            run('import', async () => { const r = await importBackup(f); toast(`Imported ${r.trades} trades and ${r.images} screenshots`); });
+            confirmDialog('Importing replaces ALL current data with the backup. Continue?', 'Replace and import').then((ok) => { if (ok) run('import', async () => { const r = await importBackup(f); toast(`Imported ${r.trades} trades and ${r.images} screenshots`); }); });
           }} />
         </div>
       </Block>
@@ -95,7 +94,7 @@ export default function SettingsPage() {
       <Block title="Demo data">
         <p className="mb-4 text-[13px] text-ink-2">The example NQ short (22 Sep 2026) plus dummy trades, accounts, ledgers and outlooks are flagged as demo. Clearing them leaves everything you created yourself.</p>
         <div className="flex flex-wrap gap-2">
-          <Button variant="danger" disabled={!!busy} onClick={() => confirm('Remove all demo trades, accounts, ledgers, outlooks and screenshots?') && run('clear', async () => { await clearDemo(); toast('Demo data cleared'); })}>
+          <Button variant="danger" disabled={!!busy} onClick={async () => (await confirmDialog('Remove all demo trades, accounts, ledgers, outlooks and screenshots?', 'Clear demo data')) && run('clear', async () => { await clearDemo(); toast('Demo data cleared'); })}>
             <Sparkles size={14} /> {busy === 'clear' ? 'Clearing…' : 'Clear demo data'}
           </Button>
           <Button disabled={!!busy} onClick={() => run('seed', async () => { await seedDemo(); toast('Demo data loaded'); })}><Database size={14} /> {busy === 'seed' ? 'Loading…' : 'Load demo data'}</Button>
@@ -103,8 +102,8 @@ export default function SettingsPage() {
       </Block>
 
       <Block title="Danger zone">
-        <Button variant="danger" onClick={() => {
-          if (!confirm('Erase EVERYTHING in this browser? Export a backup first.')) return;
+        <Button variant="danger" onClick={async () => {
+          if (!(await confirmDialog('Erase everything stored in this browser? Export a backup first.', 'Erase all data'))) return;
           run('wipe', async () => {
             await Promise.all([db.trades.clear(), db.images.clear(), db.outlooks.clear(), db.accounts.clear(), db.expenses.clear(), db.payouts.clear()]);
             await db.settings.put({ ...DEFAULT_SETTINGS, seeded: true });
@@ -168,7 +167,7 @@ function TagEditor({ tags, onChange }: { tags: Tag[]; onChange: (t: Tag[]) => vo
           <div key={t.id} className="group flex items-center gap-2 px-2 py-1">
             <ColorPicker tag={t} onPick={(color) => update(t.id, { color })} />
             <TextField value={t.name} onChange={(name) => name.trim() && update(t.id, { name: name.trim() })} className="flex-1" />
-            <IconButton title="Delete tag" className="opacity-0 group-hover:opacity-100 hover:!text-loss" onClick={() => confirm(`Delete “${t.name}”? Trades using it will lose the tag.`) && onChange(tags.filter((x) => x.id !== t.id))}><Trash2 size={13} /></IconButton>
+            <IconButton title="Delete tag" className="opacity-0 group-hover:opacity-100 hover:!text-loss" onClick={async () => (await confirmDialog(`Delete “${t.name}”? Trades using it will lose the tag.`, 'Delete tag')) && onChange(tags.filter((x) => x.id !== t.id))}><Trash2 size={13} /></IconButton>
           </div>
         ))}
       </div>

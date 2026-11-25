@@ -521,3 +521,31 @@ export function StatTile({ label, value, sub, tone }: { label: string; value: Re
     </div>
   );
 }
+
+/* ---------- In-app confirm (window.confirm is blocked in sandboxed frames) ---------- */
+type ConfirmReq = { message: string; confirmLabel: string; resolve: (ok: boolean) => void };
+let pushConfirm: ((r: ConfirmReq) => void) | null = null;
+
+export function confirmDialog(message: string, confirmLabel = 'Confirm'): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (!pushConfirm) { resolve(false); return; }
+    pushConfirm({ message, confirmLabel, resolve });
+  });
+}
+
+export function ConfirmHost() {
+  const [req, setReq] = useState<ConfirmReq | null>(null);
+  useEffect(() => { pushConfirm = setReq; return () => { pushConfirm = null; }; }, []);
+  const close = (ok: boolean) => { req?.resolve(ok); setReq(null); };
+  return (
+    <Modal open={!!req} onClose={() => close(false)} width={420}>
+      <div className="p-5">
+        <p className="text-[14px] leading-relaxed text-ink">{req?.message}</p>
+        <div className="mt-5 flex justify-end gap-2">
+          <Button onClick={() => close(false)}>Cancel</Button>
+          <Button variant="danger" autoFocus onClick={() => close(true)}>{req?.confirmLabel}</Button>
+        </div>
+      </div>
+    </Modal>
+  );
+}

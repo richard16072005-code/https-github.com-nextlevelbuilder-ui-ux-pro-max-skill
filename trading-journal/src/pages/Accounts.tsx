@@ -3,7 +3,7 @@ import { AlertTriangle, Pencil, Plus, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import {
-  Button, cx, Empty, IconButton, inputCls, Modal, NumberField, PageHeader, SectionTitle, Select, StatTile, TagPill, TextField, useToast,
+  Button, confirmDialog, cx, Empty, IconButton, inputCls, Modal, NumberField, PageHeader, SectionTitle, Select, StatTile, TagPill, TextField, useToast,
 } from '../components/ui';
 import { db, uid } from '../db/db';
 import type { Account, AccountStatus, AccountType, DrawdownType, Expense, Payout, TagColor } from '../db/types';
@@ -236,7 +236,7 @@ function AccountForm({ account, onClose }: { account: Account; onClose: () => vo
       </div>
       <div className="flex items-center justify-between border-t border-line px-5 py-3">
         {!isNew ? (
-          <Button variant="danger" size="sm" onClick={async () => { if (confirm('Delete account? Trades keep their other accounts.')) { await db.accounts.delete(a.id); onClose(); } }}><Trash2 size={13} /> Delete</Button>
+          <Button variant="danger" size="sm" onClick={async () => { if (await confirmDialog('Delete this account? Trades keep their other accounts.', 'Delete account')) { await db.accounts.delete(a.id); onClose(); } }}><Trash2 size={13} /> Delete</Button>
         ) : <span />}
         <div className="flex gap-2"><Button onClick={onClose}>Cancel</Button><Button variant="primary" onClick={save}>{isNew ? 'Add account' : 'Save'}</Button></div>
       </div>

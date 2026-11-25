@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Shell } from './components/Shell';
-import { ToastProvider } from './components/ui';
+import { ConfirmHost, ToastProvider } from './components/ui';
 import { seedIfNeeded } from './db/seed';
 import Accounts from './pages/Accounts';
 import Dashboard from './pages/Dashboard';
@@ -43,6 +43,7 @@ export default function App() {
           <Route path="*" element={<Dashboard />} />
         </Routes>
       </Shell>
+      <ConfirmHost />
     </ToastProvider>
   );
 }

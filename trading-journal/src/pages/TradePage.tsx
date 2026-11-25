@@ -9,7 +9,7 @@ import { ImageSlots } from '../components/ImageSlots';
 import { RichText } from '../components/RichText';
 import {
   Button, Checkbox, cx, Empty, IconButton, inputCls, nextTagColor, NumberField, OutcomePill, PositionPill, PropRow,
-  RuleBreakBadge, Scale, SectionTitle, Select, TagPill, TagSelect, useToast,
+  RuleBreakBadge, Scale, confirmDialog, SectionTitle, Select, TagPill, TagSelect, useToast,
 } from '../components/ui';
 import { db, deleteTrade, duplicateTrade, patchSettings, uid } from '../db/db';
 import type { Trade, TradeAccountEntry } from '../db/types';
@@ -71,7 +71,7 @@ function TradeDoc({ trade: t, prev, next }: { trade: Trade; prev?: string; next?
           <IconButton title="Next trade" disabled={!next} onClick={() => next && nav(`/trades/${next}`)} className="disabled:opacity-30"><ChevronRight size={16} /></IconButton>
           <span className="mx-1 h-4 w-px bg-line" />
           <IconButton title="Duplicate" onClick={async () => { const nid = await duplicateTrade(t.id); toast('Trade duplicated'); nid && nav(`/trades/${nid}`); }}><Copy size={15} /></IconButton>
-          <IconButton title="Delete" className="hover:!text-loss" onClick={async () => { if (confirm('Delete this trade and its screenshots?')) { await deleteTrade(t.id); toast('Trade deleted'); nav('/trades'); } }}><Trash2 size={15} /></IconButton>
+          <IconButton title="Delete" className="hover:!text-loss" onClick={async () => { if (await confirmDialog('Delete this trade and its screenshots?', 'Delete trade')) { await deleteTrade(t.id); toast('Trade deleted'); nav('/trades'); } }}><Trash2 size={15} /></IconButton>
         </div>
       </div>
 

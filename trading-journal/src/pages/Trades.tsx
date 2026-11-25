@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../components/Shell';
 import {
-  Button, Checkbox, cx, DropdownButton, Empty, OutcomePill, PageHeader, PositionPill, RuleBreakBadge, Segmented, TagPill,
+  Button, Checkbox, cx, DropdownButton, Empty, OutcomePill, PageHeader, PositionPill, RuleBreakBadge, Segmented, TagPill, useToast,
 } from '../components/ui';
 import { db } from '../db/db';
 import type { AppSettings, StoredImage, Trade } from '../db/types';
@@ -42,6 +42,7 @@ export default function Trades() {
   const s = useSettings();
   const accounts = useAccounts();
   const { openQuickAdd } = useApp();
+  const toast = useToast();
   const [prefs, setPrefs] = usePersisted('ledger.trades.view', { view: 'Table' as View, sort: 'date' as SortKey, dir: -1 as 1 | -1 });
   const [filters, setFilters] = usePersisted<Filters>('ledger.trades.filters', EMPTY);
   const [q, setQ] = useState('');
@@ -84,7 +85,7 @@ export default function Trades() {
         title="Trades"
         right={
           <>
-            <Button onClick={() => download(`trades-${todayISO()}.csv`, tradesToCsv(filtered, s, accounts), 'text/csv')}><Download size={14} /> CSV</Button>
+            <Button onClick={() => download(`trades-${todayISO()}.csv`, tradesToCsv(filtered, s, accounts), 'text/csv').catch((e) => toast(e.message, 'err'))}><Download size={14} /> CSV</Button>
             <Button variant="primary" onClick={openQuickAdd}><Plus size={14} /> New trade</Button>
           </>
         }

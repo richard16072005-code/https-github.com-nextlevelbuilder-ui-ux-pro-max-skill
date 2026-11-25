@@ -29,7 +29,23 @@ export function tradesToCsv(trades: Trade[], s: AppSettings, accounts: Account[]
   return [header, ...rows].map((r) => r.map(esc).join(',')).join('\n');
 }
 
-export function download(name: string, data: Blob | string, type = 'text/plain') {
+type DownloadsApi = { save: (r: { filename: string; data: Blob | string }) => Promise<unknown> };
+type ClaudeHost = { use: (name: string) => Promise<DownloadsApi | null> };
+
+/** Saves a file. Inside a claude.ai artifact this goes through the viewer's `downloads` capability. */
+export async function download(name: string, data: Blob | string, type = 'text/plain') {
+  const host = (window as unknown as { claude?: ClaudeHost }).claude;
+  if (host?.use) {
+    const d = await host.use('downloads');
+    if (!d) throw new Error('Saving files is not available in this view');
+    try {
+      await d.save({ filename: name, data: typeof data === 'string' ? new Blob([data], { type }) : data });
+    } catch (e) {
+      const code = (e as { code?: string })?.code;
+      throw new Error(code === 'declined' ? 'Save cancelled' : `Could not save the file (${code ?? 'error'})`);
+    }
+    return;
+  }
   const blob = typeof data === 'string' ? new Blob([data], { type }) : data;
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
