@@ -62,6 +62,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
 .container{width:min(1200px,100% - 40px);margin-inline:auto}
 section{position:relative}
+main{overflow-x:clip} /* keeps slide-in elements from causing sideways scroll on phones */
 .section{padding:clamp(72px,10vw,130px) 0}
 .alt{background:var(--cream-2)}
 
@@ -120,8 +121,8 @@ h3{font-size:1.25rem}
 .header.scrolled{--header-h:66px;background:rgba(46,22,10,.94);backdrop-filter:blur(12px);box-shadow:0 10px 30px -15px rgba(0,0,0,.6)}
 .header .container{display:flex;align-items:center;justify-content:space-between;gap:24px}
 .logo{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.logo svg,.logo img{height:52px;width:auto;transition:height .4s var(--ease);filter:drop-shadow(0 0 14px rgba(232,184,109,.35))}
-.header.scrolled .logo svg,.header.scrolled .logo img{height:42px}
+.logo svg,.logo img{height:56px;width:auto;transition:height .4s var(--ease);filter:drop-shadow(0 0 14px rgba(232,184,109,.35))}
+.header.scrolled .logo svg,.header.scrolled .logo img{height:46px}
 .nav{display:flex;align-items:center;gap:6px}
 .nav a{position:relative;padding:10px 14px;color:rgba(255,255,255,.85);font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;transition:color .3s}
 .nav a::after{content:"";position:absolute;left:14px;right:14px;bottom:4px;height:2px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
@@ -343,7 +344,7 @@ a.c-item:hover{background:rgba(232,184,109,.12);border-color:rgba(232,184,109,.5
 .footer{background:var(--brown-deep);color:rgba(255,255,255,.72);padding:80px 0 0;position:relative;overflow:hidden}
 .footer::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
 .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1.2fr 1fr;gap:40px}
-.footer .logo svg,.footer .logo img{height:70px}
+.footer .logo svg,.footer .logo img{height:84px;max-width:100%}
 .footer p{font-size:.92rem;margin-top:18px;max-width:300px}
 .footer h4{color:var(--gold);font-size:.74rem;letter-spacing:.32em;text-transform:uppercase;margin-bottom:20px;font-weight:600}
 .footer ul{list-style:none;display:grid;gap:10px}
@@ -443,27 +444,55 @@ a.c-item:hover{background:rgba(232,184,109,.12);border-color:rgba(232,184,109,.5
       <stop offset="0" stop-color="#9C5B26"/>
       <stop offset="1" stop-color="#E8B86D"/>
     </linearGradient>
-    <!-- Reusable logo. PLACEHOLDER: replace each <svg class="logo-svg"> below with
-         <img src="images/logo.png" alt="V & P Projects logo"> once you have the logo file. -->
-    <symbol id="logoMark" viewBox="0 0 220 80">
-      <!-- buildings -->
-      <g fill="url(#logoGrad)">
-        <rect x="14" y="22" width="12" height="30" rx="1"/>
-        <rect x="30" y="8" width="16" height="44" rx="1"/>
-        <rect x="50" y="16" width="12" height="36" rx="1"/>
+    <linearGradient id="logoGlass" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#FBEBD0" stop-opacity=".95"/>
+      <stop offset=".55" stop-color="#E8B86D" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#9C5B26" stop-opacity=".25"/>
+    </linearGradient>
+    <linearGradient id="logoBlock" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#E8B86D"/><stop offset="1" stop-color="#9C5B26"/>
+    </linearGradient>
+    <linearGradient id="logoWord" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#E8B86D"/><stop offset=".5" stop-color="#F5D9A8"/><stop offset="1" stop-color="#E8B86D"/>
+    </linearGradient>
+    <!-- LOGO: vector redraw of the V & P Projects logo, coloured for dark backgrounds
+         (header + footer). The original artwork has a white background, so it is
+         redrawn here to stay crisp and blend in. Drawn on the original's 2000x667 grid.
+         The tagline can be hidden per use with style="--tagline:0". -->
+    <g id="logoArt">
+      <!-- tall glass tower -->
+      <path d="M258 216 L530 72 L530 455 L258 455 Z" fill="url(#logoGrad)"/>
+      <path d="M277 227 L512 103 L512 455 L277 455 Z" fill="url(#logoGlass)"/>
+      <g stroke="#9C5B26" stroke-width="5" opacity=".8">
+        <path d="M370 178 V455 M415 154 V455 M460 130 V455 M420 272 L512 238"/>
       </g>
-      <g fill="#2E160A" opacity=".55">
-        <rect x="33" y="13" width="3" height="3"/><rect x="40" y="13" width="3" height="3"/>
-        <rect x="33" y="20" width="3" height="3"/><rect x="40" y="20" width="3" height="3"/>
-        <rect x="33" y="27" width="3" height="3"/><rect x="40" y="27" width="3" height="3"/>
-        <rect x="17" y="28" width="2.5" height="2.5"/><rect x="21" y="28" width="2.5" height="2.5"/>
-        <rect x="53" y="22" width="2.5" height="2.5"/><rect x="57" y="22" width="2.5" height="2.5"/>
+      <!-- narrow side block -->
+      <path d="M545 150 L622 205 L622 390 L545 390 Z" fill="url(#logoBlock)"/>
+      <!-- front glass building -->
+      <path d="M165 378 L418 260 L418 502 L165 522 Z" fill="url(#logoGrad)"/>
+      <path d="M182 392 L400 290 L400 500 L182 515 Z" fill="url(#logoGlass)"/>
+      <path d="M298 338 L400 290 L400 500 L298 508 Z" fill="#6B3A1E" opacity=".75"/>
+      <g stroke="#9C5B26" stroke-width="5" opacity=".85">
+        <path d="M258 356 V512 M335 320 V505 M372 303 V502"/>
       </g>
-      <!-- swoosh under the buildings -->
-      <path d="M4 60 C 30 46, 60 48, 76 54" fill="none" stroke="url(#logoGrad)" stroke-width="3" stroke-linecap="round"/>
-      <text x="84" y="44" font-family="Montserrat,sans-serif" font-weight="800" font-size="30" fill="url(#logoGrad)">V &amp; P</text>
-      <text x="85" y="64" font-family="Montserrat,sans-serif" font-weight="500" font-size="11" letter-spacing="5.2" fill="#F5D9A8">PROJECTS</text>
-    </symbol>
+      <!-- house -->
+      <path d="M514 460 L682 357 L812 452 L812 537 L514 522 Z" fill="url(#logoGlass)"/>
+      <path d="M450 462 L682 320 L842 438 L842 537 L812 537 L812 455 L682 358 L514 462 L514 500 L450 500 Z" fill="url(#logoGrad)"/>
+      <g fill="#C88A45">
+        <rect x="644" y="420" width="33" height="32"/><rect x="682" y="420" width="31" height="32"/>
+        <rect x="644" y="458" width="33" height="32"/><rect x="682" y="458" width="31" height="32"/>
+      </g>
+      <!-- swoosh -->
+      <path d="M72 572 C 230 495, 430 486, 600 510 C 720 527, 820 543, 902 530 C 820 556, 720 550, 600 535 C 440 514, 240 516, 72 572 Z" fill="url(#logoGrad)"/>
+      <!-- divider -->
+      <rect x="899" y="155" width="7" height="356" fill="url(#logoBlock)"/>
+      <!-- wordmark -->
+      <text x="975" y="345" textLength="878" lengthAdjust="spacingAndGlyphs" font-family="Montserrat,sans-serif" font-weight="500" font-size="262" fill="url(#logoWord)">V&amp;P</text>
+      <rect x="958" y="404" width="117" height="8" fill="url(#logoGrad)"/>
+      <rect x="1780" y="404" width="120" height="8" fill="url(#logoGrad)"/>
+      <text x="1108" y="430" textLength="636" lengthAdjust="spacing" font-family="Montserrat,sans-serif" font-weight="500" font-size="64" fill="#F5D9A8">PROJECTS</text>
+      <text x="958" y="497" textLength="950" lengthAdjust="spacingAndGlyphs" font-family="Montserrat,sans-serif" font-weight="500" font-size="46" fill="#FBF6EF" style="opacity:var(--tagline,.85)">Interior Fit Out - Commercial &amp; Residential</text>
+    </g>
   </defs>
 </svg>
 
@@ -471,7 +500,7 @@ a.c-item:hover{background:rgba(232,184,109,.12);border-color:rgba(232,184,109,.5
 <header class="header" id="header">
   <div class="container">
     <a href="#home" class="logo" aria-label="V & P Projects — home">
-      <svg class="logo-svg" viewBox="0 0 220 80" role="img" aria-label="V & P Projects logo"><use href="#logoMark"/></svg>
+      <svg class="logo-svg" viewBox="60 60 1860 525" role="img" aria-label="V & P Projects logo" style="--tagline:0"><use href="#logoArt"/></svg>
     </a>
     <nav class="nav" id="nav" aria-label="Main">
       <a href="#home" class="active">Home</a>
@@ -842,7 +871,7 @@ a.c-item:hover{background:rgba(232,184,109,.12);border-color:rgba(232,184,109,.5
   <div class="container footer-grid">
     <div>
       <a href="#home" class="logo" aria-label="V & P Projects — back to top">
-        <svg class="logo-svg" viewBox="0 0 220 80" role="img" aria-label="V & P Projects logo"><use href="#logoMark"/></svg>
+        <svg class="logo-svg" viewBox="60 60 1860 525" role="img" aria-label="V & P Projects — Interior Fit Out, Commercial & Residential"><use href="#logoArt"/></svg>
       </a>
       <p>Premium interior fit-outs for commercial and residential clients. Spaces built to perform, finished to impress.</p>
       <!-- PLACEHOLDER: licence number -->
